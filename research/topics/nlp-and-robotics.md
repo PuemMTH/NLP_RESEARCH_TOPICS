@@ -3,10 +3,10 @@
 # Topic: NLP and Robotics
 
 ## Included Sources
-- ../sources/saycan-grounding-language-robotic-affordances-2026-04-04.md
-- ../sources/rt-2-vla-robot-control-2026-04-04.md
-- ../sources/openvla-open-source-vla-2026-04-04.md
-- ../references/refs-nlp-robotics.md
+- [research/sources/saycan-grounding-language-robotic-affordances-2026-04-04.md](research/sources/saycan-grounding-language-robotic-affordances-2026-04-04.md)
+- [research/sources/rt-2-vla-robot-control-2026-04-04.md](research/sources/rt-2-vla-robot-control-2026-04-04.md)
+- [research/sources/openvla-open-source-vla-2026-04-04.md](research/sources/openvla-open-source-vla-2026-04-04.md)
+- [research/references/refs-nlp-robotics.md](research/references/refs-nlp-robotics.md)
 
 ## Topic Summary
 This topic focuses on connecting natural language understanding to executable robotic behavior. Current directions converge on language-grounded planning (SayCan) and unified vision-language-action policies (RT-2, OpenVLA), with a key trade-off between broad semantic generalization, controllability, compute cost, and safety.
@@ -68,13 +68,13 @@ This topic focuses on connecting natural language understanding to executable ro
 - Practical deployment impact
 
 ## Related Diagram
-- ../diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md
+- [research/diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md](research/diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md)
 
 ## New Index Entry (2026-04-04)
-- OpenVLA variants/extensions and Minecraft evidence scan: ../references/refs-openvla-minecraft-2026-04.md
+- OpenVLA variants/extensions and Minecraft evidence scan: [research/references/refs-openvla-minecraft-2026-04.md](research/references/refs-openvla-minecraft-2026-04.md)
 - Current status: no confirmed direct OpenVLA-on-Minecraft implementation found in official OpenVLA channels or broad GitHub repository/discussion search at scan time.
 - Adjacent active line: Minecraft VLA/agent papers (OmniJARVIS, JARVIS-VLA, OpenHA, MAIN-VLA) and agent systems (Voyager, VPT, MineDojo).
-- Landscape diagram: ../diagrams/openvla-minecraft-landscape-2026-04-04.md
+- Landscape diagram: [research/diagrams/openvla-minecraft-landscape-2026-04-04.md](research/diagrams/openvla-minecraft-landscape-2026-04-04.md)
 
 ## Stack Recommendation for Thesis (OpenVLA-style vs Voyager/JARVIS-style)
 
@@ -101,8 +101,8 @@ This topic focuses on connecting natural language understanding to executable ro
 - Borrow one OpenVLA-style idea as contribution: constrained action decoding or safety mask for invalid action prevention.
 
 ### Related Decision Diagram
-- ../diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md
+- [research/diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md](research/diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md)
 
 ## Proposal Evaluation Design (2026-04-04)
-- Baselines + metrics + ablations pack: ../ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md
-- Evaluation framework diagram: ../diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md
+- Baselines + metrics + ablations pack: [research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md](research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md)
+- Evaluation framework diagram: [research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md](research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md)

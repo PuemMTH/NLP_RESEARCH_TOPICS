@@ -4,10 +4,10 @@
 
 ## Included Sources
 - thai-medical-ocr-post-correction-2026-03-31.md
-- ../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md
-- ../ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md
-- ../diagrams/pipeline-thai-medical-ocr-modular.md
-- ../diagrams/system-comparison-ocr-abcd.md
+- [research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md](research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md)
+- [research/ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md](research/ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md)
+- [research/diagrams/pipeline-thai-medical-ocr-modular.md](research/diagrams/pipeline-thai-medical-ocr-modular.md)
+- [research/diagrams/system-comparison-ocr-abcd.md](research/diagrams/system-comparison-ocr-abcd.md)
 
 ## Topic Summary
 This topic connects Thai OCR model design, medical-document extraction requirements, and post-OCR correction reliability. It is highly aligned with practical pipeline work involving FastAPI services, OCR processing, and medical data constraints.

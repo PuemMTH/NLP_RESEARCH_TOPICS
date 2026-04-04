@@ -29,6 +29,6 @@ flowchart TD
 - ByT5-small ทำงานระดับ character ไม่ต้อง word tokenizer
 
 ## Related
-- Topic: [../topics/thai-medical-ocr-post-correction.md](../topics/thai-medical-ocr-post-correction.md)
-- Experiment Plan: [../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md](../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md)
+- Topic: [research/topics/thai-medical-ocr-post-correction.md](research/topics/thai-medical-ocr-post-correction.md)
+- Experiment Plan: [research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md](research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md)
 - See also: [system-comparison-ocr-abcd.md](system-comparison-ocr-abcd.md)

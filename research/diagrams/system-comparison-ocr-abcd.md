@@ -33,6 +33,6 @@ flowchart LR
 | D: VLM+Constrained | ✅ | สูง | ✅ | ช้ากว่า แต่แม่นกว่า |
 
 ## Related
-- Topic: [../topics/thai-medical-ocr-post-correction.md](../topics/thai-medical-ocr-post-correction.md)
+- Topic: [research/topics/thai-medical-ocr-post-correction.md](research/topics/thai-medical-ocr-post-correction.md)
 - Pipeline diagram: [pipeline-thai-medical-ocr-modular.md](pipeline-thai-medical-ocr-modular.md)
-- Experiment Plan: [../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md](../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md)
+- Experiment Plan: [research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md](research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md)
