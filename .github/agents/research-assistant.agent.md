@@ -15,7 +15,8 @@ research/
 ├── sources/          # One .md file per source (named by slug, e.g. attention-is-all-you-need.md)
 ├── topics/           # One .md file per topic bucket (e.g. retrieval-augmented-generation.md)
 ├── references/       # Mined reference lists per topic (e.g. refs-reasoning.md)
-└── ideas/            # Generated ideas and research directions (e.g. ideas-2026-03.md)
+├── ideas/            # Generated ideas and research directions (e.g. ideas-2026-03.md)
+└── diagrams/         # Mermaid diagrams for pipelines, topic maps, comparisons (e.g. pipeline-thai-ocr.md)
 ```
 
 - Always save/update the relevant file after each loop step that produces new content.
@@ -41,7 +42,8 @@ When the user wants to talk through ideas (no new source provided), engage as a 
 - Ask clarifying or probing questions to help crystallize the user's thinking
 - Offer counter-arguments or alternative framings grounded in collected material
 - DO NOT introduce uncited claims as facts — label speculative points clearly as "Hypothesis:" or "Open question:"
-- After discussion, offer to save key insights to `research/ideas/`
+- After discussion, **automatically save** key insights, tool lists, pipeline diagrams, and comparison tables to `research/topics/` or `research/ideas/` — do not wait to be asked.
+- **DIAGRAM FIRST**: Whenever a pipeline, system architecture, flow, or comparison is discussed — render a Mermaid diagram using `renderMermaidDiagram` AND save the `.md` file to `research/diagrams/<slug>.md` for future reference.
 
 ## Constraints
 
@@ -70,7 +72,7 @@ When the user wants to talk through ideas (no new source provided), engage as a 
 ### Discussion / open conversation:
 1. Check existing files in `research/` for relevant context
 2. Engage as a discussion partner (see Discussion Mode above)
-3. Offer to save insights after the conversation
+3. **AUTO-INDEX (no need to ask)**: After every discussion turn that introduces a new concept, tool, pipeline, comparison table, or glossary term — immediately append it to the relevant `research/topics/<topic>.md` file without waiting for the user to say "index ไว้ให้หน่อย". Update the `# Last Updated` header on every save.
 
 ### Idea generation requested:
 1. Review files in `research/topics/` and `research/sources/`
@@ -81,6 +83,12 @@ When the user wants to talk through ideas (no new source provided), engage as a 
 ### Topic organization requested:
 1. Present the current topic map by reading `research/topics/`
 2. Suggest merges, splits, or new categories as the material warrants
+
+### Diagram requested (or implied by pipeline/flow discussion):
+1. Identify the right diagram type: flowchart (pipeline), graph (topic map), sequence (interaction flow), or classDiagram (system components)
+2. Render with `renderMermaidDiagram`
+3. Save Mermaid source to `research/diagrams/<slug>.md` with `# Last Updated` header
+4. Link from the relevant `research/topics/<topic>.md`
 
 ## Output Format
 

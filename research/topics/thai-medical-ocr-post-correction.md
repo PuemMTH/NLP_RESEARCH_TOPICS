@@ -1,4 +1,4 @@
-# Last Updated: 2026-03-31 (concepts indexed)
+# Last Updated: 2026-03-31 (modular pipeline indexed)
 
 # Topic: Thai Medical OCR + Post-correction
 
@@ -6,6 +6,8 @@
 - thai-medical-ocr-post-correction-2026-03-31.md
 - ../ideas/experiment-plan-thai-medical-ocr-2026-03-31.md
 - ../ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md
+- ../diagrams/pipeline-thai-medical-ocr-modular.md
+- ../diagrams/system-comparison-ocr-abcd.md
 
 ## Topic Summary
 This topic connects Thai OCR model design, medical-document extraction requirements, and post-OCR correction reliability. It is highly aligned with practical pipeline work involving FastAPI services, OCR processing, and medical data constraints.
@@ -68,3 +70,51 @@ This topic connects Thai OCR model design, medical-document extraction requireme
 | D: VLM+Constrained | ✅ | สูง | ✅ | ช้ากว่า แต่แม่นกว่า |
 
 VLM ทนต่อ Noise ได้ดีกว่าเพราะไม่ได้แค่ "อ่านพิกเซล" แต่ "เข้าใจว่าฟิลด์นี้ควรมีอะไร" จากบริบทรอบข้าง
+
+---
+
+## Modular Lightweight Pipeline (ทางเลือกเบากว่า VLM เดี่ยว)
+
+แทนที่จะให้ VLM ตัวเดียวรับทุกอย่าง ให้แยกเป็นชิ้นเล็กๆ เฉพาะทาง:
+
+```
+ภาพ
+ │
+ ▼
+[1] Preprocessing       ← OpenCV
+    denoise, deskew, binarize
+ │
+ ▼
+[2] Layout Detection    ← DocLayout-YOLO (~30 MB)
+    detect: ตาราง, หัวข้อ, ช่องฟอร์ม
+ │
+ ▼
+[3] OCR per region      ← EasyOCR Thai (~200 MB)
+    อ่านข้อความใน region ที่ detect มา
+ │
+ ▼
+[4] Post-correction     ← ByT5-small หรือ WangchanBERTa
+    + Medical Lexicon Lock (~300–400 MB)
+ │
+ ▼
+[5] Field Structuring   ← Regex + Rules
+    → JSON schema → FastAPI
+```
+
+### Tool Stack Reference
+
+| ขั้นตอน | Tool | ขนาด | หมายเหตุ |
+|---|---|---|---|
+| Preprocessing | OpenCV | ~0 MB | ใช้อยู่แล้ว |
+| Layout Detection | **DocLayout-YOLO** | ~30 MB | คล้าย YOLO11 ที่รู้จัก |
+| OCR | **EasyOCR Thai** | ~200 MB | ใช้อยู่แล้ว |
+| Post-correction | **ByT5-small** | ~300 MB | character-level, ไม่ต้อง tokenize Thai |
+| Post-correction (Thai) | **WangchanBERTa** | ~400 MB | Thai BERT จาก NECTEC/VISTEC |
+| Field Structuring | Regex + Rules | ~0 MB | ไม่ต้องโมเดล |
+
+**รวม ~930 MB** vs Typhoon OCR VLM (~5–10x หนักกว่า)
+
+### จุดสำคัญ
+- Layout Detection (ขั้นที่ 2) คือหัวใจ — detect region ถูก ที่เหลือง่ายขึ้นมาก
+- WangchanBERTa มาจาก NECTEC/VISTEC ตรง context งานที่ NECTEC โดยตรง
+- ByT5-small ทำงานระดับ character ไม่ต้อง word tokenizer ภาษาไทย
