@@ -1,4 +1,4 @@
-# Last Updated: 2026-04-04 (top-3 thesis picks added)
+# Last Updated: 2026-04-04 (top-3 thesis picks added; OpenVLA-Minecraft scan indexed; stack decision added; eval design indexed)
 
 # Topic: NLP and Robotics
 
@@ -69,3 +69,40 @@ This topic focuses on connecting natural language understanding to executable ro
 
 ## Related Diagram
 - ../diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md
+
+## New Index Entry (2026-04-04)
+- OpenVLA variants/extensions and Minecraft evidence scan: ../references/refs-openvla-minecraft-2026-04.md
+- Current status: no confirmed direct OpenVLA-on-Minecraft implementation found in official OpenVLA channels or broad GitHub repository/discussion search at scan time.
+- Adjacent active line: Minecraft VLA/agent papers (OmniJARVIS, JARVIS-VLA, OpenHA, MAIN-VLA) and agent systems (Voyager, VPT, MineDojo).
+- Landscape diagram: ../diagrams/openvla-minecraft-landscape-2026-04-04.md
+
+## Stack Recommendation for Thesis (OpenVLA-style vs Voyager/JARVIS-style)
+
+### Recommended Primary Stack
+- Voyager/JARVIS-style stack is recommended as the primary thesis stack for Minecraft-oriented NLP+Robotics research.
+
+### Why this stack wins for this context
+- Domain fit: built directly around Minecraft control loops and long-horizon language-conditioned tasks.
+- Reproducibility: easier to reproduce with public Minecraft environments and agent frameworks.
+- Cost and timeline: lower setup burden than real robot VLA control pipelines.
+- Research depth: still supports strong novelty through planning, tool-use memory, self-verification, and recovery.
+
+### Practical stack blueprint
+- Environment: MineDojo-compatible or equivalent Minecraft API setup.
+- Agent core: Voyager/JARVIS-style planner-executor loop.
+- NLP layer: instruction decomposition, skill retrieval, and reflection-based replanning.
+- Evaluation: task success, sample efficiency, horizon length, recovery rate after failure.
+
+### When OpenVLA-style should be primary instead
+- If your thesis target is real-robot manipulation transfer and action-token safety constraints in physical environments.
+
+### Best compromise (hybrid)
+- Use Voyager/JARVIS-style as primary system in Minecraft.
+- Borrow one OpenVLA-style idea as contribution: constrained action decoding or safety mask for invalid action prevention.
+
+### Related Decision Diagram
+- ../diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md
+
+## Proposal Evaluation Design (2026-04-04)
+- Baselines + metrics + ablations pack: ../ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md
+- Evaluation framework diagram: ../diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md
