@@ -1,0 +1,23 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated outputs from POC runs
+sample_outputs/*.png
+sample_outputs/*.jpg
+sample_outputs/*.jpeg
+sample_outputs/*.json
+!sample_outputs/.gitkeep
+
+# Local model/cache artifacts
+.cache/
+
+# IDE/editor artifacts
+.vscode/
+.idea/
+
+# OS artifacts
+.DS_Store

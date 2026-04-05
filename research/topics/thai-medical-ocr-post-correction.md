@@ -1,4 +1,4 @@
-# Last Updated: 2026-04-05 (modular pipeline indexed; broad OCR context added; stage-wise paper list linked; cited-reference map linked)
+# Last Updated: 2026-04-05 (modular pipeline indexed; broad OCR context added; stage-wise paper list linked; cited-reference map linked; DocLayout-YOLO POC added)
 
 # Topic: Thai Medical OCR + Post-correction
 
@@ -142,3 +142,20 @@ VLM ทนต่อ Noise ได้ดีกว่าเพราะไม่ไ
 
 ### Related Diagram
 - [/research/diagrams/ocr-research-landscape-2026-04-05.md](/research/diagrams/ocr-research-landscape-2026-04-05.md)
+
+---
+
+## POC Log
+
+| วันที่ | Tool | Stage | ไฟล์ | สถานะ |
+|--------|------|-------|------|--------|
+| 2026-04-05 | DocLayout-YOLO | Stage 2: Layout Detection | [/poc/doclayout-yolo/](/poc/doclayout-yolo/) | ✅ Scaffolded |
+
+### 2026-04-05 — DocLayout-YOLO POC
+- **Source**: <https://github.com/opendatalab/DocLayout-YOLO>
+- **Stage**: 2 — Layout Understanding
+- **Model**: `juliozhao/DocLayout-YOLO-DocStructBench` (~120 MB, HuggingFace)
+- **Detects**: title, plain_text, abandon, figure, figure_caption, table, table_caption, table_footnote, isolate_formula, formula_caption
+- **CLI**: `python poc/doclayout-yolo/poc_runner.py --image doc.png --save-json`
+- **Integration point**: JSON output (label + bbox_xyxy + confidence) feeds directly into Stage 3 — crop each region and pass to PaddleOCR/EasyOCR
+- **Thai caveats**: Model trained on English-heavy data; test on Thai forms with `--conf 0.15` first; consider fine-tuning if recall on Thai table layouts is <0.6

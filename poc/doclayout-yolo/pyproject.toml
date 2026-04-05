@@ -1,0 +1,24 @@
+[project]
+name = "doclayout-yolo-poc"
+version = "0.1.0"
+description = "POC: DocLayout-YOLO document layout detection"
+requires-python = ">=3.10"
+dependencies = [
+    "doclayout-yolo",
+    "huggingface_hub",
+    "pillow",
+    "opencv-python-headless",
+    "torch",
+    "torchvision",
+]
+
+# cu128 = CUDA 12.8 — required for Blackwell GPUs (RTX 50xx, sm_120+)
+# Supports: sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
