@@ -1,4 +1,4 @@
-# Last Updated: 2026-04-04 (top-3 thesis picks added; OpenVLA-Minecraft scan indexed; stack decision added; eval design indexed)
+# Last Updated: 2026-04-05 (top-3 thesis picks added; OpenVLA-Minecraft scan indexed; stack decision added; eval design indexed; trend outlook linked)
 
 # Topic: NLP and Robotics
 
@@ -106,3 +106,7 @@ This topic focuses on connecting natural language understanding to executable ro
 ## Proposal Evaluation Design (2026-04-04)
 - Baselines + metrics + ablations pack: [research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md](research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md)
 - Evaluation framework diagram: [research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md](research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md)
+
+## Trend Outlook Link (2026-04-05)
+- Cross-topic trend map: [research/diagrams/research-trend-outlook-2026-04-05.md](research/diagrams/research-trend-outlook-2026-04-05.md)
+- Strategic emphasis for this topic: constrained/safe VLA, multilingual grounding, and robustness-first evaluation.

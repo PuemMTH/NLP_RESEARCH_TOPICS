@@ -1,4 +1,4 @@
-# Last Updated: 2026-04-05
+# Last Updated: 2026-04-05 (trend outlook linked)
 
 # Topic: Chanlekha Research Landscape
 
@@ -28,3 +28,7 @@ This topic organizes 19 publications from 2008-2024 and maps the trajectory from
 - Retrieve abstracts/full texts for top-5 cited papers and build method-comparison matrix.
 - Verify duplicate-author formatting anomalies in source list (example: repeated author names in a few entries).
 - Build a temporal analysis: pre-2012 surveillance phase vs post-2018 applied NLP phase.
+
+## Trend Outlook Link (2026-04-05)
+- Cross-topic trend map: [research/diagrams/research-trend-outlook-2026-04-05.md](research/diagrams/research-trend-outlook-2026-04-05.md)
+- Strategic emphasis for this topic: transfer legacy surveillance methods into modern multilingual, explainable, and operational NLP systems.
