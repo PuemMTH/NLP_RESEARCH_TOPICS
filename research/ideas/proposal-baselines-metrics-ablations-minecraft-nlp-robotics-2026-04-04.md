@@ -109,4 +109,4 @@
 - Claim 3: Multilingual setup improves CR while maintaining competitive TSR.
 
 ## Related Diagram
-- [research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md](research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md)
+- [/research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md](/research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md)

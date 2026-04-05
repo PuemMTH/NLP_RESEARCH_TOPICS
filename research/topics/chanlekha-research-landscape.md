@@ -3,8 +3,8 @@
 # Topic: Chanlekha Research Landscape
 
 ## Included Sources
-- [research/sources/chanlekha-publications-list-2026-04-05.md](research/sources/chanlekha-publications-list-2026-04-05.md)
-- [research/references/refs-chanlekha-research-landscape-2026-04.md](research/references/refs-chanlekha-research-landscape-2026-04.md)
+- [/research/sources/chanlekha-publications-list-2026-04-05.md](/research/sources/chanlekha-publications-list-2026-04-05.md)
+- [/research/references/refs-chanlekha-research-landscape-2026-04.md](/research/references/refs-chanlekha-research-landscape-2026-04.md)
 
 ## Topic Summary
 This topic organizes 19 publications from 2008-2024 and maps the trajectory from disease-outbreak event NLP to applied AI/NLP systems in education, agriculture, and Myanmar language technologies. Strong citation concentration appears in early public-health surveillance papers, while recent works show a multilingual shift and broader applied-NLP scope.
@@ -22,7 +22,7 @@ This topic organizes 19 publications from 2008-2024 and maps the trajectory from
 - Core high-impact cluster: 2008-2010 outbreak-surveillance papers
 
 ## Related Diagram
-- [research/diagrams/chanlekha-research-landscape-2008-2024-2026-04-05.md](research/diagrams/chanlekha-research-landscape-2008-2024-2026-04-05.md)
+- [/research/diagrams/chanlekha-research-landscape-2008-2024-2026-04-05.md](/research/diagrams/chanlekha-research-landscape-2008-2024-2026-04-05.md)
 
 ## Open Threads
 - Retrieve abstracts/full texts for top-5 cited papers and build method-comparison matrix.
@@ -30,5 +30,5 @@ This topic organizes 19 publications from 2008-2024 and maps the trajectory from
 - Build a temporal analysis: pre-2012 surveillance phase vs post-2018 applied NLP phase.
 
 ## Trend Outlook Link (2026-04-05)
-- Cross-topic trend map: [research/diagrams/research-trend-outlook-2026-04-05.md](research/diagrams/research-trend-outlook-2026-04-05.md)
+- Cross-topic trend map: [/research/diagrams/research-trend-outlook-2026-04-05.md](/research/diagrams/research-trend-outlook-2026-04-05.md)
 - Strategic emphasis for this topic: transfer legacy surveillance methods into modern multilingual, explainable, and operational NLP systems.

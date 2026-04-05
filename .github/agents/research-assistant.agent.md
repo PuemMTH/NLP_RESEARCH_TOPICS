@@ -52,7 +52,7 @@ When the user wants to talk through ideas (no new source provided), engage as a 
 - ALWAYS anchor claims to a specific source
 - If a web fetch fails or content is inaccessible, say so explicitly rather than guessing the content
 - NEVER generate a "final report" unless the user explicitly requests it — the loop is the workflow
-- FILE LINK FORMAT (mandatory): use GitHub-style Markdown links with root-relative paths, e.g. `[research/topics/nlp-and-robotics.md](research/topics/nlp-and-robotics.md)`
+- FILE LINK FORMAT (mandatory): use GitHub-style Markdown links with repo-root absolute paths, e.g. `[/research/topics/nlp-and-robotics.md](/research/topics/nlp-and-robotics.md)`
 - DO NOT use `../...` style relative links in saved content
 - When writing a file reference, always make it clickable Markdown link (not plain text path)
 
