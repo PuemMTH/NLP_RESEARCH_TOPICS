@@ -1,4 +1,4 @@
-# Last Updated: 2026-03-31 (modular pipeline indexed)
+# Last Updated: 2026-04-05 (modular pipeline indexed; broad OCR context added)
 
 # Topic: Thai Medical OCR + Post-correction
 
@@ -118,3 +118,25 @@ VLM ทนต่อ Noise ได้ดีกว่าเพราะไม่ไ
 - Layout Detection (ขั้นที่ 2) คือหัวใจ — detect region ถูก ที่เหลือง่ายขึ้นมาก
 - WangchanBERTa มาจาก NECTEC/VISTEC ตรง context งานที่ NECTEC โดยตรง
 - ByT5-small ทำงานระดับ character ไม่ต้อง word tokenizer ภาษาไทย
+
+---
+
+## OCR Broad Context (2026-04-05)
+
+### ภาพใหญ่ของสนาม OCR
+- OCR ไม่ได้จบที่ text transcription อีกต่อไป แต่เป็น end-to-end document understanding pipeline.
+- งานที่เด่นขึ้นคือ layout-aware recognition, field-level extraction, และ post-correction ที่ควบคุมข้อผิดพลาดเชิงโดเมน.
+- ในโดเมนการแพทย์ ความถูกต้องระดับ field (ค่า, หน่วย, ชื่อการทดสอบ) สำคัญกว่าคะแนนข้อความรวมเพียงอย่างเดียว.
+
+### 4 แกนวิจัยหลักที่กำลังเร่ง
+- Image quality and restoration: ลด noise ที่ทำให้ downstream error สะสม.
+- Layout and multimodal parsing: เข้าใจโครงสร้างเอกสาร ไม่ใช่แค่อ่านทีละบรรทัด.
+- Constrained post-correction: ใช้ lexicon/rules เพื่อลด over-correction ของคำเฉพาะทาง.
+- Reliability and compliance: วัดความเสี่ยง PHI leakage, consistency, และ fail-safe behavior.
+
+### แนวโน้มประเมินผล
+- จาก CER/WER อย่างเดียว ไปสู่ metric ผสม: field-level exact match, key-value F1, term-preservation, latency/memory.
+- เน้นรายงาน failure mode และ recovery strategy มากขึ้น โดยเฉพาะเอกสาร noisy และ layout ซับซ้อน.
+
+### Related Diagram
+- [/research/diagrams/ocr-research-landscape-2026-04-05.md](/research/diagrams/ocr-research-landscape-2026-04-05.md)
