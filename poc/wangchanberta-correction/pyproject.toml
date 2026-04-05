@@ -1,0 +1,22 @@
+[project]
+name = "wangchanberta-correction-poc"
+version = "0.1.0"
+description = "POC: WangchanBERTa MLM-based OCR post-correction for Thai medical text"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers",
+    "torch",
+    "torchvision",
+    "sentencepiece",
+    "protobuf",
+]
+
+# cu128 = CUDA 12.8 — supports sm_50 through sm_120 (Blackwell RTX 50xx)
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

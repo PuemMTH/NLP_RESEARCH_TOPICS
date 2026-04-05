@@ -1,0 +1,21 @@
+[project]
+name = "byt5-ocr-correction-poc"
+version = "0.1.0"
+description = "POC: ByT5-small for OCR post-correction (character-level seq2seq)"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers",
+    "torch",
+    "torchvision",
+    "sentencepiece",
+]
+
+# cu128 = CUDA 12.8 — supports sm_50 through sm_120 (Blackwell RTX 50xx)
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

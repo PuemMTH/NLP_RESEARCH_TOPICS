@@ -1,0 +1,23 @@
+[project]
+name = "got-ocr2-poc"
+version = "0.1.0"
+description = "POC: GOT-OCR2.0 — unified end-to-end VLM-based OCR"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers",
+    "torch",
+    "torchvision",
+    "pillow",
+    "accelerate",
+    "verovio",
+]
+
+# cu128 = CUDA 12.8 — supports sm_50 through sm_120 (Blackwell RTX 50xx)
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

@@ -1,0 +1,22 @@
+[project]
+name = "paddleocr-v5-poc"
+version = "0.1.0"
+description = "POC: PP-OCRv5 text detection + recognition via HuggingFace transformers"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers",
+    "torch",
+    "torchvision",
+    "pillow",
+    "opencv-python-headless",
+]
+
+# cu128 = CUDA 12.8 — supports sm_50 through sm_120 (Blackwell RTX 50xx)
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

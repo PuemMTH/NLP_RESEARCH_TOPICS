@@ -149,7 +149,12 @@ VLM ทนต่อ Noise ได้ดีกว่าเพราะไม่ไ
 
 | วันที่ | Tool | Stage | ไฟล์ | สถานะ |
 |--------|------|-------|------|--------|
-| 2026-04-05 | DocLayout-YOLO | Stage 2: Layout Detection | [/poc/doclayout-yolo/](/poc/doclayout-yolo/) | ✅ Scaffolded |
+| 2026-04-05 | DocLayout-YOLO | Stage 2: Layout Detection | [/poc/doclayout-yolo/](/poc/doclayout-yolo/) | ✅ Run success (RTX 5070, cu128, 13 detections) |
+| 2026-04-05 | EasyOCR Thai | Stage 3: Text Recognition | [/poc/easyocr-thai/](/poc/easyocr-thai/) | ✅ PASS — 42 regions (sample), 107 regions (real paper) |
+| 2026-04-06 | PaddleOCR v5 | Stage 3: Text Recognition | [/poc/paddleocr-v5/](/poc/paddleocr-v5/) | ✅ PASS — 8 regions (sample), 53 regions (real paper); HF transformers backend |
+| 2026-04-05 | GOT-OCR2.0 | Stage 3: Text Recognition (VLM) | [/poc/got-ocr2/](/poc/got-ocr2/) | ✅ PASS — 53 lines/2978 chars (real paper, 6.9s) |
+| 2026-04-05 | ByT5-small | Stage 4: Post-correction | [/poc/byt5-ocr-correction/](/poc/byt5-ocr-correction/) | ✅ PASS — 8 samples, 0/8 exact (pretrained base, not fine-tuned) |
+| 2026-04-05 | WangchanBERTa | Stage 4: Post-correction (MLM) | [/poc/wangchanberta-correction/](/poc/wangchanberta-correction/) | ✅ PASS — 8 samples, 1/8 exact (pretrained MLM) |
 
 ### 2026-04-05 — DocLayout-YOLO POC
 - **Source**: <https://github.com/opendatalab/DocLayout-YOLO>

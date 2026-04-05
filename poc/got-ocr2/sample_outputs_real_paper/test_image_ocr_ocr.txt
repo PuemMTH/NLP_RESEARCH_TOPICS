@@ -1,0 +1,53 @@
+on developing architectural improvements to make learnable
+matching methods generalize.
+Motivated by the above observations, we propose
+OmniGlue, the first learnable image matcher that is de-
+signed with generalization as a core principle. Building
+on top of domain-agnostic local features [10], we introduce
+novel techniques for improving the generalizability of match-
+ing layers: foundation model guidance and keypoint-position
+attention guidance. As shown in Fig. 1, with the introduced
+techniques, we enable OmniGlue to generalize better on
+out-of-distribution domains while maintaining quality per-
+formance on the source domain.
+Firstly, we incorporate broad visual knowledge of a foun-
+dation model. By training on large-scale data, the foundation
+model, DINOv2 [35], performs well in diverse image do-
+mains on a variety of tasks, including robust region-level
+matching [22, 35, 57]. Even though the granularity of match-
+ing results yielded from foundational models is limited, these
+models provide generalizable guidance on potential match-
+ing regions when a specialized matcher cannot handle the
+domain shift. Thus, we use DINO to guide the inter-image
+feature propagation process, downgrading irrelevant key-
+points and encouraging the model to fuse information from
+potentially matchable regions.
+Secondly, we also guide the information propagation
+process with keypoint position information. We discover
+that previous positional encoding strategies [42] hurt per-
+formance when the model is applied to different domains
+– which motivates us to disentangle it from the matching
+descriptors used to estimate correspondence. We propose
+a novel keypoint-position guided attention mechanism de-
+signed to avoid specializing too strongly in the training dis-
+tribution of keypoints and relative pose transformations.
+Experimentally, we assess OmniGlue’s generalization
+across diverse visual domains, spanning synthetic and real
+images, from scene-level to object-centric and aerial datasets,
+with small-baseline and wide-baseline cameras. We demon-
+strate significant improvements compared to previous work.
+In more detail, our contributions are as follows.
+Contributions. (1) We introduce foundation model guid-
+ance to the learnable feature matching process, which lever-
+ages broad visual knowledge to enhance correspondences
+in domains that are not observed at training time, boosting
+pose estimation accuracy by up to 5.8% (14.4% relatively).
+(2) A new strategy for leveraging positional encoding of
+keypoints, which avoids an overly reliant dependence on
+geometric priors from the training domain, boosting cross-
+domain transfer by up to 6.1% (14.9% relatively). (3) We
+perform comprehensive experiments on 7 datasets from var-
+ied domains, demonstrating the limited generalizability of
+existing matching methods and OmniGlue’s strong improve-
+ments, with relative gains of 20.9% on average in all novel
+domains. (4) By fine-tuning OmniGlue using limited amount

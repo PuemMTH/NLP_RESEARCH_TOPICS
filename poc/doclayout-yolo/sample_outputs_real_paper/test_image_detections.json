@@ -1,0 +1,72 @@
+{
+  "image": "/home/puem/Desktop/NLP_RESEARCH_TOPICS/test_image.png",
+  "total_detections": 6,
+  "detections": [
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.954,
+      "bbox_xyxy": [
+        75.9,
+        138.8,
+        523.4,
+        181.6
+      ]
+    },
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.9834,
+      "bbox_xyxy": [
+        75.8,
+        185.9,
+        523.9,
+        408.8
+      ]
+    },
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.9802,
+      "bbox_xyxy": [
+        76.3,
+        412.6,
+        524.7,
+        681.3
+      ]
+    },
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.9826,
+      "bbox_xyxy": [
+        75.3,
+        684.4,
+        524.1,
+        885.2
+      ]
+    },
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.9789,
+      "bbox_xyxy": [
+        76.1,
+        888.8,
+        524.5,
+        1022.6
+      ]
+    },
+    {
+      "label": "plain_text",
+      "class_id": 1,
+      "confidence": 0.9785,
+      "bbox_xyxy": [
+        76.3,
+        1026.4,
+        524.9,
+        1339.8
+      ]
+    }
+  ]
+}
