@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Diagram</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12/dist/d3-sankey.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0f1117;
+      --surface:    #1a1d2e;
+      --surface2:   #222640;
+      --border:     #2d3148;
+      --text:       #e2e8f0;
+      --muted:      #8892b0;
+      --accent:     #64ffda;
+      --accent2:    #7c5cbf;
+      --warn:       #f97316;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem 5rem;
+      gap: 1.5rem;
+    }
+
+    header { width: 100%; max-width: 1200px; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .subtitle { font-size: 0.84rem; color: var(--muted); margin-top: 0.35rem; }
+
+    #diagram-container {
+      width: 100%; max-width: 1200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      overflow: auto;
+      min-height: 200px;
+    }
+
+    .sankey-link { opacity: 0.38; transition: opacity 0.2s; fill: none; }
+    .sankey-link:hover { opacity: 0.72; }
+    .sankey-label { font-size: 12px; fill: var(--text); font-weight: 500; }
+
+    .latex-block { margin: 1.2rem 0; padding: 1rem 1.5rem; background: var(--bg); border-left: 3px solid var(--accent); border-radius: 4px; font-size: 1.05rem; overflow-x: auto; }
+    .latex-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .mermaid { color: var(--text); }
+
+    #data-section {
+      width: 100%; max-width: 1200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    #data-section summary {
+      padding: 0.85rem 1.5rem;
+      cursor: pointer;
+      font-size: 0.85rem; font-weight: 600; color: var(--accent);
+      user-select: none; border-bottom: 1px solid transparent;
+      transition: border-color 0.2s; list-style: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    #data-section summary::before { content: "▶"; font-size: 0.7rem; transition: transform 0.2s; }
+    #data-section[open] summary::before { transform: rotate(90deg); }
+    #data-section[open] summary { border-bottom-color: var(--border); }
+    #data-section summary::-webkit-details-marker { display: none; }
+
+    #data-table-wrap { padding: 1.25rem 1.5rem; overflow-x: auto; }
+    table.data-tbl { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    table.data-tbl th { text-align: left; padding: 0.4rem 0.6rem; color: var(--muted); font-weight: 600; font-size: 0.75rem; border-bottom: 1px solid var(--border); }
+    table.data-tbl td { padding: 0.25rem 0.4rem; border-bottom: 1px solid rgba(45,49,72,0.5); }
+    table.data-tbl td[contenteditable="true"] { outline: none; cursor: text; border-radius: 3px; transition: background 0.15s; }
+    table.data-tbl td[contenteditable="true"]:focus { background: var(--surface2); box-shadow: 0 0 0 1px var(--accent); }
+    .btn-rerender { margin-top: 0.9rem; padding: 0.45rem 1.1rem; background: var(--accent2); color: #fff; border: none; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+    .btn-rerender:hover { opacity: 0.85; }
+    .edit-hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
+    #sources-section { width: 100%; max-width: 1200px; border-top: 1px solid var(--border); padding-top: 1.2rem; }
+    #sources-section h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.7rem; font-weight: 600; }
+    .source-item { display: flex; gap: 0.7rem; align-items: baseline; font-size: 0.8rem; margin-bottom: 0.4rem; }
+    .source-file { font-family: 'Consolas', monospace; color: var(--accent); white-space: nowrap; }
+    .source-desc { color: var(--muted); }
+    .source-date { color: var(--border); font-size: 0.72rem; white-space: nowrap; }
+
+    #tooltip {
+      position: fixed; background: rgba(26,29,46,0.97); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.4rem 0.75rem; font-size: 0.8rem;
+      pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 999; white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="graph-title">Diagram</h1>
+  <p class="subtitle" id="graph-subtitle"></p>
+</header>
+
+<div id="diagram-container"></div>
+
+<details id="data-section">
+  <summary>Edit Data</summary>
+  <div id="data-table-wrap">
+    <div id="data-table-inner"></div>
+    <p class="edit-hint">แก้ไขค่าในตารางแล้วกด Re-render เพื่ออัปเดต diagram</p>
+    <button class="btn-rerender" onclick="rerender()">Re-render</button>
+  </div>
+</details>
+
+<footer id="sources-section">
+  <h2>Data Sources</h2>
+  <div id="sources-list"></div>
+</footer>
+
+<div id="tooltip"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+// CONFIG — Claude fills this block with real data when generating a diagram
+// ════════════════════════════════════════════════════════════════════════════
+const CONFIG = {
+  type: "plotly",
+  title: "OCR Model Confidence Comparison — Real Paper Image",
+  subtitle: "ข้อมูลจากการรัน 3 โมเดลกับภาพ paper จริง (test_image.png)",
+  sources: [
+    {
+      file: "poc/doclayout-yolo/sample_outputs_real_paper/test_image_detections.json",
+      description: "6 layout regions detected, all plain_text, avg confidence 0.976",
+      extractedAt: "2026-04-29"
+    },
+    {
+      file: "poc/easyocr-thai/sample_outputs_real_paper/test_image_detections.json",
+      description: "107 OCR word regions, wide confidence spread (0.23–1.0)",
+      extractedAt: "2026-04-29"
+    },
+    {
+      file: "poc/got-ocr2/sample_outputs_real_paper/test_image_result_ocr.json",
+      description: "53 lines, 2,978 characters — document-level OCR (no per-token confidence)",
+      extractedAt: "2026-04-29"
+    }
+  ],
+  data: {
+    traces: [
+      {
+        type: "bar",
+        name: "DocLayout-YOLO (layout detection)",
+        x: ["Region 1","Region 2","Region 3","Region 4","Region 5","Region 6"],
+        y: [0.954, 0.9834, 0.9802, 0.9826, 0.9789, 0.9785],
+        marker: { color: "#4c9be8" },
+        text: ["0.954","0.983","0.980","0.983","0.979","0.979"],
+        textposition: "outside",
+        hovertemplate: "<b>%{x}</b><br>Confidence: %{y:.4f}<extra></extra>"
+      },
+      {
+        type: "histogram",
+        name: "EasyOCR (107 word regions)",
+        x: [
+          0.4946,0.7615,0.9659,0.6348,1.0,0.9997,0.9935,0.6142,0.5869,0.4269,
+          0.6472,0.5218,0.6395,0.8231,0.2996,0.6625,0.7507,0.5724,0.6287,0.6528,
+          0.9957,0.9784,0.7032,0.7886,0.4773,0.6079,0.9314,0.4642,0.3805,0.6454,
+          0.5575,0.5391,0.4775,0.9999,0.4528,0.8045,0.4998,0.5488,0.8075,0.4806,
+          0.6522,0.571,0.4302,1.0,0.5018,0.999,0.9658,0.7671,0.8809,0.5353,
+          0.7358,0.5665,0.7415,0.6636,0.4778,0.4821,0.7707,0.5341,0.9456,0.7084,
+          0.5079,0.4375,0.7839,0.6499,0.5066,0.9959,0.9979,0.5067,0.6259,0.6988,
+          0.9999,0.8612,0.7683,0.9805,0.4426,0.6591,0.5985,1.0,0.6658,0.7172,
+          0.6446,0.4658,0.8812,0.6958,0.4602,0.7105,0.6379,0.7454,0.6917,0.9998,
+          0.8212,0.5504,0.5403,0.4992,0.7955,0.6679,0.8623,0.498,0.5311,0.6769,
+          0.5116,0.6405,0.7844,0.9957,0.6819,0.5865,0.4312
+        ],
+        xbins: { start: 0, end: 1.05, size: 0.1 },
+        marker: { color: "#a855f7", opacity: 0.75 },
+        hovertemplate: "Confidence %{x:.1f}–%{xend:.1f}<br>Count: %{y}<extra></extra>",
+        yaxis: "y2"
+      }
+    ],
+    layout: {
+      barmode: "group",
+      xaxis: { title: "Detection / Confidence bin" },
+      yaxis:  { title: "Confidence score", range: [0, 1.05] },
+      yaxis2: {
+        title: "EasyOCR region count",
+        overlaying: "y", side: "right",
+        showgrid: false
+      },
+      legend: { orientation: "h", y: -0.2 },
+      annotations: [
+        { x: 2.5, y: 0.976, xref: "x", yref: "y",
+          text: "avg 0.976", showarrow: false,
+          font: { color: "#64ffda", size: 11 }, yshift: 12 }
+      ]
+    }
+  }
+};
+// ════════════════════════════════════════════════════════════════════════════
+
+const PALETTE = [
+  "#4c9be8","#7c5cbf","#64ffda","#f97316","#a855f7",
+  "#ec4899","#22d3ee","#84cc16","#fbbf24","#ef4444",
+  "#10b981","#6366f1","#14b8a6","#f59e0b","#8b5cf6",
+  "#3b82f6","#d946ef","#0ea5e9","#a3e635","#fb923c"
+];
+
+const container = document.getElementById("diagram-container");
+const tooltip   = document.getElementById("tooltip");
+
+document.getElementById("page-title").textContent     = CONFIG.title;
+document.getElementById("graph-title").textContent    = CONFIG.title;
+document.getElementById("graph-subtitle").textContent = CONFIG.subtitle || "";
+
+function renderSankey(data) {
+  container.innerHTML = "";
+  const W = Math.min(container.clientWidth - 64, 1100);
+  const H = Math.max(520, data.links.length * 20);
+  const PAD = { top: 12, right: 200, bottom: 12, left: 200 };
+  const svg = d3.select(container).append("svg").attr("viewBox", `0 0 ${W} ${H}`).attr("preserveAspectRatio", "xMidYMid meet");
+  const sankey = d3.sankey().nodeId(d => d.id).nodeWidth(22).nodePadding(16).extent([[PAD.left, PAD.top], [W - PAD.right, H - PAD.bottom]]);
+  const { nodes, links } = sankey({ nodes: data.nodes.map(d => ({ ...d })), links: data.links.map(d => ({ ...d })) });
+  const colorOf = {};
+  nodes.forEach((n, i) => { colorOf[n.id] = PALETTE[i % PALETTE.length]; });
+  svg.append("g").selectAll("path").data(links).join("path").attr("class", "sankey-link").attr("d", d3.sankeyLinkHorizontal()).attr("stroke", d => colorOf[d.source.id]).attr("stroke-width", d => Math.max(1.5, d.width))
+    .on("mousemove", (e, d) => { tooltip.style.opacity = 1; tooltip.style.left = (e.clientX + 14) + "px"; tooltip.style.top = (e.clientY - 30) + "px"; tooltip.textContent = `${d.source.label||d.source.id} → ${d.target.label||d.target.id}  ${d.value}${d.note ? " — " + d.note : ""}`; })
+    .on("mouseleave", () => { tooltip.style.opacity = 0; });
+  const nodeG = svg.append("g").selectAll("g").data(nodes).join("g");
+  nodeG.append("rect").attr("x", d => d.x0).attr("y", d => d.y0).attr("width", d => d.x1 - d.x0).attr("height", d => Math.max(5, d.y1 - d.y0)).attr("fill", d => colorOf[d.id]).attr("rx", 4);
+  nodeG.append("text").attr("class", "sankey-label").attr("x", d => d.x0 < W/2 ? d.x1 + 9 : d.x0 - 9).attr("y", d => (d.y0 + d.y1) / 2).attr("dy", "0.35em").attr("text-anchor", d => d.x0 < W/2 ? "start" : "end").text(d => d.label || d.id);
+}
+
+function renderMermaid(data) {
+  container.innerHTML = "";
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  const pre = document.createElement("pre");
+  pre.className = "mermaid"; pre.textContent = data.definition;
+  container.appendChild(pre); mermaid.run({ nodes: [pre] });
+}
+
+function renderLatex(data) {
+  container.innerHTML = "";
+  data.blocks.forEach(block => {
+    const wrap = document.createElement("div"); wrap.className = "latex-block";
+    if (block.label) { const lbl = document.createElement("div"); lbl.className = "latex-label"; lbl.textContent = block.label; wrap.appendChild(lbl); }
+    const math = document.createElement("div"); math.textContent = `\\[${block.tex || block}\\]`; wrap.appendChild(math);
+    container.appendChild(wrap);
+  });
+  if (window.MathJax) MathJax.typesetPromise([container]);
+}
+
+function renderPlotly(data) {
+  container.innerHTML = "";
+  const div = document.createElement("div"); container.appendChild(div);
+  const layout = Object.assign({ paper_bgcolor: "transparent", plot_bgcolor: "transparent", font: { color: "#e2e8f0", family: "Segoe UI, system-ui, sans-serif" }, margin: { t: 30, b: 50, l: 60, r: 60 } }, data.layout || {});
+  Plotly.newPlot(div, data.traces, layout, { responsive: true });
+}
+
+function buildTable(data) {
+  const inner = document.getElementById("data-table-inner");
+  inner.innerHTML = "";
+  if (CONFIG.type === "sankey") {
+    const tbl = document.createElement("table"); tbl.className = "data-tbl";
+    tbl.innerHTML = `<thead><tr><th>Source</th><th>Target</th><th>Value</th><th>Note</th></tr></thead>`;
+    const tbody = document.createElement("tbody");
+    data.links.forEach((lk, i) => {
+      const tr = document.createElement("tr"); tr.dataset.idx = i;
+      ["source","target","value","note"].forEach(col => { const td = document.createElement("td"); td.contentEditable = "true"; td.dataset.col = col; td.textContent = lk[col] ?? ""; tr.appendChild(td); });
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody); inner.appendChild(tbl);
+  } else if (CONFIG.type === "plotly" && data.traces && data.traces.length) {
+    data.traces.forEach((trace, ti) => {
+      if (!trace.x || !trace.y) return;
+      const label = document.createElement("p"); label.style.cssText = "font-size:.75rem;color:var(--muted);margin-bottom:.4rem;margin-top:.6rem"; label.textContent = `Trace ${ti + 1}: ${trace.name || trace.type}`; inner.appendChild(label);
+      const tbl = document.createElement("table"); tbl.className = "data-tbl"; tbl.dataset.traceIdx = ti;
+      const xs = trace.x || []; const ys = trace.y || []; const max = Math.max(xs.length, ys.length);
+      tbl.innerHTML = `<thead><tr><th>x</th><th>y</th></tr></thead>`;
+      const tbody = document.createElement("tbody");
+      for (let i = 0; i < max; i++) {
+        const tr = document.createElement("tr"); tr.dataset.idx = i;
+        ["x","y"].forEach(col => { const td = document.createElement("td"); td.contentEditable = "true"; td.dataset.col = col; td.textContent = (col === "x" ? xs[i] : ys[i]) ?? ""; tr.appendChild(td); });
+        tbody.appendChild(tr);
+      }
+      tbl.appendChild(tbody); inner.appendChild(tbl);
+    });
+  } else {
+    inner.textContent = "Live editing available for sankey and plotly types.";
+  }
+}
+
+function readTableBack() {
+  if (CONFIG.type === "sankey") {
+    document.querySelectorAll("#data-table-inner tbody tr").forEach(tr => {
+      const i = +tr.dataset.idx;
+      tr.querySelectorAll("td[data-col]").forEach(td => { const col = td.dataset.col; const val = td.textContent.trim(); CONFIG.data.links[i][col] = col === "value" ? (parseFloat(val) || 0) : val; });
+    });
+  } else if (CONFIG.type === "plotly") {
+    document.querySelectorAll("#data-table-inner table[data-trace-idx]").forEach(tbl => {
+      const ti = +tbl.dataset.traceIdx; const xs = [], ys = [];
+      tbl.querySelectorAll("tbody tr").forEach(tr => { tr.querySelectorAll("td").forEach(td => { const v = td.textContent.trim(); if (td.dataset.col === "x") xs.push(isNaN(v) ? v : +v); else ys.push(isNaN(v) ? v : +v); }); });
+      CONFIG.data.traces[ti].x = xs; CONFIG.data.traces[ti].y = ys;
+    });
+  }
+}
+
+function rerender() { readTableBack(); const r = RENDERERS[CONFIG.type]; if (r) r(CONFIG.data); }
+
+function renderSources(sources) {
+  const list = document.getElementById("sources-list");
+  if (!sources || sources.length === 0) { list.innerHTML = `<p style="font-size:.8rem;color:var(--muted)">No sources.</p>`; return; }
+  list.innerHTML = sources.map(s => `<div class="source-item"><span class="source-file">${s.file}</span><span class="source-desc">${s.description||""}</span><span class="source-date">${s.extractedAt||""}</span></div>`).join("");
+}
+
+const RENDERERS = { sankey: renderSankey, mermaid: renderMermaid, latex: renderLatex, plotly: renderPlotly };
+const render = RENDERERS[CONFIG.type];
+if (render) { render(CONFIG.data); buildTable(CONFIG.data); }
+else { container.innerHTML = `<p style="color:#ef4444">Unknown type: <strong>${CONFIG.type}</strong></p>`; }
+renderSources(CONFIG.sources);
+</script>
+</body>
+</html>
