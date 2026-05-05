@@ -46,3 +46,30 @@
 - medical-ocr: MeDocVL
 - post-ocr-correction: No Free Lunches
 - low-resource-nlp: Typhoon OCR, No Free Lunches
+
+---
+
+## POC Log
+
+### 2026-05-06 — VLM Zero-Shot Image Classifier
+
+**POC folder**: `poc/vlm-zero-shot-classifier/`
+**Model**: `scb10x/typhoon2-qwen2vl-7b-vision-instruct` (Typhoon2-Vision, Thai-optimised Qwen2-VL-7B)
+**Fallback**: `Qwen/Qwen2.5-VL-7B-Instruct`
+
+**Goal**: Replace the hardcoded 700-char OCR text-length threshold for classifying SME product images as "ad/label" vs "product" with a direct VLM zero-shot classifier.
+
+**Pipeline stage**: Stage 2 (Layout/Routing) — sits before OCR, routes images to appropriate processing path.
+
+**Results on synthetic samples**:
+- `sample_product.png` (33 chars): VLM → "product" (conf=0.95) | 700-char rule → "product" | AGREE
+- `sample_ad_label.png` (795 chars): VLM → "advertisement" (conf=0.95) | 700-char rule → "advertisement" | AGREE
+
+**Thai language notes**: Typhoon2-Vision is Thai-aware and correctly interpreted Thai promotional text in the label image. Confidence self-reporting is not calibrated probability — tune the 0.7 threshold on real labelled data.
+
+**VRAM**: RTX 5070 (11.5 GB) → use `--load-4bit` (~6-8 GB). BF16 default requires ~15 GB.
+
+**Key files**:
+- `poc/vlm-zero-shot-classifier/poc_runner.py`
+- `poc/vlm-zero-shot-classifier/generate_sample.py`
+- `poc/vlm-zero-shot-classifier/run.sh`
