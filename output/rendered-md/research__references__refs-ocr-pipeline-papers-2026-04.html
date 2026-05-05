@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference Mining: OCR Pipeline Papers by Stage</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-05</p>
+<h1>Reference Mining: OCR Pipeline Papers by Stage</h1>
+<p>Source basis:</p>
+<ul>
+<li>arXiv query sweeps performed on 2026-04-05 for OCR pipeline subtopics</li>
+<li>Existing OCR references already indexed in this workspace</li>
+</ul>
+<hr>
+<h2>1) Preprocessing (denoise, rectification, orientation, restoration)</h2>
+<ul>
+<li>PreP-OCR: A Complete Pipeline for Document Image Restoration and Enhanced OCR Accuracy (2025)</li>
+<li><a href="https://arxiv.org/abs/2505.20429">https://arxiv.org/abs/2505.20429</a></li>
+<li>NAF-DPM: A Nonlinear Activation-Free Diffusion Probabilistic Model for Document Enhancement (2024)</li>
+<li><a href="https://arxiv.org/abs/2404.05669">https://arxiv.org/abs/2404.05669</a></li>
+<li>ForCenNet: Foreground-Centric Network for Document Image Rectification (2025)</li>
+<li><a href="https://arxiv.org/abs/2507.19804">https://arxiv.org/abs/2507.19804</a></li>
+<li>Seeing Straight: Document Orientation Detection for Efficient OCR (2025)</li>
+<li><a href="https://arxiv.org/abs/2511.04161">https://arxiv.org/abs/2511.04161</a></li>
+<li>MatteViT: High-Frequency-Aware Document Shadow Removal with Shadow Matte Guidance (2025)</li>
+<li><a href="https://arxiv.org/abs/2512.08789">https://arxiv.org/abs/2512.08789</a></li>
+</ul>
+<h2>2) Layout Understanding (region, reading order, structural parsing)</h2>
+<ul>
+<li>DocLayout-YOLO: Enhancing Document Layout Analysis through Diverse Synthetic Data and Global-to-Local Adaptive Perception (2024)</li>
+<li><a href="https://arxiv.org/abs/2410.12628">https://arxiv.org/abs/2410.12628</a></li>
+<li>DLAFormer: An End-to-End Transformer For Document Layout Analysis (2024)</li>
+<li><a href="https://arxiv.org/abs/2405.11757">https://arxiv.org/abs/2405.11757</a></li>
+<li>PARL: Position-Aware Relation Learning Network for Document Layout Analysis (2026)</li>
+<li><a href="https://arxiv.org/abs/2601.07620">https://arxiv.org/abs/2601.07620</a></li>
+<li>Dolphin-v2: Universal Document Parsing via Scalable Anchor Prompting (2026)</li>
+<li><a href="https://arxiv.org/abs/2602.05384">https://arxiv.org/abs/2602.05384</a></li>
+<li>DocSAM: Unified Document Image Segmentation via Query Decomposition and Heterogeneous Mixed Learning (2025)</li>
+<li><a href="https://arxiv.org/abs/2504.04085">https://arxiv.org/abs/2504.04085</a></li>
+</ul>
+<h2>3) Text Recognition (OCR/HTR core recognition)</h2>
+<ul>
+<li>VISTA-OCR: Towards generative and interactive end-to-end OCR models (2025)</li>
+<li><a href="https://arxiv.org/abs/2504.03621">https://arxiv.org/abs/2504.03621</a></li>
+<li>FastTextSpotter: A High-Efficiency Transformer for Multilingual Scene Text Spotting (2024)</li>
+<li><a href="https://arxiv.org/abs/2408.14998">https://arxiv.org/abs/2408.14998</a></li>
+<li>Towards Universal Khmer Text Recognition (2026)</li>
+<li><a href="https://arxiv.org/abs/2603.00702">https://arxiv.org/abs/2603.00702</a></li>
+<li>Handwritten Text Recognition of Historical Manuscripts Using Transformer-Based Models (2025)</li>
+<li><a href="https://arxiv.org/abs/2508.11499">https://arxiv.org/abs/2508.11499</a></li>
+<li>SARD: A Large-Scale Synthetic Arabic OCR Dataset for Book-Style Text Recognition (2025)</li>
+<li><a href="https://arxiv.org/abs/2505.24600">https://arxiv.org/abs/2505.24600</a></li>
+</ul>
+<h2>4) Post-correction (error correction after OCR)</h2>
+<ul>
+<li>OCR Error Post-Correction with LLMs in Historical Documents: No Free Lunches (2025)</li>
+<li><a href="https://arxiv.org/abs/2502.01205">https://arxiv.org/abs/2502.01205</a></li>
+<li>Multimodal LLMs for OCR, OCR Post-Correction, and Named Entity Recognition in Historical Documents (2025)</li>
+<li><a href="https://arxiv.org/abs/2504.00414">https://arxiv.org/abs/2504.00414</a></li>
+<li>Post-OCR Text Correction for Bulgarian Historical Documents (2024)</li>
+<li><a href="https://arxiv.org/abs/2409.00527">https://arxiv.org/abs/2409.00527</a></li>
+<li>RoundTripOCR: Data Generation for Post-OCR Correction in Low-Resource Devanagari Languages (2024)</li>
+<li><a href="https://arxiv.org/abs/2412.15248">https://arxiv.org/abs/2412.15248</a></li>
+<li>NeKo: Cross-Modality Post-Recognition Error Correction with Tasks-Guided MoE Language Model (2024)</li>
+<li><a href="https://arxiv.org/abs/2411.05945">https://arxiv.org/abs/2411.05945</a></li>
+</ul>
+<h2>5) Structured Extraction (KIE/VIE/schema mapping)</h2>
+<ul>
+<li>MeDocVL: A Visual Language Model for Medical Document Understanding and Parsing (2026)</li>
+<li><a href="https://arxiv.org/abs/2602.06402">https://arxiv.org/abs/2602.06402</a></li>
+<li>ExStrucTiny: A Benchmark for Schema-Variable Structured Information Extraction from Document Images (2026)</li>
+<li><a href="https://arxiv.org/abs/2602.12203">https://arxiv.org/abs/2602.12203</a></li>
+<li>UNIKIE-BENCH: Benchmarking Large Multimodal Models for Key Information Extraction in Visual Documents (2026)</li>
+<li><a href="https://arxiv.org/abs/2602.07038">https://arxiv.org/abs/2602.07038</a></li>
+<li>Qianfan-OCR: A Unified End-to-End Model for Document Intelligence (2026)</li>
+<li><a href="https://arxiv.org/abs/2603.13398">https://arxiv.org/abs/2603.13398</a></li>
+<li>ROAP: A Reading-Order and Attention-Prior Pipeline for Optimizing Layout Transformers in Key Information Extraction (2026)</li>
+<li><a href="https://arxiv.org/abs/2601.05470">https://arxiv.org/abs/2601.05470</a></li>
+</ul>
+<h2>6) Validation / Compliance (reliability, policy, PHI/privacy)</h2>
+<ul>
+<li>FinCriticalED: A Visual Benchmark for Financial Fact-Level OCR Evaluation (2025)</li>
+<li><a href="https://arxiv.org/abs/2511.14998">https://arxiv.org/abs/2511.14998</a></li>
+<li>SCORE: A Semantic Evaluation Framework for Generative Document Parsing (2025)</li>
+<li><a href="https://arxiv.org/abs/2509.19345">https://arxiv.org/abs/2509.19345</a></li>
+<li>Doc-PP: Document Policy Preservation Benchmark for Large Vision-Language Models (2026)</li>
+<li><a href="https://arxiv.org/abs/2601.03926">https://arxiv.org/abs/2601.03926</a></li>
+<li>DICOM De-Identification via Hybrid AI and Rule-Based Framework for Scalable, Uncertainty-Aware Redaction (2025)</li>
+<li><a href="https://arxiv.org/abs/2507.23736">https://arxiv.org/abs/2507.23736</a></li>
+<li>Not What the Doctor Ordered: Surveying LLM-based De-identification and Quantifying Clinical Information Loss (2025)</li>
+<li><a href="https://arxiv.org/abs/2509.14464">https://arxiv.org/abs/2509.14464</a></li>
+</ul>
+<hr>
+<h2>Practical Notes for Use</h2>
+<ul>
+<li>Some papers span multiple stages in the pipeline; they are placed in the stage where they contribute most directly.</li>
+<li>For thesis/prototype planning, use this file as a seed list, then shortlist 2-3 papers per stage for deep reading and reproducible baselines.</li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-ocr-pipeline-papers-2026-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

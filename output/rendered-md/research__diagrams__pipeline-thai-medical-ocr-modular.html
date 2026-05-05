@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: Thai Medical OCR — Modular Lightweight Pipeline</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>Diagram: Thai Medical OCR — Modular Lightweight Pipeline</h1>
+<pre><code class="language-mermaid">flowchart TD
+    IMG([📄 ภาพเอกสารการแพทย์]) --&gt; PRE
+
+    PRE[&quot;[1] Preprocessing\nOpenCV\ndenoise · deskew · binarize&quot;]
+    PRE --&gt; LAY
+
+    LAY[&quot;[2] Layout Detection\nDocLayout-YOLO ~30MB\ndetect: ตาราง · หัวข้อ · ช่องฟอร์ม&quot;]
+    LAY --&gt; OCR
+
+    OCR[&quot;[3] OCR per Region\nEasyOCR Thai ~200MB\nอ่านข้อความแต่ละ region&quot;]
+    OCR --&gt; POST
+
+    POST[&quot;[4] Post-correction\nByT5-small / WangchanBERTa ~300-400MB\n+ Medical Lexicon Lock&quot;]
+    POST --&gt; FIELD
+
+    FIELD[&quot;[5] Field Structuring\nRegex + Rules\nmap → JSON schema&quot;]
+    FIELD --&gt; API([🔌 FastAPI Service])</code></pre>
+<h2>Notes</h2>
+<ul>
+<li>รวม ~930 MB (เบากว่า VLM เดี่ยว 5-10x)</li>
+<li>ขั้นตอนที่ 2 Layout Detection คือ bottleneck หลัก — detect region ถูกแล้วที่เหลือง่าย</li>
+<li>WangchanBERTa มาจาก NECTEC/VISTEC เหมาะกับ context ภาษาไทยทางการแพทย์</li>
+<li>ByT5-small ทำงานระดับ character ไม่ต้อง word tokenizer</li>
+</ul>
+<h2>Related</h2>
+<ul>
+<li>Topic: <a href="../../research/topics/thai-medical-ocr-post-correction.md">/research/topics/thai-medical-ocr-post-correction.md</a></li>
+<li>Experiment Plan: <a href="../../research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md">/research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md</a></li>
+<li>See also: <a href="system-comparison-ocr-abcd.md">system-comparison-ocr-abcd.md</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/diagrams/pipeline-thai-medical-ocr-modular.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

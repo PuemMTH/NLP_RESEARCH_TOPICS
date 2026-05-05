@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: VLM Thai OCR Architecture Map</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>Diagram: VLM Thai OCR Architecture Map</h1>
+<h2>Modular OCR + VLM Fallback Architecture</h2>
+<pre><code class="language-mermaid">flowchart LR
+  A[Input Thai document image] --&gt; B[Preprocess&lt;br/&gt;deskew denoise crop]
+  B --&gt; C[Layout detection&lt;br/&gt;DocLayout-YOLO]
+  C --&gt; D[OCR per region&lt;br/&gt;EasyOCR / PaddleOCR]
+  D --&gt; E[Post-correction&lt;br/&gt;ByT5 / WangchanBERTa]
+  E --&gt; F[Field extraction&lt;br/&gt;rules + schema]
+  F --&gt; G[Evaluation cascade&lt;br/&gt;CER + ANLS + BERTScore]
+  G --&gt; H{Verifier result}
+  H --&gt;|supported| I[Accept field JSON]
+  H --&gt;|unsupported / uncertain| J[VLM fallback&lt;br/&gt;Typhoon OCR / Qwen2.5-VL]
+  J --&gt; K[Evidence-grounded verifier]
+  K --&gt; I
+  K --&gt;|still uncertain| L[Human review]</code></pre>
+<h2>Typhoon OCR-Style Data Construction / Inference Architecture</h2>
+<pre><code class="language-mermaid">flowchart TB
+  A[Raw Thai/English documents] --&gt; B[Traditional OCR output]
+  B --&gt; C[VLM restructuring]
+  C --&gt; D[Curated synthetic / structured data]
+  D --&gt; E[Fine-tune VLM backbone]
+  E --&gt; F[Typhoon OCR model]
+  G[Document image] --&gt; F
+  F --&gt; H[Markdown / structured extraction]
+  H --&gt; I[Verifier + validation]</code></pre>
+<h2>Qwen2.5-VL Conceptual Architecture</h2>
+<pre><code class="language-mermaid">flowchart LR
+  A[Image / document / video] --&gt; B[Dynamic resolution processor]
+  B --&gt; C[Native ViT vision encoder&lt;br/&gt;window attention]
+  D[Prompt / task instruction] --&gt; E[Text tokenizer]
+  C --&gt; F[Multimodal token fusion&lt;br/&gt;mRoPE positions]
+  E --&gt; F
+  F --&gt; G[Qwen language model]
+  G --&gt; H[Text / bbox / structured answer]</code></pre>
+<h2>mPLUG-DocOwl OCR-Free Architecture</h2>
+<pre><code class="language-mermaid">flowchart LR
+  A[High-resolution document image] --&gt; B[Vision tower&lt;br/&gt;CLIP-style encoder]
+  B --&gt; C[Vision-to-text projection]
+  C --&gt; D[Multimodal fusion]
+  E[Question / instruction] --&gt; D
+  D --&gt; F[LLM decoder]
+  F --&gt; G[OCR-free document answer&lt;br/&gt;table / chart / text / layout]</code></pre>
+<h2>Source Links</h2>
+<ul>
+<li>Typhoon OCR paper: &lt;<a href="https://arxiv.org/abs/2601.14722&gt;">https://arxiv.org/abs/2601.14722&gt;</a></li>
+<li>Typhoon OCR model card: &lt;<a href="https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;">https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;</a></li>
+<li>Qwen2.5-VL technical report: &lt;<a href="https://arxiv.org/abs/2502.13923&gt;">https://arxiv.org/abs/2502.13923&gt;</a></li>
+<li>Qwen2.5-VL architecture notes: &lt;<a href="https://deepwiki.com/QwenLM/Qwen2.5-VL/2-model-architecture&gt;">https://deepwiki.com/QwenLM/Qwen2.5-VL/2-model-architecture&gt;</a></li>
+<li>mPLUG-DocOwl system architecture: &lt;<a href="https://deepwiki.com/X-PLUG/mPLUG-DocOwl/1.2-system-architecture&gt;">https://deepwiki.com/X-PLUG/mPLUG-DocOwl/1.2-system-architecture&gt;</a></li>
+<li>mPLUG-DocOwl 1.5: &lt;<a href="https://arxiv.org/abs/2403.12895&gt;">https://arxiv.org/abs/2403.12895&gt;</a></li>
+<li>mPLUG-DocOwl2: &lt;<a href="https://arxiv.org/abs/2409.03420&gt;">https://arxiv.org/abs/2409.03420&gt;</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

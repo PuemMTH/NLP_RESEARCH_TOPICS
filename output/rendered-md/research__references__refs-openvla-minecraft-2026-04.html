@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenVLA Variants, Extensions, and Minecraft Evidence (Web Scan)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-04</p>
+<h1>OpenVLA Variants, Extensions, and Minecraft Evidence (Web Scan)</h1>
+<h2>Official OpenVLA and Checkpoints</h2>
+<ul>
+<li>OpenVLA main repository (latest updates mention OFT and FAST): <a href="https://github.com/openvla/openvla">https://github.com/openvla/openvla</a></li>
+<li>OpenVLA project page: <a href="https://openvla.github.io/">https://openvla.github.io/</a></li>
+<li>OpenVLA HF org models list: <a href="https://huggingface.co/openvla/models">https://huggingface.co/openvla/models</a></li>
+<li>OpenVLA 7B checkpoint: <a href="https://huggingface.co/openvla/openvla-7b">https://huggingface.co/openvla/openvla-7b</a></li>
+<li>OpenVLA README mentions early checkpoint openvla-v01-7b: <a href="https://github.com/openvla/openvla#pretrained-vlas">https://github.com/openvla/openvla#pretrained-vlas</a></li>
+<li>Prismatic-compatible checkpoint referenced for full fine-tuning: <a href="https://huggingface.co/openvla/openvla-7b-prismatic">https://huggingface.co/openvla/openvla-7b-prismatic</a></li>
+<li>Official LIBERO fine-tuned checkpoints referenced in README:</li>
+<li><a href="https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial">https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial</a></li>
+<li><a href="https://huggingface.co/openvla/openvla-7b-finetuned-libero-object">https://huggingface.co/openvla/openvla-7b-finetuned-libero-object</a></li>
+<li><a href="https://huggingface.co/openvla/openvla-7b-finetuned-libero-goal">https://huggingface.co/openvla/openvla-7b-finetuned-libero-goal</a></li>
+<li><a href="https://huggingface.co/openvla/openvla-7b-finetuned-libero-10">https://huggingface.co/openvla/openvla-7b-finetuned-libero-10</a></li>
+</ul>
+<h2>OpenVLA Extensions / Tools</h2>
+<ul>
+<li>OpenVLA-OFT project page: <a href="https://openvla-oft.github.io/">https://openvla-oft.github.io/</a></li>
+<li>OpenVLA-OFT code repository: <a href="https://github.com/moojink/openvla-oft">https://github.com/moojink/openvla-oft</a></li>
+<li>FAST tokenizer research page: <a href="https://www.pi.website/research/fast">https://www.pi.website/research/fast</a></li>
+<li>FAST tokenizer HF model: <a href="https://huggingface.co/physical-intelligence/fast">https://huggingface.co/physical-intelligence/fast</a></li>
+<li>TensorRT-OpenVLA deployment/acceleration pipeline: <a href="https://github.com/rail-berkeley/tensorrt-openvla">https://github.com/rail-berkeley/tensorrt-openvla</a></li>
+</ul>
+<h2>OpenVLA + Minecraft Evidence Checks</h2>
+<ul>
+<li>GitHub repo search for &quot;OpenVLA Minecraft&quot;: 0 repositories</li>
+<li><a href="https://github.com/search?q=OpenVLA+Minecraft&amp;type=repositories">https://github.com/search?q=OpenVLA+Minecraft&amp;type=repositories</a></li>
+<li>GitHub discussions search for &quot;OpenVLA Minecraft&quot;: 0 discussions</li>
+<li><a href="https://github.com/search?q=OpenVLA+Minecraft&amp;type=discussions">https://github.com/search?q=OpenVLA+Minecraft&amp;type=discussions</a></li>
+<li>OpenVLA official issues search for &quot;Minecraft&quot;: no results</li>
+<li><a href="https://github.com/openvla/openvla/issues?q=Minecraft">https://github.com/openvla/openvla/issues?q=Minecraft</a></li>
+<li>arXiv search for &quot;OpenVLA Minecraft&quot;: 1 result (D2E), where Minecraft appears in context of VPT comparison; not an OpenVLA-on-Minecraft implementation</li>
+<li><a href="https://arxiv.org/search/?query=OpenVLA+Minecraft&amp;searchtype=all">https://arxiv.org/search/?query=OpenVLA+Minecraft&amp;searchtype=all</a></li>
+<li><a href="https://arxiv.org/abs/2510.05684">https://arxiv.org/abs/2510.05684</a></li>
+</ul>
+<h2>Adjacent Minecraft VLA / Agent Lines (Not OpenVLA)</h2>
+<ul>
+<li>OmniJARVIS (VLA for Minecraft): <a href="https://arxiv.org/abs/2407.00114">https://arxiv.org/abs/2407.00114</a></li>
+<li>JARVIS-VLA (visual games with keyboard/mouse): <a href="https://arxiv.org/abs/2503.16365">https://arxiv.org/abs/2503.16365</a></li>
+<li>OpenHA (hierarchical agentic models in Minecraft): <a href="https://arxiv.org/abs/2509.13347">https://arxiv.org/abs/2509.13347</a></li>
+<li>MAIN-VLA (open-world Minecraft and PvP settings): <a href="https://arxiv.org/abs/2602.02212">https://arxiv.org/abs/2602.02212</a></li>
+<li>Voyager (LLM lifelong agent in Minecraft):</li>
+<li><a href="https://voyager.minedojo.org/">https://voyager.minedojo.org/</a></li>
+<li><a href="https://arxiv.org/abs/2305.16291">https://arxiv.org/abs/2305.16291</a></li>
+<li><a href="https://github.com/MineDojo/Voyager">https://github.com/MineDojo/Voyager</a></li>
+<li>VPT (Minecraft agents from unlabeled videos):</li>
+<li><a href="https://arxiv.org/abs/2206.11795">https://arxiv.org/abs/2206.11795</a></li>
+<li><a href="https://github.com/openai/Video-Pre-Training">https://github.com/openai/Video-Pre-Training</a></li>
+<li>MineDojo benchmark/platform:</li>
+<li><a href="https://arxiv.org/abs/2206.08853">https://arxiv.org/abs/2206.08853</a></li>
+<li><a href="https://github.com/MineDojo/MineDojo">https://github.com/MineDojo/MineDojo</a></li>
+</ul>
+<h2>Notes on Evidence Strength</h2>
+<ul>
+<li>Confirmed (strong): no direct public OpenVLA+Minecraft repo in GitHub search results and no &quot;Minecraft&quot; issue in official openvla/openvla issues at scan time.</li>
+<li>Weak/indirect: one commit and one issue mention in broad GitHub search are in index/digest style repositories, not implementation repos.</li>
+<li>Adjacent evidence is stronger for non-OpenVLA Minecraft work (OmniJARVIS, JARVIS-VLA, OpenHA, MAIN-VLA, Voyager, VPT, MineDojo).</li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-openvla-minecraft-2026-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

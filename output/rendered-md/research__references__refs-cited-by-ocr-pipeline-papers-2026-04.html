@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference Mining: References Cited By Each OCR Pipeline Paper</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-05</p>
+<h1>Reference Mining: References Cited By Each OCR Pipeline Paper</h1>
+<p>Method:</p>
+<ul>
+<li>Source extraction from ar5iv HTML (<code><a href="https://ar5iv.labs.arxiv.org/html/&lt;arxiv_id&gt;">https://ar5iv.labs.arxiv.org/html/&lt;arxiv_id&gt;</a></code>), References section.</li>
+<li>Fallback extraction via alternative citation index or mirrored arXiv HTML when ar5iv/PDF fails.</li>
+<li>Target: at least 5 cited references per paper.</li>
+<li>Status: 30 papers extracted, 0 failed. (Recovery sources: ar5iv, arXiv HTML, NASA ADS, Semantic Scholar API)</li>
+</ul>
+<p>Note:</p>
+<ul>
+<li>Entries are machine-extracted citation strings (compact form) to support fast literature chaining.</li>
+<li>For formal writing, verify full bib details in the original paper PDF.</li>
+</ul>
+<hr>
+<h2>1) Preprocessing</h2>
+<h3>2505.20429 PreP-OCR</h3>
+<ul>
+<li>Amrhein and Clematide (2018). Supervised OCR error detection and correction using statistical and neural machine translation methods.</li>
+<li>Bassil and Alwani (2012). OCR post-processing error correction algorithm using Google online spelling suggestion.</li>
+<li>Brooks et al. (2023). InstructPix2Pix: Learning to follow image editing instructions.</li>
+<li>Kupyn et al. (2019). DeblurGAN-v2.</li>
+<li>Smith (2007). An overview of the Tesseract OCR engine.</li>
+</ul>
+<h3>2404.05669 NAF-DPM</h3>
+<ul>
+<li>Hradis et al. (2015). Convolutional neural networks for direct text deblurring.</li>
+<li>Pratikakis et al. (2017). ICDAR 2017 competition on document image binarization.</li>
+<li>Ho et al. (2020). Denoising diffusion probabilistic models.</li>
+<li>Song and Ermon (2021). Denoising diffusion implicit models.</li>
+<li>Saharia et al. (2022). Palette: Image-to-image diffusion models.</li>
+</ul>
+<h3>2507.19804 ForCenNet</h3>
+<ul>
+<li>Das et al. (2019). DewarpNet.</li>
+<li>Feng et al. (2021). DocTr: Document image transformer for geometric unwarping.</li>
+<li>Jiang et al. (2022). Revisiting document image dewarping by grid regularization.</li>
+<li>Ma et al. (2018). DocUNet.</li>
+<li>Ronneberger et al. (2015). U-Net.</li>
+</ul>
+<h3>2511.04161 Seeing Straight</h3>
+<ul>
+<li>Smith (2007). Tesseract OCR engine overview.</li>
+<li>Li et al. (2021). TrOCR.</li>
+<li>Liao et al. (2023). docTR.</li>
+<li>Touvron et al. (2024). Llama model technical report.</li>
+<li>Khan et al. (2025). Chitrarth vision-language model.</li>
+</ul>
+<h3>2512.08789 MatteViT</h3>
+<ul>
+<li>Shah et al. (2018). Iterative photo shadow removal.</li>
+<li>Wang et al. (2019). Transformer network for shadow removal.</li>
+<li>Lin et al. (2020). BEDSR-Net.</li>
+<li>Qu et al. (2017). DeShadowNet.</li>
+<li>Smith (2007). Tesseract OCR engine overview.</li>
+</ul>
+<hr>
+<h2>2) Layout Understanding</h2>
+<h3>2410.12628 DocLayout-YOLO</h3>
+<ul>
+<li>Antonacopoulos et al. (2009). Dataset for document layout analysis.</li>
+<li>Zhong et al. (2019). PubLayNet.</li>
+<li>Pfitzmann et al. (2022). DocLayNet.</li>
+<li>Cheng et al. (2023). M6Doc.</li>
+<li>Ren et al. (2015). Faster R-CNN.</li>
+</ul>
+<h3>2405.11757 DLAFormer</h3>
+<ul>
+<li>Carion et al. (2020). DETR.</li>
+<li>Zhu et al. (2021). Deformable DETR.</li>
+<li>Li et al. (2022). DiT.</li>
+<li>Pfitzmann et al. (2022). DocLayNet.</li>
+<li>Zhang et al. (2022). DINO.</li>
+</ul>
+<h3>2601.07620 PARL</h3>
+<ul>
+<li>Bi et al. (2022). PaddlePaddle.</li>
+<li>Carion et al. (2020). DETR.</li>
+<li>Cheng et al. (2023). M6Doc.</li>
+<li>Da et al. (2023). Vision grid transformer for DLA.</li>
+<li>Luo et al. (2022). Doc-GCN.</li>
+</ul>
+<h3>2602.05384 Dolphin-v2</h3>
+<ul>
+<li>Blecher et al. (2024). Nougat.</li>
+<li>Cui et al. (2025). PaddleOCR 3.0 technical report.</li>
+<li>Wang et al. (2024). MinerU.</li>
+<li>Bai et al. (2025). Qwen2.5-VL technical report.</li>
+<li>Xu et al. (2020). LayoutLM.</li>
+</ul>
+<h3>2504.04085 DocSAM</h3>
+<ul>
+<li>Liu et al. (2023). Review of document analysis and recognition.</li>
+<li>Zhu et al. (2021). Deformable DETR.</li>
+<li>Li et al. (2020). DocBank.</li>
+<li>Zhong et al. (2019). PubLayNet.</li>
+<li>Pfitzmann et al. (2022). DocLayNet.</li>
+</ul>
+<hr>
+<h2>3) Text Recognition</h2>
+<h3>2504.03621 VISTA-OCR</h3>
+<ul>
+<li>Zhou et al. (2017). EAST text detector.</li>
+<li>Vaswani et al. (2017). Attention Is All You Need.</li>
+<li>Baek et al. (2019). Character region awareness for text detection.</li>
+<li>Kim et al. (2022). OCR-free document understanding transformer.</li>
+<li>Lee et al. (2023). Pix2Struct.</li>
+</ul>
+<h3>2408.14998 FastTextSpotter</h3>
+<ul>
+<li>Atienza (2021). ViT for efficient scene text recognition.</li>
+<li>Carion et al. (2020). DETR.</li>
+<li>Ch&#x27;ng et al. (2020). Total-Text.</li>
+<li>Das et al. (2024). Multilingual pretraining for text spotting.</li>
+<li>Das et al. (2023). Multi-domain noisy scene text spotting.</li>
+</ul>
+<h3>2603.00702 Universal Khmer Text Recognition</h3>
+<ul>
+<li>Buoy et al. (2023). Low-resource non-Latin OCR baseline.</li>
+<li>Buoy et al. (2022). Khmer printed character recognition (attention seq2seq).</li>
+<li>Nom et al. (2024). KhmerST benchmark.</li>
+<li>Buoy et al. (2025). Attention drift mitigation for Khmer textline recognition.</li>
+<li>Vaswani et al. (2017). Attention Is All You Need.</li>
+</ul>
+<h3>2508.11499 HTR with Transformer-Based Models</h3>
+<ul>
+<li>Vaswani et al. (2017). Attention Is All You Need.</li>
+<li>Li et al. (2021). TrOCR.</li>
+<li>Strobel et al. (2022). Transformer-based HTR for historical docs.</li>
+<li>Sanchez et al. (2019). HTR benchmarks.</li>
+<li>Kuncheva and Whitaker (2003). Diversity measures in classifier ensembles.</li>
+</ul>
+<h3>2505.24600 SARD</h3>
+<ul>
+<li>Al-Sheikh et al. (2020). Arabic text recognition dataset review.</li>
+<li>Smith (2007). Tesseract OCR engine overview.</li>
+<li>He et al. (2016). ResNet.</li>
+<li>Dosovitskiy et al. (2021). Vision Transformer.</li>
+<li>Rashad (2024). Arabic-Nougat.</li>
+</ul>
+<hr>
+<h2>4) Post-correction</h2>
+<h3>2502.01205 No Free Lunches</h3>
+<ul>
+<li>Akiba et al. (2019). Optuna.</li>
+<li>Beshirov et al. (2024). Bulgarian post-OCR correction.</li>
+<li>Boros et al. (2024). Post-correction with LLMs.</li>
+<li>Jiang et al. (2024). Mixtral of Experts.</li>
+<li>Mesnard et al. (2024). Gemma.</li>
+</ul>
+<h3>2504.00414 Multimodal LLMs for OCR + Post-Correction + NER</h3>
+<ul>
+<li>Buringh and Van Zanden (2009). Manuscripts and printed books in Europe.</li>
+<li>Gupta et al. (2007). OCR binarization and preprocessing for historical docs.</li>
+<li>Reul et al. (2019). OCR4all.</li>
+<li>Shen et al. (2021). LayoutParser.</li>
+<li>Petitpierre et al. (2023). Pipeline for historical census processing.</li>
+</ul>
+<h3>2409.00527 Bulgarian Post-OCR Correction</h3>
+<ul>
+<li>Source used: NASA ADS references index (<code><a href="https://ui.adsabs.harvard.edu/abs/2024arXiv240900527B/references">https://ui.adsabs.harvard.edu/abs/2024arXiv240900527B/references</a></code>).</li>
+<li>Joulin et al. (2016). Bag of Tricks for Efficient Text Classification (arXiv:1607.01759).</li>
+<li>Lample and Conneau (2019). Cross-lingual Language Model Pretraining (arXiv:1901.07291).</li>
+<li>Liu et al. (2019). RoBERTa: A Robustly Optimized BERT Pretraining Approach (arXiv:1907.11692).</li>
+<li>Sanh et al. (2019). DistilBERT, a distilled version of BERT (arXiv:1910.01108).</li>
+<li>Wolf et al. (2019). HuggingFace&#x27;s Transformers: State-of-the-art NLP (arXiv:1910.03771).</li>
+</ul>
+<h3>2412.15248 RoundTripOCR</h3>
+<ul>
+<li>Amrhein and Clematide (2018). Supervised OCR error detection/correction.</li>
+<li>Bojar et al. (2016). WMT findings.</li>
+<li>Devlin et al. (2019). BERT.</li>
+<li>D&#x27;hondt et al. (2017). Training corpus generation for OCR post-correction.</li>
+<li>Dwivedi et al. (2020). OCR for classical Indic documents.</li>
+</ul>
+<h3>2411.05945 NeKo</h3>
+<ul>
+<li>Ackley et al. (1985). Boltzmann Machines.</li>
+<li>Brown et al. (2020). Language Models are Few-Shot Learners.</li>
+<li>Vaswani et al. (2017). Attention Is All You Need.</li>
+<li>Raffel et al. (2020). T5.</li>
+<li>Wolf et al. (2020). Transformers library paper.</li>
+</ul>
+<hr>
+<h2>5) Structured Extraction</h2>
+<h3>2602.06402 MeDocVL</h3>
+<ul>
+<li>Huang et al. (2022). LayoutLMv3.</li>
+<li>Lee et al. (2022). FormNet.</li>
+<li>Xu et al. (2021). LayoutLMv2.</li>
+<li>Xu et al. (2020). LayoutLM.</li>
+<li>Li et al. (2021). StrucTexT.</li>
+</ul>
+<h3>2602.12203 ExStrucTiny</h3>
+<ul>
+<li>Abdin et al. (2025). Phi-4 reasoning technical report.</li>
+<li>Agrawal et al. (2025). GPT-OSS model card.</li>
+<li>Bai et al. (2023). Qwen-VL.</li>
+<li>Biten et al. (2019). Scene text VQA.</li>
+<li>Chia et al. (2022). RelationPrompt.</li>
+</ul>
+<h3>2602.07038 UNIKIE-BENCH</h3>
+<ul>
+<li>Abdallah et al. (2024). Survey on form understanding.</li>
+<li>Aiello et al. (2002). Document understanding methods.</li>
+<li>Bai et al. (2025a). Qwen3-VL technical report.</li>
+<li>Bai et al. (2025b). Qwen2.5-VL technical report.</li>
+<li>Bai et al. (2025c). LongBench v2.</li>
+</ul>
+<h3>2603.13398 Qianfan-OCR</h3>
+<ul>
+<li>Source used: arXiv HTML (<code><a href="https://arxiv.org/html/2603.13398">https://arxiv.org/html/2603.13398</a></code>).</li>
+<li>Ainslie et al. (2023). GQA: training generalized multi-query transformer models from multi-head checkpoints (arXiv:2305.13245).</li>
+<li>AllenAI (2024). OlmOCR-bench: a comprehensive OCR evaluation benchmark (Hugging Face dataset).</li>
+<li>Bai et al. (2023). Qwen-VL (arXiv:2308.12966).</li>
+<li>Bai et al. (2025). Qwen2.5-VL technical report (arXiv:2502.13923).</li>
+<li>Blecher et al. (2023). Nougat: neural optical understanding for academic documents (arXiv:2308.13418).</li>
+</ul>
+<h3>2601.05470 ROAP</h3>
+<ul>
+<li>Abdallah et al. (2024). Survey of form understanding.</li>
+<li>Devlin et al. (2019). BERT.</li>
+<li>Gu et al. (2022). XYLayoutLM.</li>
+<li>Jaume (2019). FUNSD.</li>
+<li>Hong et al. (2022). BROS.</li>
+</ul>
+<hr>
+<h2>6) Validation / Compliance</h2>
+<h3>2511.14998 FinCriticalED</h3>
+<p><strong>Source</strong>: Semantic Scholar API (recovered 2026-04-05 after multiple fallback attempts)</p>
+<ul>
+<li>Gan et al. (2025). MME-Finance: A Multimodal Finance Benchmark for Expert-level Understanding and Reasoning. ACM MM 2025. DOI: 10.1145/3746027.3758230</li>
+<li>Jin et al. (2025). Multi-Stage Field Extraction of Financial Documents with OCR and Compact Vision-Language Models. arXiv:2510.23066</li>
+<li>Wei et al. (2025). DeepSeek-OCR: Contexts Optical Compression. arXiv:2510.18234</li>
+<li>Cui et al. (2025). PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model. arXiv:2510.14528</li>
+<li>Niu et al. (2025). MinerU2.5: A Decoupled Vision-Language Model for Efficient High-Resolution Document Parsing. arXiv:2509.22186</li>
+<li>Cui et al. (2025). PaddleOCR 3.0 Technical Report. arXiv:2507.05595</li>
+<li>Peng et al. (2025). MultiFinBen: Benchmarking Large Language Models for Multilingual and Multimodal Financial Application. arXiv:2506.14028</li>
+<li>Luo et al. (2025). FinMME: Benchmark Dataset for Financial Multi-Modal Reasoning Evaluation. arXiv:2505.24714</li>
+<li>Hegde et al. (2025). ChartQA-X: Generating Explanations for Visual Chart Reasoning. arXiv:2504.13275</li>
+<li>Nakhl&#x27;e et al. (2025). DOLFIN - Document-Level Financial test set for Machine Translation. arXiv:2502.03053</li>
+<li>Fu et al. (2024). OCRBench v2: An Improved Benchmark for Evaluating Large Multimodal Models on Visual Text Localization and Reasoning. arXiv:2501.00321</li>
+<li>Wei et al. (2024). Slow Perception: Let&#x27;s Perceive Geometric Figures Step-by-step. arXiv:2412.20631</li>
+<li>Ouyang et al. (2024). OmniDocBench: Benchmarking Diverse PDF Document Parsing with Comprehensive Annotations. arXiv:2412.07626</li>
+<li>Yang et al. (2024). CC-OCR: A Comprehensive and Challenging OCR Benchmark for Evaluating Large Multimodal Models in Literacy. arXiv:2412.02210</li>
+<li>OpenAI (2024). GPT-4o System Card. arXiv:2410.21276</li>
+<li>Yue et al. (2024). MMMU-Pro: A More Robust Multi-discipline Multimodal Understanding Benchmark. arXiv:2409.02813</li>
+<li>Wei et al. (2024). General OCR Theory: Towards OCR-2.0 via a Unified End-to-end Model. arXiv:2409.01704</li>
+<li>Liu et al. (2024). Focus Anywhere for Fine-grained Multi-page Document Understanding. arXiv:2405.14295</li>
+<li>Li et al. (2024). SEED-Bench-2-Plus: Benchmarking Multimodal Large Language Models with Text-Rich Visual Comprehension. arXiv:2404.16790</li>
+<li>Chen et al. (2024). OneChart: Purify the Chart Structural Extraction via One Auxiliary Token. arXiv:2404.09987</li>
+<li>Masry &amp; Hajian (2024). LongFin: A Multimodal Document Understanding Model for Long Financial Domain Documents. arXiv:2401.15050</li>
+<li>Wadhawan et al. (2024). ConTextual: Evaluating Context-Sensitive Text-Rich Visual Reasoning in Large Multimodal Models. arXiv:2401.13311</li>
+<li>Wei et al. (2023). Vary: Scaling up the Vision Vocabulary for Large Vision-Language Models. arXiv:2312.06109</li>
+<li>Yue et al. (2023). MMMU: A Massive Multi-Discipline Multimodal Understanding and Reasoning Benchmark for Expert AGI. arXiv:2311.16502</li>
+<li>Shi et al. (2023). Exploring OCR Capabilities of GPT-4V(ision): A Quantitative and In-depth Evaluation. arXiv:2310.16809</li>
+<li>Liu et al. (2023). OCRBench: on the hidden mystery of OCR in large multimodal models. arXiv:2305.07895</li>
+<li>Patterson et al. (2022). The Carbon Footprint of Machine Learning Training Will Plateau, Then Shrink. arXiv:2204.05149</li>
+<li>Mathew et al. (2020). DocVQA: A Dataset for VQA on Document Images. arXiv:2007.00398</li>
+<li>Mishra et al. (2019). OCR-VQA: Visual Question Answering by Reading Text in Images. ICDAR 2019.</li>
+<li>Lin, C.-Y. (2004). ROUGE: A Package for Automatic Evaluation of Summaries. ACL Workshop.</li>
+<li>Papineni et al. (2002). Bleu: a Method for Automatic Evaluation of Machine Translation. ACL 2002.</li>
+<li>Cohen, J. (1960). A Coefficient of Agreement for Nominal Scales.</li>
+<li>Fleiss, J. (1971). Measuring nominal scale agreement among many raters.</li>
+<li>Levenshtein, V. (1965). Binary codes capable of correcting deletions, insertions, and reversals.</li>
+</ul>
+<h3>2509.19345 SCORE</h3>
+<ul>
+<li>Clausner et al. (2013). Significance of reading order in document recognition.</li>
+<li>Everingham et al. (2010). PASCAL VOC challenge.</li>
+<li>Gilani et al. (2017). Table detection with deep learning.</li>
+<li>Ha et al. (1995). Recursive XY-cut.</li>
+<li>Harley et al. (2015). Deep conv nets for document image classification.</li>
+</ul>
+<h3>2601.03926 Doc-PP</h3>
+<ul>
+<li>Ali et al. (2025). SustainableQA.</li>
+<li>Bai et al. (2025). Qwen3-VL technical report.</li>
+<li>Chang et al. (2025). Security policy preservation benchmark.</li>
+<li>Chia et al. (2025). M-LongDoc benchmark.</li>
+<li>Lee et al. (2025). CheckEval.</li>
+</ul>
+<h3>2507.23736 DICOM De-Identification</h3>
+<ul>
+<li>Institute of Medicine (2009). Beyond the HIPAA Privacy Rule.</li>
+<li>Shojaei et al. (2024). Security and privacy in health information systems.</li>
+<li>Freymann et al. (2012). Image data sharing for biomedical research.</li>
+<li>Aryanto et al. (2016). Image de-identification methods.</li>
+<li>Clark et al. (2013). The Cancer Imaging Archive.</li>
+</ul>
+<h3>2509.14464 Not What the Doctor Ordered</h3>
+<ul>
+<li>Abdalla et al. (2020). Word embeddings for clinical-note privacy.</li>
+<li>Abdalla (2022). Rethinking Clinical De-identification.</li>
+<li>Alsentzer et al. (2019). Clinical BERT embeddings.</li>
+<li>Altalla et al. (2025). Evaluating GPT models for clinical de-identification.</li>
+<li>Brown et al. (2020). Language Models are Few-Shot Learners.</li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

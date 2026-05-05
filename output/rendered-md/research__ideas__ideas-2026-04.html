@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas: NLP + Robotics (2026-04)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-05 (top-3 ranking added; stack decision added; chanlekha landscape ideas added; trend outlook added)</p>
+<h1>Ideas: NLP + Robotics (2026-04)</h1>
+<h2>Promising Directions</h2>
+<ul>
+<li>Multilingual instruction grounding for household/service robots (Thai + English code-switch).</li>
+<li>Constraint-aware action decoding (language intent + safety shield + affordance value).</li>
+<li>Closed-loop language planning with real-time scene feedback and uncertainty signals.</li>
+<li>Low-compute VLA distillation for edge deployment on small lab robots.</li>
+<li>Failure recovery policies: detect, explain, and replan after execution drift.</li>
+<li>Human preference alignment for robot dialogue when commands are ambiguous.</li>
+</ul>
+<h2>Experiment Concepts</h2>
+<ul>
+<li>Ablation: language-only planner vs affordance-grounded planner vs VLA end-to-end.</li>
+<li>Robustness grid: unseen objects x unseen rooms x ambiguous instructions.</li>
+<li>Safety eval: near-human zones, fragile-object interactions, and forbidden-action rates.</li>
+</ul>
+<h2>Proposal-Friendly Thesis Angles</h2>
+<ul>
+<li>&quot;Thai-English Multilingual Grounding for Long-Horizon Manipulation&quot;</li>
+<li>&quot;Safe Action Token Decoding for Open Vision-Language-Action Policies&quot;</li>
+<li>&quot;Data-Efficient Adaptation of Open VLA Models with LoRA Under Real-World Shift&quot;</li>
+</ul>
+<h2>Ranked Recommendation (2026-04-04)</h2>
+<ol>
+<li>Safe Action Token Decoding for Open VLA Policies</li>
+<li>Thai-English Multilingual Grounding for Long-Horizon Manipulation</li>
+<li>Data-Efficient OpenVLA Adaptation with LoRA Under Real-World Shift</li>
+</ol>
+<h2>Fast Decision Heuristic</h2>
+<ul>
+<li>Choose #1 if target is high-impact novelty + safety publications.</li>
+<li>Choose #2 if target is practical multilingual deployment and balanced risk.</li>
+<li>Choose #3 if target is fast, reproducible experimentation with lower execution risk.</li>
+</ul>
+<h2>Stack Decision Note (2026-04-04)</h2>
+<ul>
+<li>Decision for Minecraft-oriented thesis: choose Voyager/JARVIS-style as primary stack.</li>
+<li>Rationale: better domain fit and lower setup risk than OpenVLA-style in Minecraft context.</li>
+<li>Hybrid add-on candidate: constrained action decoding inspired by OpenVLA safety line.</li>
+</ul>
+<h2>Idea Generation from Chanlekha Publication Landscape (2026-04-05)</h2>
+<ul>
+<li>Build a method matrix for top-5 cited papers: task, data unit, representation, core algorithm, and evaluation metric.</li>
+<li>Study transfer opportunity: outbreak event-spatial extraction concepts to Thai health fake-news verification pipelines.</li>
+<li>Launch a low-resource multilingual benchmark thread: Thai + Myanmar for medical/public-safety NLP tasks.</li>
+<li>Explore &quot;ontology + transformer&quot; hybrid design for explainable surveillance NLP in local-language settings.</li>
+<li>Create a longitudinal research-evolution note from 2008-2024 to identify publishable &quot;bridge&quot; contributions.</li>
+</ul>
+<h2>Research Trend Outlook (2026-2028) (2026-04-05)</h2>
+<h3>Direction likely to accelerate</h3>
+<ul>
+<li>Safety-and-verification layers for language-conditioned agents (robotics and structured extraction pipelines).</li>
+<li>Data-efficient adaptation (LoRA/partial tuning/distillation) for domain and embodiment shift.</li>
+<li>Multilingual deployment tracks (Thai-English code-switch, Thai-Myanmar low-resource transfer).</li>
+</ul>
+<h3>Direction likely to slow down</h3>
+<ul>
+<li>Pure demo-driven end-to-end claims without recovery/safety analysis.</li>
+<li>OCR-only pipelines for complex medical layouts without region/layout understanding.</li>
+<li>Accuracy-only reporting that ignores field-level reliability and operational risk.</li>
+</ul>
+<h3>High-probability contribution patterns</h3>
+<ul>
+<li>Hybrid systems: foundation model + constraints/ontology/rules.</li>
+<li>Evaluation-focused work: robustness, safety violations, recovery time, and cost-performance trade-offs.</li>
+<li>Domain transfer: applying surveillance/event-extraction knowledge to modern low-resource health-information tasks.</li>
+</ul>
+<h3>Practical thesis implication</h3>
+<ul>
+<li>Best risk-adjusted line: choose one deployment domain, then contribute one cross-cutting method:</li>
+</ul>
+<p>safety constraint, multilingual grounding, or efficient adaptation.</p>
+<h3>Related Diagram</h3>
+<ul>
+<li><a href="../../research/diagrams/research-trend-outlook-2026-04-05.md">/research/diagrams/research-trend-outlook-2026-04-05.md</a></li>
+</ul>
+<h2>Broad Context Snapshot (2026-04-05)</h2>
+<h3>Macro research climate</h3>
+<ul>
+<li>Agentic AI and multi-agent systems are moving from demos to operational tooling with memory, tool orchestration, and evaluation frameworks.</li>
+<li>Reasoning and RL trends emphasize controllability, efficiency, and benchmark reliability rather than only long-chain outputs.</li>
+<li>Efficiency is now a first-class axis (quantization, KV-cache optimization, parameter-efficient adaptation).</li>
+</ul>
+<h3>Where this workspace aligns strongly</h3>
+<ul>
+<li>NLP+Robotics: language grounding + safe/constrained action execution.</li>
+<li>Thai medical OCR: layout-aware extraction + constrained correction + field-level reliability.</li>
+<li>Public-health and multilingual NLP: transfer legacy surveillance NLP into modern low-resource deployments.</li>
+</ul>
+<h3>Cross-cutting opportunities</h3>
+<ul>
+<li>Safety by design: constraint layers, policy compliance, verification metrics.</li>
+<li>Data efficiency under shift: LoRA/distillation/partial tuning for real-world adaptation.</li>
+<li>Multilingual deployment: Thai-English and Thai-Myanmar robustness as differentiator.</li>
+</ul>
+<h3>Strategic implication</h3>
+<ul>
+<li>High-probability publishable direction is hybrid design:</li>
+</ul>
+<p>foundation model backbone + explicit constraints/ontology/rules + robustness-oriented evaluation.</p>
+      <p class="source-path">Source: <code>research/ideas/ideas-2026-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

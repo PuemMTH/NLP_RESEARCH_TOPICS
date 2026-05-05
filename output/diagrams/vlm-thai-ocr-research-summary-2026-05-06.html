@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VLM Extension Research for Thai OCR Pipeline</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12/dist/d3-sankey.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f1117;
+      --surface:  #1a1d2e;
+      --surface2: #222640;
+      --border:   #2d3148;
+      --text:     #e2e8f0;
+      --muted:    #8892b0;
+      --accent:   #64ffda;
+      --accent2:  #7c5cbf;
+      --warn:     #f97316;
+      --green:    #22c55e;
+      --yellow:   #fbbf24;
+      --red:      #ef4444;
+      --blue:     #4c9be8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sarabun', 'Noto Sans Thai', 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem 5rem;
+      gap: 2rem;
+    }
+
+    /* ── Global widths ── */
+    .full-width { width: 100%; max-width: 1200px; }
+
+    /* ── Header ── */
+    header {
+      width: 100%; max-width: 1200px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--accent2);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      margin-bottom: 0.65rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .subtitle {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      max-width: 780px;
+      line-height: 1.55;
+    }
+    .header-meta {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--border);
+    }
+
+    /* ── Section wrapper ── */
+    .section {
+      width: 100%; max-width: 1200px;
+    }
+    .section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.75rem 2rem;
+      overflow: auto;
+    }
+
+    /* ── Mermaid ── */
+    .mermaid { color: var(--text); }
+
+    /* ── Papers table ── */
+    .papers-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+    .papers-table thead tr {
+      border-bottom: 2px solid var(--border);
+    }
+    .papers-table th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .papers-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid rgba(45,49,72,0.5);
+      line-height: 1.5;
+      vertical-align: top;
+    }
+    .papers-table tr:last-child td { border-bottom: none; }
+    .papers-table tr:hover td { background: var(--surface2); }
+    .paper-name {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .paper-org {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .paper-year {
+      font-size: 0.8rem;
+      color: var(--yellow);
+      white-space: nowrap;
+    }
+    .relevance-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin: 0.15rem 0.1rem 0.15rem 0;
+    }
+    .tag-stage3 { background: rgba(76,155,232,0.18); color: var(--blue); border: 1px solid rgba(76,155,232,0.35); }
+    .tag-stage4 { background: rgba(124,92,191,0.18); color: #a78bfa; border: 1px solid rgba(124,92,191,0.35); }
+    .tag-stage5 { background: rgba(100,255,218,0.12); color: var(--accent); border: 1px solid rgba(100,255,218,0.25); }
+    .tag-module1 { background: rgba(249,115,22,0.15); color: var(--warn); border: 1px solid rgba(249,115,22,0.3); }
+    .tag-module2 { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .tag-stage6 { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+    /* ── Metrics comparison ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 700px) { .metrics-grid { grid-template-columns: 1fr; } }
+
+    .metric-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .metric-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+    .metric-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .label-now { color: var(--red); }
+    .label-upgraded { color: var(--green); }
+    .metric-pill {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin: 0.25rem 0.2rem;
+    }
+    .pill-bad { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.35); }
+    .pill-good { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.35); }
+    .pill-neutral { background: rgba(100,255,218,0.1); color: var(--accent); border: 1px solid rgba(100,255,218,0.25); }
+
+    .drift-alert {
+      margin-top: 0.9rem;
+      padding: 0.75rem 1rem;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #fca5a5;
+      line-height: 1.55;
+    }
+    .drift-alert strong { color: var(--red); }
+    .upgrade-note {
+      margin-top: 0.9rem;
+      padding: 0.75rem 1rem;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #86efac;
+      line-height: 1.55;
+    }
+    .upgrade-note strong { color: var(--green); }
+
+    /* ── Roadmap cards ── */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    .idea-card {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      border-left: 4px solid;
+      position: relative;
+    }
+    .idea-card.green  { border-color: var(--green);  background: rgba(34,197,94,0.05); }
+    .idea-card.yellow { border-color: var(--yellow); background: rgba(251,191,36,0.05); }
+    .idea-card.red    { border-color: var(--red);    background: rgba(239,68,68,0.05); }
+    .idea-id {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .idea-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+    .idea-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.6rem;
+    }
+    .effort-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+    }
+    .effort-green  { background: rgba(34,197,94,0.2);  color: var(--green); }
+    .effort-yellow { background: rgba(251,191,36,0.2); color: var(--yellow); }
+    .effort-red    { background: rgba(239,68,68,0.2);  color: var(--red); }
+
+    /* ── Plotly / Sankey containers ── */
+    #plotly-roadmap { width: 100%; min-height: 380px; }
+    #sankey-vlm { width: 100%; min-height: 480px; }
+
+    /* ── Gap cards ── */
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .gap-card {
+      background: var(--bg);
+      border: 1px solid rgba(249,115,22,0.3);
+      border-top: 3px solid var(--warn);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+    .gap-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--warn);
+      margin-bottom: 0.45rem;
+    }
+    .gap-desc {
+      font-size: 0.79rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Sankey labels ── */
+    .sankey-label { font-size: 12px; fill: var(--text); font-weight: 500; }
+    .sankey-link  { opacity: 0.38; transition: opacity 0.2s; fill: none; }
+    .sankey-link:hover { opacity: 0.72; }
+
+    /* ── Tooltip ── */
+    #tooltip {
+      position: fixed;
+      background: rgba(26,29,46,0.97);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    /* ── Sources ── */
+    #sources-section {
+      width: 100%; max-width: 1200px;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+    #sources-section h2 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+      font-weight: 700;
+    }
+    .source-item {
+      display: flex; gap: 0.7rem; align-items: baseline;
+      font-size: 0.79rem; margin-bottom: 0.4rem;
+    }
+    .source-file { font-family: 'Consolas', monospace; color: var(--accent); white-space: nowrap; }
+    .source-desc { color: var(--muted); }
+    .source-date { color: var(--border); font-size: 0.71rem; white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ HEADER ═══ -->
+<header class="full-width">
+  <div class="header-badge">Research Summary</div>
+  <h1>VLM Extension Research for Thai OCR Pipeline</h1>
+  <p class="subtitle">
+    Grounding VLM and evaluation-metric findings in the NECTEC SME product-data pipeline —
+    Module 1 (PyThaiNLP tokenization, regex filtering, 700-char threshold classifier) and
+    Module 2 (WER via PyThaiNLP + cosine similarity via SentenceTransformer).
+    Sources: refs-vlm-thai-ocr-extension-2026-05.md &amp; ideas-vlm-thai-ocr-extension-2026-05.md
+  </p>
+  <div class="header-meta">Generated 2026-05-06 &mdash; Thai Medical OCR Pipeline &mdash; NECTEC</div>
+</header>
+
+<!-- ════════════════════════════════ SECTION 1: PIPELINE OVERVIEW ═══ -->
+<section class="section">
+  <div class="section-title">1 &mdash; Current Pipeline Overview</div>
+  <div class="panel">
+    <div class="mermaid" id="pipeline-diagram">
+flowchart TD
+  subgraph PIPELINE ["Thai Medical OCR Pipeline"]
+    S1["Stage 1\nPreprocessing\n(denoising, deskew,\nbinarization)"]
+    S2["Stage 2\nLayout Detection\n(DocLayout-YOLO,\nPP-StructureV3)"]
+    S3["Stage 3\nText Recognition\n(PaddleOCR, GOT-OCR2,\nEasyOCR, Nougat)"]
+    S4["Stage 4\nPost-correction\n(ByT5, WangchanBERTa,\nLLM-based)"]
+    S5["Stage 5\nStruct Extraction\n(table parsing,\nkey-value extraction)"]
+    S6["Stage 6\nValidation\n(schema check,\ncompliance rules)"]
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6
+  end
+
+  subgraph MOD1 ["Module 1 — Data Cleaning (SME)"]
+    M1A["PyThaiNLP\nnewmm tokenization"]
+    M1B["Regex + Emoji\nFiltering"]
+    M1C["Word Frequency\nThreshold"]
+    M1D["700-char\nClassifier\n(ad vs. label)"]
+    M1A --> M1B --> M1C --> M1D
+  end
+
+  subgraph MOD2 ["Module 2 — OCR Evaluation"]
+    M2A["WER\n(PyThaiNLP tokenized)"]
+    M2B["Cosine Similarity\n(SentenceTransformer)"]
+  end
+
+  S3 -- "text output" --> M2A
+  S3 -- "text output" --> M2B
+  M1D -- "cleaned images" --> S1
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ SECTION 2: KEY PAPERS ═══ -->
+<section class="section">
+  <div class="section-title">2 &mdash; Key Papers</div>
+  <div class="panel" style="padding: 0; overflow: hidden;">
+    <table class="papers-table">
+      <thead>
+        <tr>
+          <th>Paper</th>
+          <th>Organization</th>
+          <th>Year</th>
+          <th>Pipeline Relevance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="paper-name">Typhoon OCR</div>
+            <div class="paper-org">arXiv 2601.14722 &mdash; V1.5: 2B params (down from 7B V1), outperforms V1 on BLEU/ROUGE-L/Levenshtein</div>
+          </td>
+          <td><div class="paper-org">SCB 10X</div></td>
+          <td><div class="paper-year">2026 Jan</div></td>
+          <td>
+            <span class="relevance-tag tag-stage3">Stage 3</span>
+            <span class="relevance-tag tag-stage4">Stage 4</span>
+            <span class="relevance-tag tag-stage5">Stage 5</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem">Unified pass: replaces Stages 3+4+5 together. 5–10&times; heavier than modular pipeline.</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="paper-name">ThaiOCRBench</div>
+            <div class="paper-org">arXiv 2511.04479 &mdash; 2,808 human-annotated images, 13 task categories. Gemini 2.5 Pro: 0.777 avg. Best open-source: Qwen2.5-VL 72B: 0.615 avg</div>
+          </td>
+          <td><div class="paper-org">SCB 10X</div></td>
+          <td><div class="paper-year">2025 (AACL)</div></td>
+          <td>
+            <span class="relevance-tag tag-module2">Module 2</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem">Blueprint for upgrading Module 2: uses TED, BMFL, F1, ANLS — deliberately excludes WER/cosine similarity.</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="paper-name">Typhoon 2 Vision</div>
+            <div class="paper-org">arXiv 2412.13702 &mdash; Qwen2VL-7B fine-tuned for Thai. HF: scb10x/typhoon2-qwen2vl-7b-vision-instruct</div>
+          </td>
+          <td><div class="paper-org">SCB 10X</div></td>
+          <td><div class="paper-year">2024 Dec</div></td>
+          <td>
+            <span class="relevance-tag tag-module1">Module 1</span>
+            <span class="relevance-tag tag-stage3">Stage 3</span>
+            <span class="relevance-tag tag-stage4">Stage 4</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem">Direct candidate to replace 700-char threshold classifier in Module 1.</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="paper-name">Qwen2.5-VL Technical Report</div>
+            <div class="paper-org">arXiv 2502.13923 &mdash; 3 sizes (edge to 72B). 72B matches GPT-4o and Claude 3.5 Sonnet on document understanding.</div>
+          </td>
+          <td><div class="paper-org">Alibaba Qwen</div></td>
+          <td><div class="paper-year">2025 Feb</div></td>
+          <td>
+            <span class="relevance-tag tag-module1">Module 1</span>
+            <span class="relevance-tag tag-stage3">Stage 3</span>
+            <span class="relevance-tag tag-stage5">Stage 5</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem">Zero-shot key-value extraction from product labels; highest open-source avg on ThaiOCRBench (0.615).</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="paper-name">ANLS* — Universal Document Processing Metric</div>
+            <div class="paper-org">arXiv 2402.03848 &mdash; Extension of ANLS to nested data structures. Threshold 0.5: penalizes OCR errors gently.</div>
+          </td>
+          <td><div class="paper-org">Community (DocVQA standard)</div></td>
+          <td><div class="paper-year">2024</div></td>
+          <td>
+            <span class="relevance-tag tag-module2">Module 2</span>
+            <span class="relevance-tag tag-stage6">Stage 6</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem">Tolerates minor Thai OCR confusions (ก vs lookalikes) without over-penalizing correct answers.</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="paper-name">Thai WER Tokenizer Bias</div>
+            <div class="paper-org">ThaiWav2Vec2 (arXiv 2208.04799) + Gladia WER blog &mdash; Same ASR system: NewMM WER 13.6% vs deepcut WER 8.2%</div>
+          </td>
+          <td><div class="paper-org">Academic (ASR community)</div></td>
+          <td><div class="paper-year">2022</div></td>
+          <td>
+            <span class="relevance-tag tag-module2">Module 2</span>
+            <div style="font-size:0.78rem; color:var(--muted); margin-top:0.3rem"><strong style="color:var(--red)">Known flaw in Module 2</strong>: WER with newmm is tokenizer-relative, not absolute. ~40% relative drift between tokenizers.</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 3: METRICS COMPARISON ═══ -->
+<section class="section">
+  <div class="section-title">3 &mdash; Current vs. Upgraded Evaluation Metrics (Module 2)</div>
+  <div class="metrics-grid">
+
+    <div class="metric-card">
+      <div class="metric-card-header">
+        <span class="metric-card-label label-now">Module 2 — NOW</span>
+      </div>
+      <div>
+        <span class="metric-pill pill-bad">WER (newmm tokenizer)</span>
+        <span class="metric-pill pill-bad">Cosine Similarity (generic SentenceTransformer)</span>
+      </div>
+      <div class="drift-alert">
+        <strong>Tokenizer drift problem:</strong> Thai WER differs significantly by tokenizer.
+        The same OCR output scores <strong>13.6% WER with newmm</strong> vs <strong>8.2% WER with deepcut</strong>
+        &mdash; a ~40% relative difference on the same underlying text. Comparisons across systems
+        are invalid unless all use the identical tokenizer version. This is currently uncontrolled in Module 2.
+      </div>
+      <div style="margin-top:0.85rem; font-size:0.79rem; color:var(--muted);">
+        Cosine similarity via generic multilingual SentenceTransformer is not calibrated for Thai medical/product domain.
+        A wrong medical term can show high cosine similarity if it appears in similar embedding context.
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-card-header">
+        <span class="metric-card-label label-upgraded">Module 2 — UPGRADED (3-Layer Stack)</span>
+      </div>
+      <div>
+        <span class="metric-pill pill-good">L1: CER (character error rate)</span>
+        <span class="metric-pill pill-good">L2: ANLS* (edit-distance tolerant)</span>
+        <span class="metric-pill pill-good">L3: LLM-as-Judge (Typhoon2-Text)</span>
+      </div>
+      <div class="upgrade-note">
+        <strong>Why CER over WER:</strong> CER is tokenizer-independent &mdash; counts character edits,
+        eliminating the newmm drift entirely. ANLS* (arXiv 2402.03848) tolerates minor Thai OCR character
+        confusions while penalizing semantically wrong answers. LLM-judge catches domain errors where
+        cosine similarity fails (e.g., similar embeddings for different medical terms).
+      </div>
+      <div style="margin-top:0.85rem; font-size:0.79rem; color:var(--muted);">
+        Additional upgrade: replace generic cosine sim with
+        <strong style="color:var(--accent)">BERTScore using WangchanBERTa</strong>
+        (already in Stage 4 post-correction &mdash; reuse at zero infrastructure cost).
+        Effort: 1 day (Idea 4A).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 4: ROADMAP CHART ═══ -->
+<section class="section">
+  <div class="section-title">4 &mdash; Research Ideas Roadmap (Effort vs. Impact)</div>
+  <div class="panel">
+    <div id="plotly-roadmap"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 5: IDEA CARDS ═══ -->
+<section class="section">
+  <div class="section-title">5 &mdash; Ideas Detail</div>
+  <div class="roadmap-grid">
+
+    <div class="idea-card green">
+      <div class="idea-id">Idea 1 &mdash; Module 1 Upgrade</div>
+      <div class="idea-title">VLM Zero-Shot Classifier (replaces 700-char threshold)</div>
+      <div class="idea-desc">
+        Use Typhoon2-Vision or Qwen2.5-VL-7B with a contrastive prompt to classify ad images vs. product labels.
+        Zero-shot — no labelled training data required. Fallback to text-length threshold when VLM confidence &lt; 0.7.
+        Model: scb10x/typhoon2-qwen2vl-7b-vision-instruct
+      </div>
+      <span class="effort-badge effort-green">1–2 days</span>
+    </div>
+
+    <div class="idea-card green">
+      <div class="idea-id">Idea 2 &mdash; Module 2 Upgrade (Priority 1)</div>
+      <div class="idea-title">3-Layer Evaluation Stack: CER + ANLS* + LLM-Judge</div>
+      <div class="idea-desc">
+        L1: CER via jiwer/fastwer (tokenizer-independent). L2: ANLS* via PyPI anls package (edit-distance tolerant).
+        L3: LLM-as-Judge with Typhoon2-Text (domain-aware, rate-limited to samples where L1/L2 disagree).
+        Eliminates the ~40% relative WER drift from newmm tokenizer.
+      </div>
+      <span class="effort-badge effort-green">2–3 days</span>
+    </div>
+
+    <div class="idea-card yellow">
+      <div class="idea-id">Idea 3 &mdash; Pipeline Architecture</div>
+      <div class="idea-title">VLM as Unified Stage 3+4+5 POC</div>
+      <div class="idea-desc">
+        Typhoon OCR V1.5 (2B) or Qwen2.5-VL as single-pass: image in → structured JSON/Markdown out.
+        Eliminates inter-stage error accumulation. Trade-off: ~4–6 GB vs ~930 MB for modular pipeline.
+        Recommended as hybrid fallback when Stage 4 ANLS score &lt; 0.6.
+      </div>
+      <span class="effort-badge effort-yellow">3–5 days</span>
+    </div>
+
+    <div class="idea-card green">
+      <div class="idea-id">Idea 4A &mdash; Module 2 Upgrade (Priority 3)</div>
+      <div class="idea-title">BERTScore with WangchanBERTa</div>
+      <div class="idea-desc">
+        Replace generic cosine similarity with token-level BERTScore using WangchanBERTa as encoder.
+        WangchanBERTa is already in the Stage 4 pipeline — reuse at zero infrastructure cost.
+        In-domain encoder outperforms generic cosine similarity for Thai medical/product text.
+      </div>
+      <span class="effort-badge effort-green">1 day</span>
+    </div>
+
+    <div class="idea-card green">
+      <div class="idea-id">Idea 4C &mdash; Module 1 Signal</div>
+      <div class="idea-title">CLIP Image-Text Alignment as OCR Quality Signal</div>
+      <div class="idea-desc">
+        Use CLIP or SigLIP to score alignment between product image and extracted OCR text.
+        Low score = OCR text doesn't match image content = likely extraction error.
+        Acts as automatic OCR quality signal without ground truth.
+        Note: Standard CLIP has limited Thai text understanding; prefer Typhoon2-Vision.
+      </div>
+      <span class="effort-badge effort-green">2 days</span>
+    </div>
+
+    <div class="idea-card yellow">
+      <div class="idea-id">Idea 5 &mdash; Infrastructure</div>
+      <div class="idea-title">Internal ThaiOCRBench Evaluation Framework</div>
+      <div class="idea-desc">
+        Adapt ThaiOCRBench methodology (2,808 samples, 13 task categories) to the NECTEC product/medical domain.
+        Collect 200–500 images: product labels, prescription forms, lab results, government ID sections.
+        Annotate with ground-truth text + key-value fields. Run all pipeline variants. Score with 3-layer stack.
+      </div>
+      <span class="effort-badge effort-yellow">2–3 weeks</span>
+    </div>
+
+    <div class="idea-card red">
+      <div class="idea-id">Idea 6 &mdash; Long-Term / Publishable</div>
+      <div class="idea-title">LoRA Fine-Tune Typhoon OCR for Thai Medical Domain</div>
+      <div class="idea-desc">
+        Fine-tune Typhoon OCR V1.5 (2B) with LoRA on 100–300 annotated Thai medical documents.
+        Evaluate with field-level F1 and term-preservation rate.
+        Risk: medical annotation requires clinical review — start with pharmacy-grade product labels.
+        Evidence: Low-resource VLM survey (ScienceDirect 2026) validates instruction tuning on synthetic data.
+      </div>
+      <span class="effort-badge effort-red">4–6 weeks</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 6: SANKEY ═══ -->
+<section class="section">
+  <div class="section-title">6 &mdash; VLM Models → Pipeline Stages (Sankey)</div>
+  <div class="panel">
+    <div id="sankey-vlm"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SECTION 7: PUBLICATION GAPS ═══ -->
+<section class="section">
+  <div class="section-title">7 &mdash; Publication Gaps &amp; Research Opportunities</div>
+  <div class="gap-grid">
+
+    <div class="gap-card">
+      <div class="gap-name">Thai CLIP Gap</div>
+      <div class="gap-desc">
+        No publicly available CLIP model fine-tuned on Thai product-image + Thai text pairs.
+        Standard CLIP (ViT-L/14) has limited Thai text understanding.
+        Building this would be a publishable contribution and directly unblock Idea 4C
+        and Idea 7 (multimodal Module 1 overhaul).
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-name">CER vs WER Tokenizer Variance for OCR (not ASR)</div>
+      <div class="gap-desc">
+        Existing Thai WER tokenizer variance studies (arXiv 2208.04799) are from the ASR domain.
+        No paper specifically compares CER and WER as OCR metrics for Thai, accounting for
+        character complexity (vowel stacking above/below/left/right of base consonant, tone marks).
+        A short study would fill this gap and directly improve Module 2.
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-name">Typhoon OCR on SME Product Labels</div>
+      <div class="gap-desc">
+        Typhoon OCR benchmarks cover financial reports, government forms, books, and infographics.
+        Performance on SME product labels (messy layouts, multilingual text, varied fonts,
+        handwritten additions) is completely unknown.
+        Direct evaluation would produce novel benchmark results.
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-name">ANLS Behavior on Thai Vowel Stacking</div>
+      <div class="gap-desc">
+        ANLS* threshold (0.5) was tuned for Latin-script DocVQA tasks.
+        Thai vowel stacking means a single character edit can change word meaning drastically.
+        Whether the 0.5 threshold is appropriate for Thai OCR evaluation has not been studied.
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-name">Constrained LLM-Judge for Thai Medical OCR</div>
+      <div class="gap-desc">
+        Using an unconstrained LLM judge risks hallucinating medical term corrections.
+        A constrained judge (with lexicon lock, similar to Stage 4 post-correction)
+        has not been published for Thai medical OCR.
+        This is a safety-critical gap if Idea 2 (L3 LLM-judge) is deployed in production.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ SOURCES FOOTER ═══ -->
+<footer id="sources-section">
+  <h2>Data Sources</h2>
+  <div class="source-item">
+    <span class="source-file">research/references/refs-vlm-thai-ocr-extension-2026-05.md</span>
+    <span class="source-desc">12 references: Typhoon OCR (arXiv 2601.14722), ThaiOCRBench (2511.04479), Typhoon2, Qwen2.5-VL, ANLS* (2402.03848), Thai WER bias (2208.04799), BERTScore, mPLUG-DocOwl 2, InternVL3, multimodal product papers, low-resource VLM survey</span>
+    <span class="source-date">2026-05-06</span>
+  </div>
+  <div class="source-item">
+    <span class="source-file">research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md</span>
+    <span class="source-desc">7 ideas with effort estimates; priority ranking table; 5 open publication gaps; WER drift figures (newmm 13.6% vs deepcut 8.2%)</span>
+    <span class="source-date">2026-05-06</span>
+  </div>
+  <div class="source-item">
+    <span class="source-file">templates/diagram-template.html</span>
+    <span class="source-desc">Base CSS variables, dark theme, D3/Mermaid/Plotly CDN pattern</span>
+    <span class="source-date">2026-05-06</span>
+  </div>
+</footer>
+
+<div id="tooltip"></div>
+
+<script>
+// ── Mermaid init ────────────────────────────────────────────────────
+mermaid.initialize({ startOnLoad: false, theme: "dark", securityLevel: "loose" });
+mermaid.run({ nodes: [document.getElementById("pipeline-diagram")] });
+
+// ── Plotly Roadmap (horizontal bar) ────────────────────────────────
+(function() {
+  const ideas = [
+    { label: "Idea 4A: BERTScore WangchanBERTa",   effort: 1,    color: "#22c55e", cat: "Quick Win" },
+    { label: "Idea 1: VLM Zero-Shot Classifier",    effort: 1.5,  color: "#22c55e", cat: "Quick Win" },
+    { label: "Idea 4C: CLIP Image-Text Alignment",  effort: 2,    color: "#22c55e", cat: "Quick Win" },
+    { label: "Idea 2: 3-Layer Eval Stack",          effort: 2.5,  color: "#fbbf24", cat: "Medium" },
+    { label: "Idea 3: Unified VLM Stage 3+4+5",    effort: 4,    color: "#fbbf24", cat: "Medium" },
+    { label: "Idea 5: Internal ThaiOCRBench",       effort: 17.5, color: "#fbbf24", cat: "Medium" },
+    { label: "Idea 6: LoRA Fine-Tune Typhoon OCR", effort: 35,   color: "#ef4444", cat: "Long-Term" }
+  ];
+
+  const trace = {
+    type: "bar",
+    orientation: "h",
+    x: ideas.map(d => d.effort),
+    y: ideas.map(d => d.label),
+    text: ["1 day", "1–2 days", "2 days", "2–3 days", "3–5 days", "2–3 weeks", "4–6 weeks"],
+    textposition: "outside",
+    textfont: { color: "#e2e8f0", size: 11 },
+    marker: {
+      color: ideas.map(d => d.color),
+      opacity: 0.85,
+      line: { color: ideas.map(d => d.color), width: 1.5 }
+    },
+    hovertemplate: "<b>%{y}</b><br>Effort midpoint: %{x} days<extra></extra>"
+  };
+
+  const layout = {
+    paper_bgcolor: "transparent",
+    plot_bgcolor: "transparent",
+    font: { color: "#e2e8f0", family: "'Sarabun', 'Segoe UI', system-ui, sans-serif", size: 12 },
+    margin: { t: 20, b: 50, l: 280, r: 100 },
+    xaxis: {
+      title: { text: "Effort (days, midpoint estimate)", font: { color: "#8892b0", size: 11 } },
+      gridcolor: "#2d3148",
+      zerolinecolor: "#2d3148",
+      tickfont: { color: "#8892b0", size: 10 },
+      type: "log"
+    },
+    yaxis: {
+      gridcolor: "#2d3148",
+      tickfont: { color: "#e2e8f0", size: 11 },
+      automargin: true
+    },
+    annotations: [
+      { x: Math.log10(2.5), y: 6.5, xref: "x", yref: "y",
+        text: "Quick Wins (green) ≤ 2 days", showarrow: false,
+        font: { color: "#22c55e", size: 10 }, xanchor: "left" }
+    ]
+  };
+
+  Plotly.newPlot("plotly-roadmap", [trace], layout, { responsive: true, displayModeBar: false });
+})();
+
+// ── Sankey (VLM Models → Pipeline Stages) ──────────────────────────
+(function() {
+  const PALETTE = [
+    "#4c9be8","#7c5cbf","#64ffda","#f97316","#a855f7",
+    "#ec4899","#22d3ee","#84cc16","#fbbf24","#ef4444",
+    "#10b981","#6366f1","#14b8a6"
+  ];
+
+  const nodes = [
+    // VLM sources (left)
+    { id: "TyphoonOCR",    label: "Typhoon OCR\n(2B, SCB10X)" },
+    { id: "Typhoon2V",     label: "Typhoon2-Vision\n(7B, SCB10X)" },
+    { id: "Qwen25VL",      label: "Qwen2.5-VL\n(72B, Alibaba)" },
+    { id: "DocOwl2",       label: "mPLUG-DocOwl 2\n(Alibaba+RUC)" },
+    { id: "InternVL3",     label: "InternVL3\n(Shanghai AI Lab)" },
+    { id: "WangchanBERT",  label: "WangchanBERTa\n(BERTScore)" },
+    { id: "CLIP",          label: "CLIP / SigLIP\n(Image-Text)" },
+    // Pipeline stages / modules (right)
+    { id: "M1",  label: "Module 1\nData Cleaning" },
+    { id: "M2",  label: "Module 2\nOCR Evaluation" },
+    { id: "ST3", label: "Stage 3\nText Recognition" },
+    { id: "ST4", label: "Stage 4\nPost-Correction" },
+    { id: "ST5", label: "Stage 5\nStruct Extraction" },
+    { id: "ST2", label: "Stage 2\nLayout Detection" }
+  ];
+
+  const links = [
+    // Typhoon OCR: Stage 3+4+5 (primary use)
+    { source: "TyphoonOCR",   target: "ST3", value: 3, note: "replaces Stage 3 (unified pass)" },
+    { source: "TyphoonOCR",   target: "ST4", value: 3, note: "replaces Stage 4 (unified pass)" },
+    { source: "TyphoonOCR",   target: "ST5", value: 3, note: "replaces Stage 5 (unified pass)" },
+    // Typhoon2 Vision: Module 1 + Stage 3+4
+    { source: "Typhoon2V",    target: "M1",  value: 3, note: "ad vs label classifier replacement" },
+    { source: "Typhoon2V",    target: "ST3", value: 2, note: "Stage 3 candidate" },
+    { source: "Typhoon2V",    target: "ST4", value: 2, note: "Stage 4 candidate" },
+    // Qwen2.5-VL: Module 1 + Stage 3+5
+    { source: "Qwen25VL",     target: "M1",  value: 2, note: "zero-shot product label extraction" },
+    { source: "Qwen25VL",     target: "ST3", value: 3, note: "Stage 3 replacement (best open-source on ThaiOCRBench: 0.615)" },
+    { source: "Qwen25VL",     target: "ST5", value: 3, note: "structured key-value extraction" },
+    // DocOwl 2: Stage 2+3
+    { source: "DocOwl2",      target: "ST2", value: 2, note: "layout + recognition combined" },
+    { source: "DocOwl2",      target: "ST3", value: 2, note: "OCR-free recognition" },
+    // InternVL3: Stage 3+5
+    { source: "InternVL3",    target: "ST3", value: 2, note: "open-source alternative to Qwen" },
+    { source: "InternVL3",    target: "ST5", value: 2, note: "structured extraction" },
+    // WangchanBERTa: Module 2 (BERTScore)
+    { source: "WangchanBERT", target: "M2",  value: 4, note: "BERTScore upgrade for cosine sim (Idea 4A, 1 day)" },
+    // CLIP / SigLIP: Module 1 image-text alignment
+    { source: "CLIP",         target: "M1",  value: 3, note: "image-text alignment quality signal (Idea 4C)" },
+    { source: "CLIP",         target: "M2",  value: 2, note: "OCR quality signal without ground truth" }
+  ];
+
+  const container = document.getElementById("sankey-vlm");
+  const tooltip   = document.getElementById("tooltip");
+  const W = Math.min(container.clientWidth - 32, 1140);
+  const H = 460;
+  const PAD = { top: 16, right: 220, bottom: 16, left: 220 };
+
+  const svg = d3.select(container).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", "100%");
+
+  const sankey = d3.sankey()
+    .nodeId(d => d.id)
+    .nodeWidth(20)
+    .nodePadding(14)
+    .extent([[PAD.left, PAD.top], [W - PAD.right, H - PAD.bottom]]);
+
+  const graph = sankey({
+    nodes: nodes.map(d => ({ ...d })),
+    links: links.map(d => ({ ...d }))
+  });
+
+  const colorOf = {};
+  graph.nodes.forEach((n, i) => { colorOf[n.id] = PALETTE[i % PALETTE.length]; });
+
+  // Links
+  svg.append("g").selectAll("path").data(graph.links).join("path")
+    .attr("class", "sankey-link")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", d => colorOf[d.source.id])
+    .attr("stroke-width", d => Math.max(1.5, d.width))
+    .on("mousemove", (e, d) => {
+      tooltip.style.opacity = 1;
+      tooltip.style.left = (e.clientX + 14) + "px";
+      tooltip.style.top  = (e.clientY - 30) + "px";
+      tooltip.textContent = `${d.source.label.replace(/\n.*/,"")} → ${d.target.label.replace(/\n.*/,"")}  weight:${d.value}  —  ${d.note||""}`;
+    })
+    .on("mouseleave", () => { tooltip.style.opacity = 0; });
+
+  // Nodes
+  const nodeG = svg.append("g").selectAll("g").data(graph.nodes).join("g");
+  nodeG.append("rect")
+    .attr("x", d => d.x0).attr("y", d => d.y0)
+    .attr("width", d => d.x1 - d.x0)
+    .attr("height", d => Math.max(5, d.y1 - d.y0))
+    .attr("fill", d => colorOf[d.id])
+    .attr("rx", 3);
+
+  // Multi-line node labels
+  nodeG.each(function(d) {
+    const isLeft = d.x0 < W / 2;
+    const lines  = d.label.split("\n");
+    const yMid   = (d.y0 + d.y1) / 2;
+    const x      = isLeft ? d.x1 + 9 : d.x0 - 9;
+    const anchor = isLeft ? "start" : "end";
+    const lineH  = 13;
+    const startY = yMid - ((lines.length - 1) * lineH) / 2;
+
+    const g = d3.select(this);
+    lines.forEach((line, i) => {
+      g.append("text")
+        .attr("class", "sankey-label")
+        .attr("x", x)
+        .attr("y", startY + i * lineH)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", anchor)
+        .style("font-size", i === 0 ? "12px" : "10px")
+        .style("fill", i === 0 ? "#e2e8f0" : "#8892b0")
+        .text(line);
+    });
+  });
+})();
+</script>
+</body>
+</html>

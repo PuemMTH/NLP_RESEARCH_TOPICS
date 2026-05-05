@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: Research File Link Map</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>Diagram: Research File Link Map</h1>
+<pre><code class="language-mermaid">graph TD
+    subgraph topics[&quot;📂 topics/&quot;]
+        T1([thai-medical-ocr-post-correction.md])
+        T2([technical-profile-and-career.md])
+    end
+
+    subgraph sources[&quot;📂 sources/&quot;]
+        S1([thai-medical-ocr-post-correction-2026-03-31.md])
+        S2([tanapat-eiam-arj-profile-cv.md])
+    end
+
+    subgraph references[&quot;📂 references/&quot;]
+        R1([refs-thai-medical-ocr-post-correction.md])
+        R2([refs-nlp-broad-topics.md])
+        R3([refs-tanapat-profile.md])
+    end
+
+    subgraph ideas[&quot;📂 ideas/&quot;]
+        I1([draft-proposal-thai-medical-ocr-masters.md])
+        I2([experiment-plan-thai-medical-ocr.md])
+        I3([ideas-2026-03.md])
+    end
+
+    subgraph diagrams[&quot;📂 diagrams/&quot;]
+        D1([pipeline-thai-medical-ocr-modular.md])
+        D2([system-comparison-ocr-abcd.md])
+    end
+
+    T1 --&gt; S1
+    T1 --&gt; I1
+    T1 --&gt; I2
+    T1 --&gt; D1
+    T1 --&gt; D2
+
+    T2 --&gt; S2
+
+    S1 --&gt; R1
+    S2 --&gt; R3
+
+    I1 --&gt; S1
+    I2 --&gt; S1
+    I3 --&gt; S1
+
+    D1 --&gt; T1
+    D1 --&gt; I2
+    D2 --&gt; T1
+    D2 --&gt; I2</code></pre>
+<h2>Notes</h2>
+<ul>
+<li>อัปเดต diagram นี้ทุกครั้งที่เพิ่มไฟล์ใหม่เข้า research/</li>
+<li>refs-nlp-broad-topics.md ยังไม่มี topic เชื่อมโยง (orphan) — เป็น reference กลางที่ยังไม่ผูกกับ topic เฉพาะ</li>
+</ul>
+      <p class="source-path">Source: <code>research/diagrams/research-file-link-map.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

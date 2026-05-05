@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas: VLM Extension for Thai OCR Pipeline (2026-05)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-05</p>
+<h1>Ideas: VLM Extension for Thai OCR Pipeline (2026-05)</h1>
+<p>Context: NECTEC SME product data cleaning + medical OCR pipeline. Two existing modules:</p>
+<ul>
+<li>Module 1: tokenization (PyThaiNLP newmm), language filter, emoji filter, word frequency threshold, 700-char text-length classifier (ad/label vs. product image)</li>
+<li>Module 2: WER (PyThaiNLP-tokenized) + cosine similarity via SentenceTransformer</li>
+</ul>
+<p>Reference file: <a href="../../research/references/refs-vlm-thai-ocr-extension-2026-05.md">/research/references/refs-vlm-thai-ocr-extension-2026-05.md</a></p>
+<hr>
+<h2>Idea 1 — Replace 700-Char Heuristic with VLM Zero-Shot Classifier (Module 1)</h2>
+<p><strong>Problem</strong>: The 700-character threshold for separating ad images from product-label images is a hand-tuned heuristic. It will break on images with dense product text or sparse ad copy near the threshold.</p>
+<p><strong>Proposed change</strong>: Use a VLM (Typhoon2-Vision or Qwen2.5-VL-7B) with a contrastive prompt:</p>
+<ul>
+<li>Prompt: &quot;Is this image primarily (A) a product label/packaging showing ingredients and specifications, or (B) an advertising image focused on lifestyle or marketing? Answer A or B.&quot;</li>
+<li>This is zero-shot — no labelled training data required.</li>
+<li>Fallback: use text-length threshold only when VLM confidence &lt; 0.7.</li>
+</ul>
+<p><strong>Evidence base</strong>: CVPR 2024 contrastive VLM classification paper; ThaiOCRBench shows Typhoon OCR handles Thai document classification.</p>
+<p><strong>Implementation path</strong>: Swap the classifier step in Module 1. Add a <code>--classifier vlm</code> flag to the pipeline runner. Measure precision/recall on a held-out set of ~200 images with manual labels.</p>
+<p><strong>Estimated effort</strong>: Low (1–2 days POC). Model: <code>scb10x/typhoon2-qwen2vl-7b-vision-instruct</code> (HuggingFace).</p>
+<hr>
+<h2>Idea 2 — Upgrade Module 2 WER to a 3-Layer Evaluation Stack</h2>
+<p><strong>Problem</strong>: WER computed on PyThaiNLP newmm tokenization is tokenizer-relative (Thai ASR research shows the same system scores 13.6% WER under newmm vs. 8.2% under deepcut). Cosine similarity on generic SentenceTransformer embeddings does not capture OCR-domain accuracy (a wrong medical term can have high cosine similarity to a correct one if both appear in similar contexts).</p>
+<p><strong>Proposed 3-layer stack</strong>:</p>
+<table><thead><tr><th>Layer</th><th>Metric</th><th>Tool</th><th>What it catches</th></tr></thead><tbody><tr><td>L1</td><td>CER (not WER)</td><td>jiwer / fastwer</td><td>Character-level transcription errors, safer for Thai</td></tr><tr><td>L2</td><td>ANLS*</td><td>anls PyPI package</td><td>Tolerates minor OCR confusions; does not over-penalize correct answers with small edit distance</td></tr><tr><td>L3</td><td>LLM-as-Judge</td><td>Typhoon2-Text or GPT-4o-mini</td><td>Semantic correctness; catches wrong medical terms that have high cosine sim</td></tr></tbody></table>
+<p><strong>Why CER over WER</strong>: CER is independent of tokenizer choice — counts character edits, not word-boundary-dependent token edits. This eliminates the newmm drift issue entirely.</p>
+<p><strong>Why ANLS over cosine sim</strong>: ANLS was designed for document VQA and is the standard in DocVQA/ThaiOCRBench. It tolerates known OCR errors (character substitutions) while still penalizing semantically wrong answers.</p>
+<p><strong>Why LLM-as-Judge as top layer</strong>: Cosine similarity can be fooled by embeddings that cluster medically similar but clinically different terms. An LLM judge can be prompted with a domain-specific rubric (&quot;is the test name preserved exactly?&quot;, &quot;is the numeric value correct?&quot;, &quot;is the unit correct?&quot;).</p>
+<p><strong>Implementation path</strong>:</p>
+<ol>
+<li>Add CER computation (drop WER or run both).</li>
+<li>Integrate <code>anls</code> (pip available) for each field extraction result.</li>
+<li>Add optional LLM-judge call (rate-limited, only on samples where L1/L2 disagree).</li>
+</ol>
+<p><strong>Estimated effort</strong>: 1 day for L1+L2, 2–3 days for L3 integration with prompt design.</p>
+<hr>
+<h2>Idea 3 — VLM as Unified Stage 3+4+5 (OCR → Correction → Extraction)</h2>
+<p><strong>Problem</strong>: The current pipeline runs Stage 3 (OCR) → Stage 4 (post-correction) → Stage 5 (struct extraction) as three separate models. Each hand-off introduces error accumulation.</p>
+<p><strong>Proposed change</strong>: Use Typhoon OCR or Qwen2.5-VL as a single model that:</p>
+<ul>
+<li>Reads the document image</li>
+<li>Outputs structured markdown/JSON directly (text + layout + key-value in one pass)</li>
+<li>Eliminates inter-stage error propagation</li>
+</ul>
+<p><strong>Evidence base</strong>: Typhoon OCR V1.5 (2B params) outperforms its predecessor (7B) on BLEU/ROUGE-L/Levenshtein across Thai document types: financial reports, government forms, books, infographics, handwritten material.</p>
+<p><strong>Key trade-off</strong>:</p>
+<ul>
+<li>Modular pipeline (EasyOCR + ByT5): ~930 MB, fast, interpretable, controllable</li>
+<li>VLM unified (Typhoon OCR 2B): ~4–6 GB, slower, but handles layout natively</li>
+</ul>
+<p><strong>Recommended hybrid</strong>: Run modular pipeline as default. Add VLM as a fallback triggered when Stage 4 post-correction confidence is below a threshold (e.g., ANLS score &lt; 0.6 on self-verification).</p>
+<p><strong>Estimated effort</strong>: 3–5 days for POC with Typhoon OCR on the existing test set.</p>
+<hr>
+<h2>Idea 4 — VLM for Semantic OCR Evaluation (Module 2 Replacement Path)</h2>
+<p><strong>Problem</strong>: Module 2 uses SentenceTransformer cosine similarity as a semantic quality score. Generic multilingual embeddings are not calibrated for Thai medical/product domain.</p>
+<p><strong>Proposed approach A — BERTScore with WangchanBERTa</strong>:</p>
+<ul>
+<li>Replace cosine similarity with token-level BERTScore using WangchanBERTa as the encoder.</li>
+<li>WangchanBERTa is already in the pipeline (Stage 4 post-correction). Reuse for evaluation.</li>
+<li>BERTScore with domain-matched encoder outperforms generic cosine sim for in-domain text.</li>
+</ul>
+<p><strong>Proposed approach B — Typhoon2-Text as LLM judge</strong>:</p>
+<ul>
+<li>Prompt: &quot;Hypothesis: [OCR output]. Reference: [ground truth]. Are they semantically equivalent for medical/product record purposes? Score 0–5 and explain.&quot;</li>
+<li>Captures domain-specific correctness that embeddings miss.</li>
+<li>Expensive: suitable for sample-level auditing, not per-document production scoring.</li>
+</ul>
+<p><strong>Proposed approach C — CLIP-based product image–text alignment score</strong>:</p>
+<ul>
+<li>For Module 1 (product images), use CLIP or SigLIP to score alignment between product image and extracted OCR text.</li>
+<li>Low score = OCR text doesn&#x27;t match image content = likely extraction error.</li>
+<li>Acts as an automatic OCR quality signal without ground truth.</li>
+</ul>
+<p><strong>Estimated effort</strong>: Approach A: 1 day. Approach B: 2 days (prompt engineering + rate-limit handling). Approach C: 2 days POC.</p>
+<hr>
+<h2>Idea 5 — ThaiOCRBench as Internal Evaluation Framework</h2>
+<p><strong>Problem</strong>: No standardized benchmark exists internally at NECTEC for measuring OCR quality across pipeline variants.</p>
+<p><strong>Proposed action</strong>: Adapt ThaiOCRBench methodology to the NECTEC product/medical domain:</p>
+<ul>
+<li>Collect 200–500 images across categories: product labels, prescription forms, lab results, government ID sections.</li>
+<li>Annotate with ground-truth text + key-value fields.</li>
+<li>Run all pipeline variants (OCR-only, OCR+ByT5, OCR+WangchanBERTa, VLM-unified) against this benchmark.</li>
+<li>Score with the 3-layer stack from Idea 2.</li>
+</ul>
+<p><strong>Outcome</strong>: A reusable internal benchmark that can track regressions when models are updated.</p>
+<p><strong>Evidence base</strong>: ThaiOCRBench design (2,808 samples, 13 task categories, 4 metric families) is a proven template.</p>
+<p><strong>Estimated effort</strong>: 2–3 weeks to collect + annotate + run evaluation pipeline.</p>
+<hr>
+<h2>Idea 6 — Low-Resource Fine-Tuning of Typhoon OCR for Medical Domain</h2>
+<p><strong>Problem</strong>: Typhoon OCR is trained on general Thai documents. Medical forms (lab results, prescriptions, referral letters) have domain-specific layouts and vocabulary not covered in general training.</p>
+<p><strong>Proposed approach</strong>: Fine-tune Typhoon OCR V1.5 (2B) using LoRA on a small set of annotated Thai medical documents.</p>
+<ul>
+<li>Collect 100–300 page images with ground-truth Markdown/JSON annotations.</li>
+<li>Fine-tune with LoRA on the vision encoder + language model jointly.</li>
+<li>Evaluate with field-level F1 and term-preservation rate.</li>
+</ul>
+<p><strong>Evidence base</strong>:</p>
+<ul>
+<li>Cross-lingual transfer paper (ACM MM 2023): visually-derived supervision bridges annotation scarcity.</li>
+<li>Low-resource VLM survey (ScienceDirect 2026): instruction tuning on translated/synthetic data is effective.</li>
+<li>Typhoon OCR&#x27;s multi-stage synthetic data construction pipeline is a template for generating pseudo-labels cheaply.</li>
+</ul>
+<p><strong>Risk</strong>: Medical annotation requires clinical review. Use pharmacy-grade product labels as a lower-risk starting point.</p>
+<p><strong>Estimated effort</strong>: 4–6 weeks (data collection + annotation + LoRA fine-tuning + evaluation).</p>
+<hr>
+<h2>Idea 7 — Multimodal Product Data Cleaning (Module 1 Overhaul)</h2>
+<p><strong>Problem</strong>: Module 1 processes text extracted from product images through a sequential pipeline (tokenize → filter → frequency → classify). It treats image and text as separate signals.</p>
+<p><strong>Proposed change</strong>: Jointly encode image + text using CLIP or BLIP-2:</p>
+<ul>
+<li>Compute image–text alignment score. Low score = product description does not match the image (data quality issue).</li>
+<li>Use joint embedding for downstream classification instead of text-only features.</li>
+<li>Replace word-frequency threshold with VLM-based relevance scoring (&quot;does this word appear to be a product ingredient/specification?&quot;).</li>
+</ul>
+<p><strong>Evidence base</strong>: Multimodal product deduplication paper (macro F1 = 0.90 with joint embeddings). BiLens framework (ScienceDirect 2025) validated on e-commerce product understanding.</p>
+<p><strong>Thai-specific note</strong>: CLIP models (ViT-L/14) have limited Thai text understanding. Use Typhoon2-Vision or a CLIP model fine-tuned on Thai e-commerce data for better alignment scores.</p>
+<p><strong>Estimated effort</strong>: 3–5 days for CLIP-based alignment scoring POC; 2–3 weeks for full joint-embedding classifier.</p>
+<hr>
+<h2>Priority Ranking (by effort vs. expected impact)</h2>
+<table><thead><tr><th>Priority</th><th>Idea</th><th>Effort</th><th>Expected Impact</th></tr></thead><tbody><tr><td>1</td><td>Idea 2 — 3-layer evaluation stack (CER + ANLS + LLM-judge)</td><td>Low (2–3 days)</td><td>High — fixes known WER bias immediately</td></tr><tr><td>2</td><td>Idea 1 — VLM zero-shot ad/label classifier</td><td>Low (1–2 days)</td><td>Medium-High — removes the fragile heuristic</td></tr><tr><td>3</td><td>Idea 4A — BERTScore with WangchanBERTa</td><td>Low (1 day)</td><td>Medium — in-domain semantic eval upgrade</td></tr><tr><td>4</td><td>Idea 3 — VLM as unified Stage 3+4+5</td><td>Medium (3–5 days)</td><td>High — eliminates inter-stage error accumulation</td></tr><tr><td>5</td><td>Idea 5 — Internal ThaiOCRBench adaptation</td><td>Medium (2–3 weeks)</td><td>High long-term — creates reusable benchmark</td></tr><tr><td>6</td><td>Idea 7 — Multimodal Module 1 overhaul</td><td>Medium (1–3 weeks)</td><td>Medium — needs Thai CLIP or domain fine-tuning</td></tr><tr><td>7</td><td>Idea 6 — LoRA fine-tune Typhoon OCR for medical</td><td>High (4–6 weeks)</td><td>Highest — publishable, domain-specific contribution</td></tr></tbody></table>
+<hr>
+<h2>Open Questions / Gaps Identified</h2>
+<ol>
+<li><strong>Thai CLIP gap</strong>: No publicly available CLIP model fine-tuned on Thai product-image + Thai text pairs. Building this would be a publishable contribution.</li>
+<li><strong>WER vs. CER tradeoff for Thai</strong>: No paper specifically compares CER and WER as OCR metrics for Thai, accounting for the character complexity (vowel stacking, tone marks). Worth a short study.</li>
+<li><strong>Constrained LLM-judge</strong>: Using an unconstrained LLM judge risks hallucinating medical term corrections. A constrained judge (with lexicon lock, similar to Stage 4 post-correction) has not been published for Thai medical domain.</li>
+<li><strong>Typhoon OCR on product labels</strong>: Typhoon OCR benchmarks focus on financial reports, government forms, books. Performance on SME product labels (messy layouts, multilingual, varied fonts) is unknown.</li>
+<li><strong>Tokenizer-agnostic WER</strong>: A character-based alternative to WER for Thai that accounts for vowel placement (above/below/left/right) rather than simple character count has not been formalized in literature.</li>
+</ol>
+      <p class="source-path">Source: <code>research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

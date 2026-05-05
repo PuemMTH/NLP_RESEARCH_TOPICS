@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic: NLP and Robotics</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-05 (top-3 thesis picks added; OpenVLA-Minecraft scan indexed; stack decision added; eval design indexed; trend outlook linked)</p>
+<h1>Topic: NLP and Robotics</h1>
+<h2>Included Sources</h2>
+<ul>
+<li><a href="../../research/sources/saycan-grounding-language-robotic-affordances-2026-04-04.md">/research/sources/saycan-grounding-language-robotic-affordances-2026-04-04.md</a></li>
+<li><a href="../../research/sources/rt-2-vla-robot-control-2026-04-04.md">/research/sources/rt-2-vla-robot-control-2026-04-04.md</a></li>
+<li><a href="../../research/sources/openvla-open-source-vla-2026-04-04.md">/research/sources/openvla-open-source-vla-2026-04-04.md</a></li>
+<li><a href="../../research/references/refs-nlp-robotics.md">/research/references/refs-nlp-robotics.md</a></li>
+</ul>
+<h2>Topic Summary</h2>
+<p>This topic focuses on connecting natural language understanding to executable robotic behavior. Current directions converge on language-grounded planning (SayCan) and unified vision-language-action policies (RT-2, OpenVLA), with a key trade-off between broad semantic generalization, controllability, compute cost, and safety.</p>
+<h2>Subtopics</h2>
+<ul>
+<li>Language grounding with affordances and skill libraries</li>
+<li>Vision-language-action policy learning</li>
+<li>Open-source embodied foundation models</li>
+<li>Efficient adaptation to new robots and tasks</li>
+<li>Safety, verification, and failure recovery in language-driven control</li>
+</ul>
+<h2>Candidate Research Questions</h2>
+<ul>
+<li>How to combine open VLA policies with explicit symbolic constraints for safer execution?</li>
+<li>Which adaptation strategy gives best sample efficiency across robot embodiments?</li>
+<li>How robust are language-conditioned policies to multilingual commands and ambiguity?</li>
+<li>Can closed-loop feedback (scene descriptors, success detectors) reduce cascading errors in long-horizon tasks?</li>
+</ul>
+<h2>Open Threads</h2>
+<ul>
+<li>Build a small reproducible benchmark: instruction complexity x environment shift x safety violations.</li>
+<li>Compare open models (OpenVLA-like) vs closed/co-trained models (RT-2-style) on semantic OOD tasks.</li>
+<li>Design human-in-the-loop override and intervention metrics for real deployment.</li>
+</ul>
+<h2>Top 3 Thesis Picks (Selected)</h2>
+<h3>1) Safe Action Token Decoding for Open VLA Policies</h3>
+<ul>
+<li>Why this is top: Strong novelty and direct safety impact in real deployment; connects NLP intent parsing to robotics execution constraints.</li>
+<li>Core question: How to insert symbolic safety constraints and affordance checks between language-conditioned action tokens and actuator commands?</li>
+<li>Difficulty: High</li>
+<li>Resource needs: 1 robot platform, simulator fallback, safety-rule engine, medium-to-high GPU budget for policy adaptation.</li>
+<li>Minimum experiment set:</li>
+<li>Baseline OpenVLA-style policy without safety layer.</li>
+<li>Constrained decoding with forbidden-action masks and state-aware guards.</li>
+<li>Compare task success, safety-violation rate, and recovery time.</li>
+</ul>
+<h3>2) Thai-English Multilingual Grounding for Long-Horizon Manipulation</h3>
+<ul>
+<li>Why this is top: Good novelty for local context and highly practical for service robots; tractable timeline for a master&#x27;s thesis.</li>
+<li>Core question: How robust are language-grounded robot policies to Thai-English code-switch, ambiguity, and paraphrase drift?</li>
+<li>Difficulty: Medium-High</li>
+<li>Resource needs: robot or sim benchmark, bilingual instruction set, modest GPU budget for adaptation/evaluation.</li>
+<li>Minimum experiment set:</li>
+<li>Build multilingual instruction splits (Thai, English, code-switch).</li>
+<li>Evaluate grounding error types (object mismatch, relation mismatch, step omission).</li>
+<li>Test clarification prompts and confidence-triggered replanning.</li>
+</ul>
+<h3>3) Data-Efficient OpenVLA Adaptation with LoRA Under Real-World Shift</h3>
+<ul>
+<li>Why this is top: Highest feasibility and strong engineering value; excellent if you want publishable, reproducible systems work quickly.</li>
+<li>Core question: Which parameter-efficient method (LoRA/partial tuning) gives best sample efficiency across camera/background/robot shifts?</li>
+<li>Difficulty: Medium</li>
+<li>Resource needs: open checkpoints, one target robot setup (or high-fidelity sim), moderate GPU budget.</li>
+<li>Minimum experiment set:</li>
+<li>Compare full finetune vs LoRA vs last-layer tuning.</li>
+<li>Measure success vs number of demos and domain shift severity.</li>
+<li>Report compute-time-memory trade-offs.</li>
+</ul>
+<h2>Selection Criteria Used</h2>
+<ul>
+<li>Feasibility in 6-12 months</li>
+<li>Novelty and publishability</li>
+<li>Resource fit (compute + data + hardware)</li>
+<li>Practical deployment impact</li>
+</ul>
+<h2>Related Diagram</h2>
+<ul>
+<li><a href="../../research/diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md">/research/diagrams/nlp-robotics-top3-thesis-picks-2026-04-04.md</a></li>
+</ul>
+<h2>New Index Entry (2026-04-04)</h2>
+<ul>
+<li>OpenVLA variants/extensions and Minecraft evidence scan: <a href="../../research/references/refs-openvla-minecraft-2026-04.md">/research/references/refs-openvla-minecraft-2026-04.md</a></li>
+<li>Current status: no confirmed direct OpenVLA-on-Minecraft implementation found in official OpenVLA channels or broad GitHub repository/discussion search at scan time.</li>
+<li>Adjacent active line: Minecraft VLA/agent papers (OmniJARVIS, JARVIS-VLA, OpenHA, MAIN-VLA) and agent systems (Voyager, VPT, MineDojo).</li>
+<li>Landscape diagram: <a href="../../research/diagrams/openvla-minecraft-landscape-2026-04-04.md">/research/diagrams/openvla-minecraft-landscape-2026-04-04.md</a></li>
+</ul>
+<h2>Stack Recommendation for Thesis (OpenVLA-style vs Voyager/JARVIS-style)</h2>
+<h3>Recommended Primary Stack</h3>
+<ul>
+<li>Voyager/JARVIS-style stack is recommended as the primary thesis stack for Minecraft-oriented NLP+Robotics research.</li>
+</ul>
+<h3>Why this stack wins for this context</h3>
+<ul>
+<li>Domain fit: built directly around Minecraft control loops and long-horizon language-conditioned tasks.</li>
+<li>Reproducibility: easier to reproduce with public Minecraft environments and agent frameworks.</li>
+<li>Cost and timeline: lower setup burden than real robot VLA control pipelines.</li>
+<li>Research depth: still supports strong novelty through planning, tool-use memory, self-verification, and recovery.</li>
+</ul>
+<h3>Practical stack blueprint</h3>
+<ul>
+<li>Environment: MineDojo-compatible or equivalent Minecraft API setup.</li>
+<li>Agent core: Voyager/JARVIS-style planner-executor loop.</li>
+<li>NLP layer: instruction decomposition, skill retrieval, and reflection-based replanning.</li>
+<li>Evaluation: task success, sample efficiency, horizon length, recovery rate after failure.</li>
+</ul>
+<h3>When OpenVLA-style should be primary instead</h3>
+<ul>
+<li>If your thesis target is real-robot manipulation transfer and action-token safety constraints in physical environments.</li>
+</ul>
+<h3>Best compromise (hybrid)</h3>
+<ul>
+<li>Use Voyager/JARVIS-style as primary system in Minecraft.</li>
+<li>Borrow one OpenVLA-style idea as contribution: constrained action decoding or safety mask for invalid action prevention.</li>
+</ul>
+<h3>Related Decision Diagram</h3>
+<ul>
+<li><a href="../../research/diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md">/research/diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md</a></li>
+</ul>
+<h2>Proposal Evaluation Design (2026-04-04)</h2>
+<ul>
+<li>Baselines + metrics + ablations pack: <a href="../../research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md">/research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md</a></li>
+<li>Evaluation framework diagram: <a href="../../research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md">/research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md</a></li>
+</ul>
+<h2>Trend Outlook Link (2026-04-05)</h2>
+<ul>
+<li>Cross-topic trend map: <a href="../../research/diagrams/research-trend-outlook-2026-04-05.md">/research/diagrams/research-trend-outlook-2026-04-05.md</a></li>
+<li>Strategic emphasis for this topic: constrained/safe VLA, multilingual grounding, and robustness-first evaluation.</li>
+</ul>
+      <p class="source-path">Source: <code>research/topics/nlp-and-robotics.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

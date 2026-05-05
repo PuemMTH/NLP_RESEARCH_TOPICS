@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: Research Trend Outlook (2026-2028)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-05</p>
+<h1>Diagram: Research Trend Outlook (2026-2028)</h1>
+<pre><code class="language-mermaid">flowchart TD
+    A[Current Base 2026-04] --&gt; B1[NLP Robotics]
+    A --&gt; B2[Thai Medical OCR]
+    A --&gt; B3[Public Health &amp; Multilingual NLP]
+
+    B1 --&gt; C1[Shift: End-to-end VLA -&gt; Constrained and Safe VLA]
+    B1 --&gt; C2[Shift: Monolingual commands -&gt; Multilingual grounding]
+    B1 --&gt; C3[Shift: Demo performance -&gt; Robustness and recovery metrics]
+
+    B2 --&gt; D1[Shift: OCR-only -&gt; Layout-aware multimodal pipeline]
+    B2 --&gt; D2[Shift: Generic correction -&gt; Constrained medical post-correction]
+    B2 --&gt; D3[Shift: Text metrics only -&gt; Field-level clinical reliability]
+
+    B3 --&gt; E1[Shift: Single-task studies -&gt; Cross-domain transfer methods]
+    B3 --&gt; E2[Shift: Thai-only focus -&gt; Thai + Myanmar low-resource track]
+    B3 --&gt; E3[Shift: Accuracy-only -&gt; Explainable and operational NLP]
+
+    C1 --&gt; F[Convergent Direction 2026-2028]
+    D2 --&gt; F
+    E1 --&gt; F
+
+    F --&gt; G[Theme 1: Safety and verification as core contribution]
+    F --&gt; H[Theme 2: Data-efficient adaptation under domain shift]
+    F --&gt; I[Theme 3: Multilingual real-world deployment]</code></pre>
+<h2>Notes</h2>
+<ul>
+<li>Synthesized from topic files and ideas indexed in this workspace as of 2026-04-05.</li>
+<li>Intended as a direction map for selecting thesis-level contributions.</li>
+</ul>
+      <p class="source-path">Source: <code>research/diagrams/research-trend-outlook-2026-04-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

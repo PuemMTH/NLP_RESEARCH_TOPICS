@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ร่างข้อเสนองานวิจัย (1 หน้า) สำหรับสมัครปริญญาโท</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>ร่างข้อเสนองานวิจัย (1 หน้า) สำหรับสมัครปริญญาโท</h1>
+<h2>ชื่อเรื่อง (เบื้องต้น)</h2>
+<p>การพัฒนาระบบสกัดข้อมูลเอกสารการแพทย์ภาษาไทยด้วย Vision-Language Model ร่วมกับการแก้ไขข้อความหลัง OCR แบบมีข้อกำกับเชิงโดเมน</p>
+<h2>ที่มาและความสำคัญของปัญหา</h2>
+<p>เอกสารการแพทย์ภาษาไทย เช่น รายงานผลแล็บ ใบสั่งยา และแบบฟอร์มโรงพยาบาล มักมีโครงร่างเอกสารที่ซับซ้อน มีทั้งตาราง ข้อความหลายคอลัมน์ ตราประทับ และข้อความไทย-อังกฤษผสมกัน ทำให้การอ่านด้วย OCR แบบดั้งเดิมมีข้อผิดพลาดสูง โดยเฉพาะในระดับฟิลด์สำคัญ เช่น ชื่อการตรวจ ค่า หน่วย และช่วงอ้างอิง ซึ่งเป็นข้อมูลที่ต้องมีความถูกต้องสูงในงานคลินิกและระบบสารสนเทศสุขภาพ</p>
+<p>แนวทางใหม่ที่ใช้ Vision-Language Model (VLM) สามารถเรียนรู้ทั้งโครงสร้างภาพและความหมายของข้อความพร้อมกัน จึงมีศักยภาพในการสกัดข้อมูลจากเอกสารที่โครงสร้างซับซ้อนมากกว่า OCR แบบอ่านข้อความล้วน อย่างไรก็ตาม การใช้โมเดลภาษาเพื่อแก้ไขข้อความหลัง OCR (post-correction) อาจทำให้คำศัพท์ทางการแพทย์ผิดเพี้ยนได้ หากไม่มีข้อกำกับเชิงโดเมน งานวิจัยนี้จึงเสนอการผสาน VLM กับ post-correction แบบมีพจนานุกรมและกฎหน่วยวัดเฉพาะทาง เพื่อเพิ่มความแม่นยำเชิงโครงสร้างและลดความเสี่ยงเชิงคลินิก</p>
+<h2>วัตถุประสงค์การวิจัย</h2>
+<ol>
+<li>พัฒนาและเปรียบเทียบไปป์ไลน์สกัดข้อมูลเอกสารการแพทย์ภาษาไทย 4 รูปแบบ ได้แก่ OCR-only, OCR+LM, OCR+Constrained Correction, และ VLM+Constrained Correction</li>
+<li>ประเมินคุณภาพทั้งระดับข้อความและระดับฟิลด์ข้อมูล เพื่อวัดความพร้อมใช้งานจริงในระบบบริการ</li>
+<li>ศึกษาผลกระทบด้านความเร็ว ความคงทนต่อสัญญาณรบกวน และความปลอดภัยข้อมูลส่วนบุคคล (PHI)</li>
+</ol>
+<h2>คำถามวิจัย</h2>
+<p>สำหรับเอกสารการแพทย์ภาษาไทยที่มี layout ซับซ้อน การใช้ VLM ร่วมกับ post-correction แบบมีข้อกำกับเชิงโดเมน สามารถเพิ่มความถูกต้องระดับฟิลด์ได้ดีกว่า OCR-only อย่างมีนัยสำคัญหรือไม่</p>
+<h2>สมมติฐาน</h2>
+<ul>
+<li>H1: ระบบ VLM+Constrained Correction ให้ค่า Field-level Exact Match และ Key-Value F1 สูงกว่า OCR-only</li>
+<li>H2: แม้ OCR-only อาจเร็วกว่า แต่ระบบ VLM มีความทนทานต่อเอกสารคุณภาพต่ำและข้อความไทย-อังกฤษผสมได้ดีกว่า</li>
+<li>H3: การแก้ข้อความแบบไม่จำกัดเงื่อนไขมีโอกาสทำให้ศัพท์แพทย์ผิดพลาด ขณะที่การจำกัดด้วยศัพท์โดเมนช่วยลดปัญหานี้ได้</li>
+</ul>
+<h2>วิธีดำเนินการวิจัย (สรุป)</h2>
+<ul>
+<li>ชุดข้อมูลนำร่อง 300-600 หน้า/ภาพ (ผ่านการปกปิดข้อมูลระบุตัวตน)</li>
+<li>ประเภทเอกสาร: ผลแล็บ ใบสั่งยา สรุปจำหน่าย และฟอร์มการแพทย์</li>
+<li>แบ่งข้อมูล 70/15/15 สำหรับพัฒนา-ตรวจสอบ-ทดสอบ</li>
+<li>ตัวชี้วัดหลัก: Field-level Exact Match, Key-Value F1</li>
+<li>ตัวชี้วัดรอง: CER, WER, Medical-term Preservation Rate, Unit-Value Consistency, Latency ต่อหน้า, PHI Leakage Rate</li>
+<li>เกณฑ์ความสำเร็จเบื้องต้น: ระบบเป้าหมายต้องเพิ่ม Field-level Exact Match อย่างน้อย 8% เมื่อเทียบ OCR-only โดยไม่ลดความปลอดภัยข้อมูล</li>
+</ul>
+<h2>ขอบเขตและผลที่คาดว่าจะได้รับ</h2>
+<p>คาดว่าจะได้กรอบการสกัดข้อมูลเอกสารการแพทย์ภาษาไทยที่ใช้งานได้จริงในบริบทโรงพยาบาลหรือระบบสุขภาพดิจิทัล โดยให้ความสมดุลระหว่างความแม่นยำ ความเร็ว และความปลอดภัยของข้อมูล พร้อมแนวทางประเมินที่นำไปต่อยอดเป็นงานวิจัยระดับบัณฑิตศึกษาและงานพัฒนาระบบเชิงอุตสาหกรรมได้</p>
+<h2>แผนดำเนินงานเบื้องต้น (4 สัปดาห์นำร่อง)</h2>
+<ul>
+<li>สัปดาห์ที่ 1: เตรียมข้อมูลและ baseline OCR</li>
+<li>สัปดาห์ที่ 2: พัฒนา VLM pipeline และ constrained correction</li>
+<li>สัปดาห์ที่ 3: ประเมินผลเชิงปริมาณและวิเคราะห์ข้อผิดพลาด</li>
+<li>สัปดาห์ที่ 4: ทำ ablation และสรุปผลในรูปแบบรายงาน/ข้อเสนอวิจัย</li>
+</ul>
+<h2>เอกสารอ้างอิงหลัก</h2>
+<ul>
+<li>Typhoon OCR: Open Vision-Language Model For Thai Document Extraction (arXiv:2601.14722)</li>
+<li>MeDocVL: A Visual Language Model for Medical Document Understanding and Parsing (arXiv:2602.06402)</li>
+<li>OCR Error Post-Correction with LLMs in Historical Documents: No Free Lunches (arXiv:2502.01205)</li>
+</ul>
+      <p class="source-path">Source: <code>research/ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

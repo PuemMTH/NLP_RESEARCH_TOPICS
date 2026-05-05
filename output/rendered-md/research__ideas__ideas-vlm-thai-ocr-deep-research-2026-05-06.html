@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas: Deep Research Follow-up From VLM Thai OCR References</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>Ideas: Deep Research Follow-up From VLM Thai OCR References</h1>
+<h2>Priority 1 — Internal Thai Product/Medical OCRBench</h2>
+<p><strong>Research question</strong>: Can an internal benchmark inspired by ThaiOCRBench reveal which pipeline variant works best for SME product labels and Thai medical-like documents?</p>
+<p><strong>Why this matters</strong>:</p>
+<ul>
+<li>ThaiOCRBench already gives a schema and task taxonomy for Thai document/VLM evaluation.</li>
+<li>NECTEC work needs domain-specific categories not covered directly by generic Thai document benchmarks.</li>
+</ul>
+<p><strong>Dataset slice</strong>:</p>
+<ul>
+<li>100 product label OCR samples</li>
+<li>100 ad vs. product-package classification samples</li>
+<li>100 key-value extraction samples from product labels</li>
+<li>50-100 medical-like document samples, if privacy-safe</li>
+</ul>
+<p><strong>Schema</strong>:</p>
+<ul>
+<li><code>image</code></li>
+<li><code>task</code></li>
+<li><code>question</code></li>
+<li><code>answer</code></li>
+<li><code>category</code></li>
+<li><code>field_type</code></li>
+<li><code>criticality</code></li>
+<li><code>evidence_bbox</code></li>
+</ul>
+<p><strong>Metrics</strong>:</p>
+<ul>
+<li>CER for raw text</li>
+<li>ANLS/ANLS* for field text</li>
+<li>F1 for classification/KIE</li>
+<li>verifier false-pass rate for critical fields</li>
+</ul>
+<h2>Priority 2 — Cost-Aware OCR Evaluation Cascade</h2>
+<p><strong>Research question</strong>: Can a layered metric stack reduce LLM judging cost while improving OCR reliability?</p>
+<p><strong>Design</strong>:</p>
+<pre><code class="language-text">OCR output
+  |
+  v
+Layer 1: exact/rule/CER
+  | pass easy cases
+  v
+Layer 2: ANLS/BERTScore
+  | route disagreements
+  v
+Layer 3: LLM judge/verifier
+  | high-risk only
+  v
+human review / VLM fallback</code></pre>
+<p><strong>Contribution</strong>:</p>
+<ul>
+<li>Adapts multi-layered evaluation ideas to Thai OCR.</li>
+<li>Adds field criticality and Thai tokenizer-risk awareness.</li>
+</ul>
+<h2>Priority 3 — VLM Product-Label vs Advertisement Classifier</h2>
+<p><strong>Research question</strong>: Can contrastive VLM prompts replace the 700-character text-length heuristic?</p>
+<p><strong>Prompt design</strong>:</p>
+<ul>
+<li>Class A: product packaging or label with ingredients, specifications, price, quantity, brand, barcode, or usage details.</li>
+<li>Class B: advertising image focused on lifestyle, promotion, claims, discount, slogan, or campaign content.</li>
+</ul>
+<p><strong>Baseline</strong>:</p>
+<ul>
+<li>Existing 700-character threshold.</li>
+<li>OCR text length + OCR bbox coverage.</li>
+<li>VLM zero-shot classifier.</li>
+</ul>
+<p><strong>Metric</strong>:</p>
+<ul>
+<li>F1 by class.</li>
+<li>False rejection of valid product images.</li>
+<li>Failure mode by packaging/ad subtype.</li>
+</ul>
+<h2>Priority 4 — Evidence-Grounded VLM Fallback</h2>
+<p><strong>Research question</strong>: When should the pipeline call a heavy VLM instead of trusting modular OCR?</p>
+<p><strong>Trigger candidates</strong>:</p>
+<ul>
+<li>low OCR confidence</li>
+<li>low ANLS against expected field pattern</li>
+<li>verifier label = <code>unsupported</code> or <code>uncertain</code></li>
+<li>layout detector finds table/form but OCR field extraction is incomplete</li>
+</ul>
+<p><strong>System design</strong>:</p>
+<ul>
+<li>Modular pipeline is default.</li>
+<li>VLM is fallback for only difficult regions or fields.</li>
+<li>Verifier decides whether VLM output is acceptable.</li>
+</ul>
+<p><strong>Why this is better than VLM-only</strong>:</p>
+<ul>
+<li>Reduces cost and latency.</li>
+<li>Keeps interpretable OCR/layout evidence.</li>
+<li>Allows safety checks on high-risk fields.</li>
+</ul>
+<h2>Priority 5 — Thai Product Image-Text Alignment</h2>
+<p><strong>Research question</strong>: Are existing Thai/multilingual CLIP-style models good enough to detect mismatches between product images and extracted OCR/product descriptions?</p>
+<p><strong>Candidate models</strong>:</p>
+<ul>
+<li><code>patomp/thai-light-multimodal-clip-and-distill</code></li>
+<li><code>jina-clip-v2</code></li>
+<li>Typhoon2-Vision as a judgment model</li>
+</ul>
+<p><strong>Experiment</strong>:</p>
+<ul>
+<li>Positive pairs: image and OCR text from same product.</li>
+<li>Negative pairs: swap OCR text across product categories.</li>
+<li>Hard negatives: same category but different brand/quantity.</li>
+</ul>
+<p><strong>Metric</strong>:</p>
+<ul>
+<li>Recall@1 / Recall@10 for retrieval</li>
+<li>AUROC for match vs. mismatch</li>
+<li>failure rate on Thai-English mixed labels</li>
+</ul>
+<h2>Priority 6 — Typhoon OCR vs Qwen2.5-VL vs Modular Pipeline</h2>
+<p><strong>Research question</strong>: Is a Thai-specific OCR VLM actually better than a strong general VLM and the existing modular pipeline on NECTEC-like data?</p>
+<p><strong>Systems to compare</strong>:</p>
+<ul>
+<li>Modular: DocLayout-YOLO + EasyOCR/PaddleOCR + ByT5/WangchanBERTa</li>
+<li>Thai-specific VLM: Typhoon OCR or Typhoon2-Vision</li>
+<li>General VLM: Qwen2.5-VL</li>
+</ul>
+<p><strong>Metrics</strong>:</p>
+<ul>
+<li>text CER</li>
+<li>key-value F1</li>
+<li>ANLS</li>
+<li>verifier critical false-pass rate</li>
+<li>latency</li>
+<li>VRAM</li>
+<li>output format stability</li>
+</ul>
+<h2>Updated Gap Statements</h2>
+<ol>
+<li><strong>Thai product-label benchmark gap</strong>: ThaiOCRBench is broad, but product-label OCR and SME ad/package classification need a domain-specific benchmark.</li>
+<li><strong>Thai OCR metric gap</strong>: WER is tokenizer-relative; CER/ANLS/verifier should be studied specifically for Thai OCR.</li>
+<li><strong>Verifier gap</strong>: LLM-as-a-Judge gives score, but Thai OCR needs evidence-grounded verification for numbers, units, brands, and medical/product terms.</li>
+<li><strong>Thai image-text alignment gap</strong>: public Thai/multilingual CLIP-like models exist, but product-label OCR alignment is under-validated.</li>
+<li><strong>VLM fallback policy gap</strong>: most work compares full VLM systems, but practical deployment needs a policy for when to call the heavy VLM.</li>
+</ol>
+<h2>Recommended Next POC Order</h2>
+<ol>
+<li><code>poc/ocr-evaluation-cascade/</code></li>
+<li><code>poc/vlm-product-image-classifier/</code></li>
+<li><code>poc/llm-ocr-verifier/</code></li>
+<li><code>poc/vlm-fallback-router/</code></li>
+<li><code>poc/product-image-text-alignment/</code></li>
+</ol>
+      <p class="source-path">Source: <code>research/ideas/ideas-vlm-thai-ocr-deep-research-2026-05-06.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

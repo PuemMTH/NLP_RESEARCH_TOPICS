@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POC Results: VLM Classifier, OCR Eval, Typhoon OCR LoRA</title>
+  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d2e;
+      --surface2: #222640;
+      --border: #2d3148;
+      --text: #e2e8f0;
+      --muted: #8892b0;
+      --accent: #64ffda;
+      --green: #22c55e;
+      --yellow: #fbbf24;
+      --red: #ef4444;
+      --blue: #4c9be8;
+      --purple: #a78bfa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Noto Sans Thai", Tahoma, sans-serif;
+      line-height: 1.6;
+      padding: 32px 20px 56px;
+    }
+
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 22px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(100,255,218,0.12);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      color: var(--accent);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.25rem;
+      color: var(--text);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    p { margin: 0 0 12px; color: var(--muted); }
+
+    section {
+      margin-top: 18px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .metric {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .ok { color: var(--green); }
+    .warn { color: var(--yellow); }
+    .bad { color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(45,49,72,0.8);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    code {
+      background: #10131f;
+      color: var(--accent);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 0.9em;
+    }
+
+    #drift-chart {
+      width: 100%;
+      height: 480px;
+    }
+
+    .sources {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <span class="badge">POC Completion Report · 2026-05-06</span>
+      <h1>VLM Classifier + 3-Layer OCR Evaluation + Typhoon OCR LoRA Research</h1>
+      <p>รายงานนี้อัปเดตจากผล run จริงใน POC outputs และ research note ของ Idea 6 เพื่อใช้ตัดสินลำดับงานต่อไป</p>
+    </header>
+
+    <section>
+      <h2>Executive Summary</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="metric ok">2/2</div>
+          <div class="metric-label">VLM classifier agreement with 700-char rule</div>
+        </div>
+        <div class="card">
+          <div class="metric warn">360pp</div>
+          <div class="metric-label">maximum WER tokenizer drift observed</div>
+        </div>
+        <div class="card">
+          <div class="metric ok">bf16</div>
+          <div class="metric-label">recommended LoRA mode for RTX 50xx / Blackwell</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Idea 1 — VLM Zero-Shot Classifier</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sample</th>
+            <th>VLM label</th>
+            <th>Confidence</th>
+            <th>700-char rule</th>
+            <th>Final</th>
+            <th>Fallback</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>sample_product.png</td>
+            <td>product</td>
+            <td>0.95</td>
+            <td>product (33 chars)</td>
+            <td class="ok">product</td>
+            <td>no</td>
+          </tr>
+          <tr>
+            <td>sample_ad_label.png</td>
+            <td>advertisement</td>
+            <td>0.95</td>
+            <td>advertisement (795 chars)</td>
+            <td class="ok">advertisement</td>
+            <td>no</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Interpretation: POC validates the VLM classifier path, but confidence is self-reported. Next step should be a labelled 100-200 image benchmark before replacing the legacy threshold.</p>
+    </section>
+
+    <section>
+      <h2>Idea 2 — 3-Layer OCR Evaluation Stack</h2>
+      <div id="drift-chart"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Pair</th>
+            <th>WER newmm</th>
+            <th>WER attacut</th>
+            <th>CER</th>
+            <th>ANLS*</th>
+            <th>WangchanBERTa F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>pair_01</td><td>200.00%</td><td>50.00%</td><td>18.18%</td><td>0.8182</td><td>0.4254</td></tr>
+          <tr><td>pair_02</td><td>400.00%</td><td>40.00%</td><td>11.11%</td><td>0.8889</td><td>0.7254</td></tr>
+          <tr><td>pair_03</td><td>133.33%</td><td>71.43%</td><td>16.13%</td><td>0.8387</td><td>0.5064</td></tr>
+          <tr><td>pair_04</td><td>100.00%</td><td>100.00%</td><td>33.33%</td><td>0.6667</td><td>0.0566</td></tr>
+          <tr><td>pair_05</td><td>22.22%</td><td>11.11%</td><td>2.94%</td><td>0.9706</td><td>0.9066</td></tr>
+        </tbody>
+      </table>
+      <p>Interpretation: WER is unstable for Thai under tokenizer changes. CER should be the primary lexical metric, with ANLS* for field tolerance and WangchanBERTa/BERTScore-style scoring for semantic sensitivity.</p>
+    </section>
+
+    <section>
+      <h2>Idea 6 — LoRA Fine-Tune Typhoon OCR V1.5</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Decision Point</th>
+            <th>Current Research Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Correct model slug</td><td><code>scb10x/typhoon-ocr1.5-2b</code> / mirror <code>typhoon-ai/typhoon-ocr1.5-2b</code></td></tr>
+          <tr><td>Base architecture</td><td>Qwen3-VL 2B, not Qwen2-VL</td></tr>
+          <tr><td>LoRA config</td><td>r=16, alpha=32, target q/k/v/o/gate/up/down, freeze vision tower first</td></tr>
+          <tr><td>Minimum data</td><td>100 pages for minimal POC; 200-300 pages recommended first run</td></tr>
+          <tr><td>Blackwell RTX 50xx</td><td class="warn">Avoid unstable 4-bit QLoRA first; use bf16 LoRA</td></tr>
+          <tr><td>Framework</td><td><code>2U1/Qwen-VL-Series-Finetune</code></td></tr>
+          <tr><td>Dataset gap</td><td>No public Thai medical OCR dataset; build synthetic + de-identified in-house data</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Updated Priority</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Next Action</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Run Idea 1 and Idea 2 on real/labelled data</td><td>POCs pass on samples, but sample count is too small for claims.</td></tr>
+          <tr><td>2</td><td>Create internal OCRBench slice</td><td>Needed to validate VLM classifier, CER/ANLS, and later LoRA improvement.</td></tr>
+          <tr><td>3</td><td>Add LLM-as-a-Verifier</td><td>Turns metric results into supported/unsupported/uncertain field decisions.</td></tr>
+          <tr><td>4</td><td>Start Typhoon OCR LoRA POC</td><td>Only after benchmark schema and annotation format are fixed.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Data Sources</h2>
+      <p class="sources">
+        <code>poc/vlm-zero-shot-classifier/sample_outputs/sample_product_result.json</code>,
+        <code>poc/vlm-zero-shot-classifier/sample_outputs/sample_ad_label_result.json</code>,
+        <code>poc/ocr-eval-3layer/sample_outputs/eval_results.json</code>,
+        <code>poc/ocr-eval-3layer/sample_outputs/test_pairs.json</code>,
+        <code>research/ideas/idea6-lora-finetune-typhoon-ocr-2026-05.md</code>
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const pairs = ["pair_01", "pair_02", "pair_03", "pair_04", "pair_05"];
+    const werNewmm = [200.0, 400.0, 133.33, 100.0, 22.22];
+    const werAttacut = [50.0, 40.0, 71.43, 100.0, 11.11];
+    const cer = [18.18, 11.11, 16.13, 33.33, 2.94];
+    const drift = werNewmm.map((v, i) => Math.abs(v - werAttacut[i]));
+
+    Plotly.newPlot("drift-chart", [
+      {
+        type: "bar",
+        x: pairs,
+        y: werNewmm,
+        name: "WER newmm",
+        marker: { color: "#ef4444" }
+      },
+      {
+        type: "bar",
+        x: pairs,
+        y: werAttacut,
+        name: "WER attacut",
+        marker: { color: "#fbbf24" }
+      },
+      {
+        type: "scatter",
+        mode: "lines+markers",
+        x: pairs,
+        y: cer,
+        name: "CER stable baseline",
+        marker: { color: "#64ffda", size: 9 },
+        line: { color: "#64ffda", width: 3 }
+      },
+      {
+        type: "scatter",
+        mode: "markers+text",
+        x: pairs,
+        y: drift,
+        name: "absolute WER drift",
+        text: drift.map(v => `${v.toFixed(1)}pp`),
+        textposition: "top center",
+        marker: { color: "#4c9be8", size: 10, symbol: "diamond" }
+      }
+    ], {
+      paper_bgcolor: "#1a1d2e",
+      plot_bgcolor: "#10131f",
+      font: { color: "#e2e8f0" },
+      barmode: "group",
+      margin: { t: 30, r: 20, b: 50, l: 60 },
+      yaxis: { title: "Percent / percentage points", gridcolor: "#2d3148" },
+      xaxis: { title: "OCR test pair", gridcolor: "#2d3148" },
+      legend: { orientation: "h", y: -0.2 }
+    }, { responsive: true });
+  </script>
+</body>
+</html>

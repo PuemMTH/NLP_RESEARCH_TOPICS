@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proposal Pack: Baselines, Metrics, and Ablations</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-04</p>
+<h1>Proposal Pack: Baselines, Metrics, and Ablations</h1>
+<h2>Scope</h2>
+<ul>
+<li>Primary stack: Voyager/JARVIS-style agent for Minecraft instruction following.</li>
+<li>Proposed contribution line: constrained action decoding + reflection-based replanning.</li>
+</ul>
+<h2>Benchmark Setup</h2>
+<ul>
+<li>Environment: MineDojo-compatible Minecraft tasks (or equivalent reproducible setup).</li>
+<li>Task buckets:</li>
+<li>T1: Short-horizon instruction following (1-3 steps)</li>
+<li>T2: Mid-horizon tool-use tasks (4-8 steps)</li>
+<li>T3: Long-horizon compositional tasks (9+ steps)</li>
+<li>T4: Robustness split (unseen phrasing, distractors, partial observability)</li>
+<li>Language splits:</li>
+<li>L1: English</li>
+<li>L2: Thai-English code-switch</li>
+<li>L3: Paraphrase/ambiguous commands</li>
+</ul>
+<h2>Baselines</h2>
+<ul>
+<li>B0 Scripted Skill Graph (non-LLM planner)</li>
+<li>Fixed symbolic planner over predefined skill graph.</li>
+<li>Purpose: lower-bound and sanity-check baseline.</li>
+<li>B1 Voyager-style Agent</li>
+<li>Standard planner + code/tool generation + memory loop.</li>
+<li>Purpose: strong open baseline for long-horizon Minecraft tasks.</li>
+<li>B2 JARVIS-style Planner-Executor</li>
+<li>Instruction decomposition + multimodal policy/execution modules.</li>
+<li>Purpose: stronger decomposition-focused baseline.</li>
+<li>B3 Proposed P1 (Voyager/JARVIS hybrid)</li>
+<li>Unified planner-executor with explicit skill library retrieval.</li>
+<li>B4 Proposed P2 (P1 + constrained action decoding)</li>
+<li>Valid-action masking and state-aware action constraints before execution.</li>
+<li>B5 Proposed P3 (P2 + reflection/replanning)</li>
+<li>Error diagnosis + replan trigger from uncertainty and failure signals.</li>
+</ul>
+<h2>Metrics</h2>
+<h3>Primary Outcome Metrics</h3>
+<ul>
+<li>Task Success Rate (TSR): fraction of tasks completed within budget.</li>
+<li>Weighted Success Score (WSS): success weighted by task difficulty.</li>
+<li>Horizon Completion Rate (HCR): completion rate per horizon bucket (T1/T2/T3).</li>
+</ul>
+<h3>Grounding and Safety Metrics</h3>
+<ul>
+<li>Instruction Grounding Accuracy (IGA): percent of steps aligned to instruction intent.</li>
+<li>Invalid Action Rate (IAR): invalid actions per episode.</li>
+<li>Safety Violation Rate (SVR): forbidden/unsafe actions per episode.</li>
+<li>Recovery Success Rate (RSR): fraction of failed episodes recovered after replanning.</li>
+</ul>
+<h3>Efficiency Metrics</h3>
+<ul>
+<li>Steps-to-Success (STS): mean environment steps for successful episodes.</li>
+<li>Token/Prompt Cost (TPC): average model token usage per episode.</li>
+<li>Wall-clock per Episode (WPE): runtime latency.</li>
+<li>GPU-hour per 1k episodes (GHE): compute budget efficiency.</li>
+</ul>
+<h3>Robustness and Generalization Metrics</h3>
+<ul>
+<li>OOD Success Drop (OSD): TSR drop from in-distribution to robustness split T4.</li>
+<li>Paraphrase Robustness (PR): TSR under paraphrased commands.</li>
+<li>Code-switch Robustness (CR): TSR under Thai-English instructions.</li>
+<li>Distractor Robustness (DR): TSR with irrelevant objects/events.</li>
+</ul>
+<h2>Metric Definitions (for proposal appendix)</h2>
+<ul>
+<li>TSR = completed_tasks / total_tasks</li>
+<li>IAR = invalid_actions / total_actions</li>
+<li>SVR = safety_violations / total_episodes</li>
+<li>RSR = recovered_failures / total_failures</li>
+<li>OSD = TSR_ID - TSR_OOD</li>
+</ul>
+<h2>Ablation Plan</h2>
+<ul>
+<li>A1 minus Memory Module</li>
+<li>Remove episodic memory/tool history retrieval.</li>
+<li>Tests value of memory for long-horizon completion.</li>
+<li>A2 minus Reflection Module</li>
+<li>Disable self-critique and replan generation.</li>
+<li>Tests contribution to failure recovery.</li>
+<li>A3 minus Constrained Decoding</li>
+<li>Execute unconstrained action outputs.</li>
+<li>Tests safety and invalid-action impact.</li>
+<li>A4 minus Uncertainty Trigger</li>
+<li>Always execute without confidence gating.</li>
+<li>Tests robustness under ambiguous instructions.</li>
+<li>A5 minus Skill Retrieval</li>
+<li>Replace retrieval with direct free-form planning only.</li>
+<li>Tests benefit of explicit skill library grounding.</li>
+<li>A6 Language-only English</li>
+<li>Remove code-switch and multilingual training/eval.</li>
+<li>Tests multilingual contribution.</li>
+</ul>
+<h2>Experimental Matrix (minimal publishable set)</h2>
+<ul>
+<li>Compare B0-B5 on T1-T4 with L1-L3.</li>
+<li>Run at least 3 random seeds per condition.</li>
+<li>Report mean and 95% CI for TSR, IAR, SVR, RSR, OSD.</li>
+<li>Include cost table: WPE, TPC, GHE.</li>
+</ul>
+<h2>Statistical Testing</h2>
+<ul>
+<li>Success-rate comparisons: bootstrap CI and McNemar test where paired episodes exist.</li>
+<li>Cost/performance trade-off: Pareto plot (TSR vs GHE, TSR vs WPE).</li>
+<li>Robustness analysis: two-way ANOVA style factor analysis (task bucket x language split) when assumptions hold; otherwise non-parametric alternative.</li>
+</ul>
+<h2>Threats to Validity</h2>
+<ul>
+<li>Environment bias from benchmark-specific mechanics.</li>
+<li>Prompt sensitivity across runs.</li>
+<li>Potential leakage from handcrafted skill libraries.</li>
+</ul>
+<h2>Expected Claim Structure</h2>
+<ul>
+<li>Claim 1: P2 reduces IAR and SVR over B1/B2 with minimal TSR drop.</li>
+<li>Claim 2: P3 improves RSR and OOD robustness over P2.</li>
+<li>Claim 3: Multilingual setup improves CR while maintaining competitive TSR.</li>
+</ul>
+<h2>Related Diagram</h2>
+<ul>
+<li><a href="../../research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md">/research/diagrams/evaluation-framework-minecraft-nlp-robotics-2026-04-04.md</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/ideas/proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One-Page Experiment Plan: Thai Medical OCR (OCR-only vs VLM + Post-correction)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>One-Page Experiment Plan: Thai Medical OCR (OCR-only vs VLM + Post-correction)</h1>
+<h2>1) Objective</h2>
+<p>Evaluate whether a VLM-centered pipeline improves Thai medical document extraction quality over a strong OCR-only baseline under practical deployment constraints (latency, privacy, and robustness).</p>
+<h2>2) Research Question</h2>
+<p>For Thai medical documents with complex layouts, does VLM parsing plus constrained post-correction achieve better field-level correctness than OCR-only pipelines?</p>
+<h2>3) Hypothesis</h2>
+<p>H1: VLM + constrained post-correction yields higher field-level exact match and key-value F1 than OCR-only. H2: OCR-only may remain faster, but VLM pipeline provides better robustness on noisy scans and mixed Thai-English text. H3: Unconstrained LLM correction risks harming medical terms; lexicon-constrained correction reduces this failure mode.</p>
+<h2>4) Data Slice (Pilot)</h2>
+<ul>
+<li>Size: 300-600 de-identified pages/images.</li>
+<li>Sources: lab reports, prescriptions, discharge summaries, medical forms.</li>
+<li>Split: 70% train/dev adaptation, 15% validation, 15% test.</li>
+<li>Annotation targets:</li>
+<li>Plain text transcription (line-level)</li>
+<li>Structured fields: patient metadata, test name, value, unit, reference range, date, hospital/site</li>
+<li>Requirements: PHI-masked storage and audit trail.</li>
+</ul>
+<h2>5) Systems Compared</h2>
+<p>A. OCR-only baseline</p>
+<ul>
+<li>OCR engine + rule-based normalization + regex field extraction</li>
+</ul>
+<p>B. OCR + unconstrained LM post-correction</p>
+<ul>
+<li>Same OCR output, corrected by generic language model</li>
+</ul>
+<p>C. OCR + constrained post-correction</p>
+<ul>
+<li>Domain lexicon constraints (Thai medical terms, abbreviations, units), format guards</li>
+</ul>
+<p>D. VLM + constrained post-correction (target system)</p>
+<ul>
+<li>VLM document parsing (text + layout + key-values), then constrained correction and schema mapping</li>
+</ul>
+<h2>6) Metrics</h2>
+<p>Primary:</p>
+<ul>
+<li>Field-level exact match</li>
+<li>Key-value F1 (micro and macro)</li>
+</ul>
+<p>Secondary:</p>
+<ul>
+<li>CER, WER</li>
+<li>Medical-term preservation rate</li>
+<li>Unit-value consistency score</li>
+<li>Latency per page and throughput</li>
+<li>PHI leakage rate after processing</li>
+</ul>
+<h2>7) Experimental Protocol</h2>
+<ol>
+<li>Build a unified JSON schema for all systems.</li>
+<li>Freeze test split and evaluation scripts before tuning.</li>
+<li>Tune each system on validation only.</li>
+<li>Run 3 random-seed repeats where applicable.</li>
+<li>Perform error analysis by document type and field type.</li>
+<li>Report confidence intervals or bootstrap uncertainty on primary metrics.</li>
+</ol>
+<h2>8) Success Criteria (Go/No-Go)</h2>
+<ul>
+<li>Go if system D improves field-level exact match by &gt;= 8% over system A on test set.</li>
+<li>Go if medical-term preservation &gt;= 98% and no PHI regression.</li>
+<li>No-Go if latency exceeds service SLA by &gt; 2x without quality gain.</li>
+</ul>
+<h2>9) Risks and Mitigation</h2>
+<ul>
+<li>Risk: Over-correction of clinical terms.</li>
+<li>Mitigation: lexicon lock, unit patterns, constrained decoding.</li>
+<li>Risk: Layout variance across hospital templates.</li>
+<li>Mitigation: template-stratified evaluation and augmentation.</li>
+<li>Risk: Privacy compliance gaps.</li>
+<li>Mitigation: PHI redaction checks and isolated evaluation environment.</li>
+</ul>
+<h2>10) 4-Week Pilot Timeline</h2>
+<ul>
+<li>Week 1: Data curation, schema, baseline OCR pipeline.</li>
+<li>Week 2: VLM integration and constrained post-correction.</li>
+<li>Week 3: Full evaluation + error analysis.</li>
+<li>Week 4: Ablation study and thesis/proposal-ready report.</li>
+</ul>
+<h2>Source Anchors</h2>
+<ul>
+<li>Typhoon OCR (Thai OCR): <a href="https://arxiv.org/abs/2601.14722">https://arxiv.org/abs/2601.14722</a></li>
+<li>MeDocVL (Medical document parsing): <a href="https://arxiv.org/abs/2602.06402">https://arxiv.org/abs/2602.06402</a></li>
+<li>No Free Lunches (LLM post-correction limits): <a href="https://arxiv.org/abs/2502.01205">https://arxiv.org/abs/2502.01205</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

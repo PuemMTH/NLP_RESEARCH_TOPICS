@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ocr-eval-3layer</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <h1>ocr-eval-3layer</h1>
+<p>3-Layer OCR Evaluation Stack for Thai Medical Documents — POC</p>
+<p>Replaces the current Module 2 evaluation system (WER with PyThaiNLP newmm + cosine similarity with SentenceTransformer) with a more robust, domain-aware 3-layer stack.</p>
+<hr>
+<h2>Problem Statement</h2>
+<p>The current Module 2 system has two known weaknesses:</p>
+<table><thead><tr><th>Issue</th><th>Detail</th></tr></thead><tbody><tr><td>Tokenizer-dependent WER</td><td>PyThaiNLP newmm vs. attacut produces ~40% relative drift in WER on the same model output. The score is not stable.</td></tr><tr><td>Generic cosine similarity</td><td>SentenceTransformer (multilingual) misses fine-grained medical term errors (e.g., substituting one drug name for another similar-sounding one).</td></tr></tbody></table>
+<hr>
+<h2>Solution: 3-Layer Stack</h2>
+<pre><code>L1 — CER (Character Error Rate)
+     Tokenizer-agnostic. Formula: edit_distance(ref, hyp) / len(ref) * 100
+     Library: jiwer
+
+L2 — ANLS* (Average Normalized Levenshtein Similarity, threshold=0.5)
+     Per-field and aggregate. NLS &lt; 0.5 → 0, else NLS.
+     Library: anls (PyPI)
+
+L3 — BERTScore-style metric with WangchanBERTa
+     Model: airesearch/wangchanberta-base-att-spm-uncased (12 layers, SPM)
+     Layer: 11 (penultimate) — calibrated on 5 Thai medical OCR pairs.
+     Reports precision, recall, F1 via greedy cosine alignment of layer embeddings.
+     Implementation: direct transformers (see Deviations below).</code></pre>
+<p>Also computes OLD baseline metrics (WER newmm, WER attacut, cosine sim) for direct side-by-side comparison.</p>
+<hr>
+<h2>Setup</h2>
+<p>Requires Python 3.10+ and <a href="<a href="https://docs.astral.sh/uv/">uv">https://docs.astral.sh/uv/">uv</a></a>.</p>
+<pre><code class="language-bash">cd poc/ocr-eval-3layer
+uv sync</code></pre>
+<hr>
+<h2>Usage</h2>
+<h3>End-to-end (recommended)</h3>
+<pre><code class="language-bash">bash poc/ocr-eval-3layer/run.sh</code></pre>
+<p>This runs: uv sync → generate 5 sample pairs → single-pair demo → full suite.</p>
+<h3>Single pair</h3>
+<pre><code class="language-bash">uv run python poc_runner.py \
+    --reference &quot;ยาแก้ปวดหัว&quot; \
+    --hypothesis &quot;ยาแกปวดหว&quot;</code></pre>
+<h3>Full test suite (5 Thai medical pairs)</h3>
+<pre><code class="language-bash">uv run python poc_runner.py \
+    --test-suite sample_outputs/test_pairs.json \
+    --save-json sample_outputs/eval_results.json</code></pre>
+<h3>CLI options</h3>
+<pre><code>--reference TEXT        Reference (ground-truth) Thai text
+--hypothesis TEXT       OCR hypothesis text (required with --reference)
+--test-suite PATH       JSON file with test pairs (from generate_sample.py)
+--device cuda|cpu       Force device (default: auto-detect GPU)
+--save-json PATH        Write results to JSON file
+--anls-threshold FLOAT  ANLS* threshold (default 0.5)
+--skip-old-baseline     Skip WER/cosine baseline (faster)</code></pre>
+<hr>
+<h2>Output Format</h2>
+<h3>Stdout (per pair)</h3>
+<pre><code>======================================================================
+  Pair: pair_01
+  REF: ยาแก้ปวดหัว
+  HYP: ยาแกปวดหว
+======================================================================
+╭────────┬─────────────────────┬──────────┬───────────────────────────────╮
+│ Layer  │ Metric              │ Value    │ Note                          │
+├────────┼─────────────────────┼──────────┼───────────────────────────────┤
+│ OLD    │ WER (newmm)         │ 66.7%    │ word-level, PyThaiNLP newmm   │
+│ OLD    │ WER (attacut/long.) │ 100.0%   │ same model, different token.  │
+│ OLD    │ Cosine Similarity   │ 0.8821   │ paraphrase-multilingual-mpnet │
+│ L1     │ CER                 │ 25.0%    │ tokenizer-agnostic            │
+│ L2     │ ANLS* (t=0.5)       │ 0.7500   │ 0=bad, 1=perfect             │
+│ L3     │ BERTScore P         │ 0.9312   │ WangchanBERTa                 │
+│ L3     │ BERTScore R         │ 0.9205   │ WangchanBERTa                 │
+│ L3     │ BERTScore F1        │ 0.9258   │ WangchanBERTa                 │
+╰────────┴─────────────────────┴──────────┴───────────────────────────────╯
+
+  [Tokenizer-drift check]  WER newmm: 66.7%  |  WER attacut: 100.0%  |  CER: 25.0%  |  Absolute drift: 33.3pp</code></pre>
+<h3>JSON (--save-json)</h3>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: &quot;pair_01&quot;,
+    &quot;reference&quot;: &quot;ยาแก้ปวดหัว&quot;,
+    &quot;hypothesis&quot;: &quot;ยาแกปวดหว&quot;,
+    &quot;wer_newmm_pct&quot;: 66.67,
+    &quot;wer_attacut_pct&quot;: 100.0,
+    &quot;cosine_sim&quot;: 0.8821,
+    &quot;cer_pct&quot;: 25.0,
+    &quot;anls_star&quot;: 0.75,
+    &quot;bs_precision&quot;: 0.9312,
+    &quot;bs_recall&quot;: 0.9205,
+    &quot;bs_f1&quot;: 0.9258
+  }
+]</code></pre>
+<hr>
+<h2>Deviations from Spec</h2>
+<h3>L3: Direct transformers instead of bert-score library</h3>
+<p><code>bert-score==0.3.x</code> is incompatible with <code>transformers v5</code> (integer overflow in <code>set_truncation_and_padding</code> caused by WangchanBERTa&#x27;s default <code>model_max_length</code> of 10^30). Rather than pin <code>transformers</code> to v4.x (which conflicts with other POCs in this workspace), L3 is implemented directly using <code>transformers.CamembertModel</code>:</p>
+<ul>
+<li>Load WangchanBERTa with <code>output_hidden_states=True</code></li>
+<li>Extract layer-11 embeddings, L2-normalize each token vector</li>
+<li>Greedy cosine alignment: P = mean(max over ref for each hyp token), R = mean(max over hyp for each ref token)</li>
+<li>F1 = harmonic mean of P and R</li>
+</ul>
+<p>This is mathematically equivalent to the bert-score algorithm (no IDF weighting, no baseline rescaling). The <code>bert-score</code> package is still listed in <code>pyproject.toml</code> as reference but is unused at runtime.</p>
+<h3>Layer selection</h3>
+<p>Layer 11 of 12 was selected by calibration on the 5-pair suite:</p>
+<table><thead><tr><th>Layer</th><th>pair_01 F1</th><th>pair_02 F1</th><th>pair_03 F1</th><th>pair_04 F1</th><th>pair_05 F1</th></tr></thead><tbody><tr><td>9</td><td>0.218</td><td>0.126</td><td>0.554</td><td>0.151</td><td>0.927</td></tr><tr><td>10</td><td>0.361</td><td>0.529</td><td>-</td><td>-</td><td>0.929</td></tr><tr><td><strong>11</strong></td><td><strong>0.425</strong></td><td><strong>0.725</strong></td><td>0.506</td><td>0.057</td><td><strong>0.907</strong></td></tr><tr><td>12</td><td>0.311</td><td>0.389</td><td>-</td><td>-</td><td>0.910</td></tr></tbody></table>
+<p>Layer 11 best discriminates tone-mark and vowel-loss OCR errors (pairs 01, 02 — the dominant Thai OCR failure mode). The low score for pair_04 (heavy consonant cluster drop: &quot;แพ้ยาเพนิซิลลิน&quot; → &quot;แพยาเพนซลน&quot;) at layer 11 may be appropriate — that level of corruption does make the word genuinely less semantically retrievable.</p>
+<hr>
+<h2>Thai Medical OCR Pipeline Integration</h2>
+<pre><code>Stage 1: Preprocessing      (denoising, deskew)
+Stage 2: Layout Detection   (DocLayout-YOLO)
+Stage 3: Text Recognition   (PaddleOCR / GOT-OCR)
+Stage 4: Post-correction    (ByT5 / WangchanBERTa)
+Stage 5: Struct Extraction  (table, key-value)
+Stage 6: Validation         (schema, compliance)
+         ↑
+         THIS POC — replaces Module 2 quality signal
+         Used to measure Stage 3 output and Stage 4 improvement.</code></pre>
+<h3>Thai Language Notes</h3>
+<ul>
+<li>L1 (CER) has no Thai-specific concerns — works on any Unicode text.</li>
+<li>L2 (ANLS*) uses standard Levenshtein edit distance — also language-agnostic.</li>
+<li>L3 (BERTScore) uses WangchanBERTa, which was pretrained on Thai Wikipedia +</li>
+</ul>
+<p>Thai news corpora. It handles Thai sub-word tokenization via SentencePiece (SPM uncased). Fine-tuning on medical text would improve discrimination of medical term near-misses further.</p>
+<ul>
+<li>The tokenizer-drift demo uses newmm vs. attacut (both bundled in PyThaiNLP)</li>
+</ul>
+<p>rather than external <code>deepcut</code> (TF1-era, frequent install failures). The drift argument is identical — same OCR output, different WER score.</p>
+<hr>
+<h2>Notes on Model Caching</h2>
+<ul>
+<li>WangchanBERTa weights are downloaded once to <code>~/.cache/huggingface/</code>.</li>
+<li>SentenceTransformer weights: <code>~/.cache/torch/sentence_transformers/</code>.</li>
+<li>Never commit <code><em>.pt</code>, <code></em>.bin</code>, <code>*.safetensors</code> files.</li>
+</ul>
+<hr>
+<h2>Dependencies</h2>
+<table><thead><tr><th>Package</th><th>Purpose</th></tr></thead><tbody><tr><td><code>jiwer</code></td><td>CER + WER computation</td></tr><tr><td><code>anls</code></td><td>ANLS* metric</td></tr><tr><td><code>bert-score</code></td><td>Reference only (unused at runtime — see Deviations)</td></tr><tr><td><code>transformers</code></td><td>WangchanBERTa model + CamembertTokenizer for L3</td></tr><tr><td><code>sentencepiece</code></td><td>SPM tokenizer for WangchanBERTa</td></tr><tr><td><code>protobuf</code></td><td>Required by sentencepiece SPM serialization</td></tr><tr><td><code>sentence-transformers</code></td><td>OLD baseline cosine similarity</td></tr><tr><td><code>pythainlp</code></td><td>WER tokenizer (newmm, attacut)</td></tr><tr><td><code>attacut</code></td><td>Neural Thai tokenizer for tokenizer-drift demo</td></tr><tr><td><code>tabulate</code></td><td>Pretty-print output tables</td></tr><tr><td><code>torch</code></td><td>GPU inference (cu128, Blackwell-compatible)</td></tr></tbody></table>
+      <p class="source-path">Source: <code>poc/ocr-eval-3layer/README.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typhoon OCR</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<hr>
+<h3>Typhoon OCR</h3>
+<p><strong>Source</strong>: <a href="https://arxiv.org/abs/2601.14722">https://arxiv.org/abs/2601.14722</a> <strong>Topic(s)</strong>: thai-ocr, vision-language-models, low-resource-nlp <strong>Summary</strong>: Typhoon OCR presents an open Thai-and-English vision-language OCR model targeted at difficult real-world Thai documents. The paper highlights Thai-specific challenges such as script complexity and no explicit word boundaries, and proposes a multi-stage data pipeline with OCR/VLM restructuring and synthetic data. Reported results indicate competitive performance with lower compute cost. <strong>Key Points</strong>:</p>
+<ul>
+<li>Thai-centric training pipeline and document extraction objectives.</li>
+<li>Unified handling of transcription + layout reconstruction.</li>
+<li>Compact inference-efficient variant (V1.5) for easier deployment.</li>
+</ul>
+<p><strong>Referenced / Related</strong>:</p>
+<ul>
+<li>Thai document extraction benchmarks and synthetic data methods.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>: Need validation on Thai medical documents specifically (prescriptions, lab reports, DICOM overlays).</p>
+<hr>
+<h3>MeDocVL</h3>
+<p><strong>Source</strong>: <a href="https://arxiv.org/abs/2602.06402">https://arxiv.org/abs/2602.06402</a> <strong>Topic(s)</strong>: medical-ocr, medical-document-parsing, multimodal-information-extraction <strong>Summary</strong>: MeDocVL targets medical document OCR/parsing where layout complexity, domain terms, and noisy labels hurt standard OCR and generic VLMs. It combines label refinement with hybrid post-training (SFT + RL) for robust, precise query-driven extraction. The reported benchmark focus is medical invoices with noisy supervision. <strong>Key Points</strong>:</p>
+<ul>
+<li>Strong emphasis on field-level exact extraction reliability.</li>
+<li>Noise-aware training strategy aligns with real hospital data conditions.</li>
+<li>Suggests a blueprint for structured extraction after OCR.</li>
+</ul>
+<p><strong>Referenced / Related</strong>:</p>
+<ul>
+<li>Medical invoice parsing and VIE benchmarks.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>: Transferability to Thai-language medical documents remains an open question.</p>
+<hr>
+<h3>OCR Error Post-Correction with LLMs: No Free Lunches</h3>
+<p><strong>Source</strong>: <a href="https://arxiv.org/abs/2502.01205">https://arxiv.org/abs/2502.01205</a> <strong>Topic(s)</strong>: post-ocr-correction, llm-evaluation, low-resource-nlp <strong>Summary</strong>: This study evaluates open-weight LLMs for OCR post-correction and reports mixed outcomes: gains for English CER, but not practically sufficient for Finnish. It explores tuning, quantization, segment length, and continuation choices, showing that post-correction quality is highly setup-dependent. <strong>Key Points</strong>:</p>
+<ul>
+<li>LLM post-correction can help, but not uniformly across languages.</li>
+<li>Engineering choices materially change correction quality.</li>
+<li>Reinforces need for language/domain-specific evaluation.</li>
+</ul>
+<p><strong>Referenced / Related</strong>:</p>
+<ul>
+<li>CER-focused OCR post-correction benchmarks.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>: Thai medical text may need explicit lexicon constraints and terminology-aware decoding.</p>
+<hr>
+<h2>Topic Map (Round Snapshot)</h2>
+<ul>
+<li>thai-ocr: Typhoon OCR</li>
+<li>medical-ocr: MeDocVL</li>
+<li>post-ocr-correction: No Free Lunches</li>
+<li>low-resource-nlp: Typhoon OCR, No Free Lunches</li>
+</ul>
+<hr>
+<h2>POC Log</h2>
+<h3>2026-05-06 — VLM Zero-Shot Image Classifier</h3>
+<p><strong>POC folder</strong>: <code>poc/vlm-zero-shot-classifier/</code> <strong>Model</strong>: <code>scb10x/typhoon2-qwen2vl-7b-vision-instruct</code> (Typhoon2-Vision, Thai-optimised Qwen2-VL-7B) <strong>Fallback</strong>: <code>Qwen/Qwen2.5-VL-7B-Instruct</code></p>
+<p><strong>Goal</strong>: Replace the hardcoded 700-char OCR text-length threshold for classifying SME product images as &quot;ad/label&quot; vs &quot;product&quot; with a direct VLM zero-shot classifier.</p>
+<p><strong>Pipeline stage</strong>: Stage 2 (Layout/Routing) — sits before OCR, routes images to appropriate processing path.</p>
+<p><strong>Results on synthetic samples</strong>:</p>
+<ul>
+<li><code>sample_product.png</code> (33 chars): VLM → &quot;product&quot; (conf=0.95) | 700-char rule → &quot;product&quot; | AGREE</li>
+<li><code>sample_ad_label.png</code> (795 chars): VLM → &quot;advertisement&quot; (conf=0.95) | 700-char rule → &quot;advertisement&quot; | AGREE</li>
+</ul>
+<p><strong>Thai language notes</strong>: Typhoon2-Vision is Thai-aware and correctly interpreted Thai promotional text in the label image. Confidence self-reporting is not calibrated probability — tune the 0.7 threshold on real labelled data.</p>
+<p><strong>VRAM</strong>: RTX 5070 (11.5 GB) → use <code>--load-4bit</code> (~6-8 GB). BF16 default requires ~15 GB.</p>
+<p><strong>Key files</strong>:</p>
+<ul>
+<li><code>poc/vlm-zero-shot-classifier/poc_runner.py</code></li>
+<li><code>poc/vlm-zero-shot-classifier/generate_sample.py</code></li>
+<li><code>poc/vlm-zero-shot-classifier/run.sh</code></li>
+</ul>
+      <p class="source-path">Source: <code>research/sources/thai-medical-ocr-post-correction-2026-03-31.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

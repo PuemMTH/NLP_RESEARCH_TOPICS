@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas: LLM as a Verifier for Thai OCR and SME Data Pipelines (2026-05)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>Ideas: LLM as a Verifier for Thai OCR and SME Data Pipelines (2026-05)</h1>
+<h2>Context</h2>
+<p>The existing NECTEC pipeline already has deterministic evaluation metrics:</p>
+<ul>
+<li>Thai-tokenized WER with PyThaiNLP <code>newmm</code></li>
+<li>CER as a tokenizer-independent OCR metric candidate</li>
+<li>SentenceTransformer cosine similarity</li>
+<li>Candidate semantic evaluation with BERTScore or LLM-as-a-Judge</li>
+</ul>
+<p>The next research step is to move from <strong>LLM-as-a-Judge</strong> to <strong>LLM-as-a-Verifier</strong>.</p>
+<h2>Judge vs. Verifier</h2>
+<table><thead><tr><th>Role</th><th>Output</th><th>Main question</th><th>Risk</th></tr></thead><tbody><tr><td>LLM-as-a-Judge</td><td>score, ranking, explanation</td><td>&quot;How good is this output?&quot;</td><td>subjective scoring, prompt sensitivity</td></tr><tr><td>LLM-as-a-Verifier</td><td>pass/fail/uncertain with evidence</td><td>&quot;Is this claim or field supported by the source?&quot;</td><td>evidence dependency, false verification</td></tr></tbody></table>
+<p>For Thai OCR, a verifier is more useful than a generic judge because downstream use often depends on exact preservation of critical facts:</p>
+<ul>
+<li>numeric value</li>
+<li>unit</li>
+<li>product name</li>
+<li>brand</li>
+<li>medicine/test name</li>
+<li>date</li>
+<li>dosage or quantity</li>
+<li>key-value alignment</li>
+</ul>
+<h2>Proposed Research Direction</h2>
+<p><strong>&quot;Evidence-Grounded LLM Verification for Thai OCR Outputs and Product Data Cleaning&quot;</strong></p>
+<p>Core idea:</p>
+<ul>
+<li>Treat OCR output or cleaned product data as a set of claims/fields.</li>
+<li>Verify each field against the original OCR text, image crop, or reference text.</li>
+<li>Return structured verification labels: <code>supported</code>, <code>unsupported</code>, <code>uncertain</code>, plus reason and evidence span.</li>
+</ul>
+<h2>Verification Pipeline</h2>
+<pre><code class="language-text">Image / OCR JSON / Reference Text
+        |
+        v
+Field extraction or cleaned product text
+        |
+        v
+Claim decomposition
+        |
+        v
+Evidence retrieval
+  - OCR line / bbox
+  - image crop
+  - product dictionary
+  - medical lexicon
+        |
+        v
+LLM verifier
+        |
+        v
+Structured result:
+  supported / unsupported / uncertain
+  evidence span
+  failure reason
+  severity</code></pre>
+<h2>Candidate POC</h2>
+<p>Create <code>poc/llm-ocr-verifier/</code>:</p>
+<ul>
+<li>Input:</li>
+<li>OCR output JSON</li>
+<li>extracted fields JSON</li>
+<li>optional reference text</li>
+<li>optional image crop path</li>
+<li>Output:</li>
+<li>verification report JSON</li>
+<li>field-level summary Markdown</li>
+</ul>
+<p>Example output schema:</p>
+<pre><code class="language-json">{
+  &quot;field&quot;: &quot;unit&quot;,
+  &quot;predicted_value&quot;: &quot;mg/dL&quot;,
+  &quot;evidence&quot;: &quot;Glucose 98 mg/dL&quot;,
+  &quot;label&quot;: &quot;supported&quot;,
+  &quot;severity&quot;: &quot;low&quot;,
+  &quot;reason&quot;: &quot;The predicted unit exactly appears next to the glucose value.&quot;
+}</code></pre>
+<h2>Metrics</h2>
+<ul>
+<li>Field verification accuracy against human labels</li>
+<li>Unsupported-field detection F1</li>
+<li>False-pass rate for critical fields</li>
+<li>False-fail rate for correct numeric fields</li>
+<li>Abstention rate (<code>uncertain</code>)</li>
+<li>Cost and latency per document</li>
+</ul>
+<h2>Best Fit With Existing Work</h2>
+<h3>SME Product Cleaning</h3>
+<p>Verifier checks whether an LLM-normalized product name is faithful:</p>
+<ul>
+<li>Did it preserve brand?</li>
+<li>Did it preserve size/quantity/unit?</li>
+<li>Did it remove only promotional/noisy text?</li>
+<li>Did it invent product attributes not visible in the OCR text?</li>
+</ul>
+<h3>OCR Evaluation</h3>
+<p>Verifier checks whether OCR output preserves exact facts:</p>
+<ul>
+<li>Is the numeric value copied correctly?</li>
+<li>Is the unit correct?</li>
+<li>Is the Thai product/medical term preserved?</li>
+<li>Is the semantic meaning preserved without unsafe correction?</li>
+</ul>
+<h3>Thai Medical OCR</h3>
+<p>Verifier acts as a safety layer before downstream structuring:</p>
+<ul>
+<li>Flag unsupported extracted fields.</li>
+<li>Abstain when OCR evidence is too noisy.</li>
+<li>Require human review for high-severity fields such as dosage, lab value, and patient identifiers.</li>
+</ul>
+<h2>Research Hypothesis</h2>
+<p>Hypothesis:</p>
+<ul>
+<li>A verifier that uses explicit evidence spans and an <code>uncertain</code> label will be more reliable than a pure LLM judge score for Thai OCR outputs, especially on numeric fields and unit preservation.</li>
+</ul>
+<p>Open question:</p>
+<ul>
+<li>Can a Thai-capable LLM verify numeric and unit fields robustly, given that prior fact-verification research reports weaker performance on numeral-related claims?</li>
+</ul>
+<h2>Recommended Experiment</h2>
+<ol>
+<li>Build a small verification dataset from existing OCR outputs:</li>
+</ol>
+<ul>
+<li>100 product label fields</li>
+<li>100 text-heavy ad/product classification examples</li>
+<li>100 medical/document fields if safe data is available</li>
+</ul>
+<ol>
+<li>Annotate each predicted field as supported, unsupported, or uncertain.</li>
+<li>Compare:</li>
+</ol>
+<ul>
+<li>deterministic rule verifier</li>
+<li>LLM-as-a-Judge score threshold</li>
+<li>evidence-grounded LLM verifier</li>
+</ul>
+<ol>
+<li>Report:</li>
+</ol>
+<ul>
+<li>field verification F1</li>
+<li>critical false-pass rate</li>
+<li>abstention quality</li>
+<li>cost/latency</li>
+</ul>
+<h2>Practical Priority</h2>
+<p>This should be implemented after the 3-layer evaluation stack:</p>
+<ol>
+<li>CER + ANLS + LLM-judge</li>
+<li>LLM-as-a-Verifier</li>
+<li>VLM fallback for low-confidence or unsupported fields</li>
+</ol>
+      <p class="source-path">Source: <code>research/ideas/ideas-llm-as-verifier-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

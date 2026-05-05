@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference Mining: Thai Medical OCR + Post-correction</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>Reference Mining: Thai Medical OCR + Post-correction</h1>
+<p>Sources queried: arXiv search pages for &quot;thai ocr&quot;, &quot;medical ocr&quot;, &quot;post-ocr correction&quot; (accessed 2026-03-31)</p>
+<hr>
+<h2>Priority References (Top Relevance)</h2>
+<table><thead><tr><th>Paper</th><th>Link</th><th>Why it matters for your work</th></tr></thead><tbody><tr><td>Typhoon OCR: Open Vision-Language Model For Thai Document Extraction (2026)</td><td><a href="https://arxiv.org/abs/2601.14722">https://arxiv.org/abs/2601.14722</a></td><td>Thai-focused OCR/VLM design, layout reconstruction, compact deployment-friendly model.</td></tr><tr><td>MeDocVL: A Visual Language Model for Medical Document Understanding and Parsing (2026)</td><td><a href="https://arxiv.org/abs/2602.06402">https://arxiv.org/abs/2602.06402</a></td><td>Medical document parsing under noisy annotations; query-driven extraction and robust post-training strategy.</td></tr><tr><td>OCR Error Post-Correction with LLMs in Historical Documents: No Free Lunches (2025)</td><td><a href="https://arxiv.org/abs/2502.01205">https://arxiv.org/abs/2502.01205</a></td><td>Practical limits and trade-offs of LLM post-correction; useful for setting realistic baselines and evaluation plans.</td></tr></tbody></table>
+<hr>
+<h2>Secondary References from Same Search Sweep</h2>
+<ul>
+<li>PreP-OCR: A Complete Pipeline for Document Image Restoration and Enhanced OCR Accuracy (ACL 2025): <a href="https://arxiv.org/abs/2505.20429">https://arxiv.org/abs/2505.20429</a></li>
+<li>RoundTripOCR: Data Generation for Post-OCR Correction in Low-Resource Devanagari Languages: <a href="https://arxiv.org/abs/2412.15248">https://arxiv.org/abs/2412.15248</a></li>
+<li>NeKo: Cross-Modality Post-Recognition Error Correction with Tasks-Guided MoE LM (ACL Industry 2025): <a href="https://arxiv.org/abs/2411.05945">https://arxiv.org/abs/2411.05945</a></li>
+<li>Reference-Based Post-OCR Processing with LLM for Diacritic Text: <a href="https://arxiv.org/abs/2410.13305">https://arxiv.org/abs/2410.13305</a></li>
+<li>Efficient Medical VIE via Reinforcement Learning: <a href="https://arxiv.org/abs/2506.13363">https://arxiv.org/abs/2506.13363</a></li>
+</ul>
+<hr>
+<h2>Practical Search Queries for Next Iteration</h2>
+<ul>
+<li>&quot;thai clinical ocr dataset&quot;</li>
+<li>&quot;thai medical report information extraction benchmark&quot;</li>
+<li>&quot;ocr post correction llm low resource language cer wer&quot;</li>
+<li>&quot;dicom burned-in text de-identification ocr&quot;</li>
+<li>&quot;medical document VLM field-level exact match&quot;</li>
+</ul>
+<hr>
+<h2>Suggested Evaluation Axes</h2>
+<ul>
+<li>OCR stage: CER, WER, field-level exact match</li>
+<li>Post-correction stage: CER delta, term-preservation rate for medical entities</li>
+<li>Safety/compliance: PHI leakage rate, de-identification recall on burned-in text</li>
+<li>Efficiency: latency per page/report, GPU/CPU memory footprint</li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-thai-medical-ocr-post-correction.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

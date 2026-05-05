@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>References: LLM as a Verifier (2026-05)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>References: LLM as a Verifier (2026-05)</h1>
+<h2>Core Verification and Factuality Papers</h2>
+<h3>Chain-of-Verification Reduces Hallucination in Large Language Models</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://www.research-collection.ethz.ch/entities/publication/dc36c61e-6ae8-4483-8d69-4f57ee0b2229&gt;">https://www.research-collection.ethz.ch/entities/publication/dc36c61e-6ae8-4483-8d69-4f57ee0b2229&gt;</a></li>
+<li><strong>Venue</strong>: Findings of ACL 2024</li>
+<li><strong>Summary</strong>: Chain-of-Verification drafts an answer, creates verification questions, answers them independently, and then produces a verified final answer. Useful pattern for OCR correction: generate correction first, then verify critical fields independently before accepting it.</li>
+<li><strong>Relevance</strong>: Supports a staged correction-then-verification design for Thai OCR.</li>
+</ul>
+<h3>Long-form factuality in large language models / SAFE</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://papers.nips.cc/paper_files/paper/2024/hash/937ae0e83eb08d2cb8627fe1def8c751-Abstract-Conference.html&gt;">https://papers.nips.cc/paper_files/paper/2024/hash/937ae0e83eb08d2cb8627fe1def8c751-Abstract-Conference.html&gt;</a></li>
+<li><strong>Venue</strong>: NeurIPS 2024</li>
+<li><strong>Summary</strong>: SAFE breaks a long answer into individual facts, searches evidence, and judges whether each fact is supported. This maps directly to OCR field verification: decompose an extraction into fields and check each field against OCR/image evidence.</li>
+<li><strong>Relevance</strong>: Blueprint for evidence-grounded verification rather than generic scoring.</li>
+</ul>
+<h3>FactBench and VERIFY</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://huggingface.co/papers/2410.22257&gt;">https://huggingface.co/papers/2410.22257&gt;</a></li>
+<li><strong>Year</strong>: 2024</li>
+<li><strong>Summary</strong>: VERIFY evaluates factuality by considering verifiability and categorizing content as supported, unsupported, or undecidable based on retrieved evidence. FactBench provides hallucination prompts across many topics.</li>
+<li><strong>Relevance</strong>: The supported/unsupported/undecidable label set is a strong fit for OCR field verification.</li>
+</ul>
+<h3>Language Models Hallucinate, but May Excel at Fact Verification</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://aclanthology.org/2024.naacl-long.62/&gt;">https://aclanthology.org/2024.naacl-long.62/&gt;</a></li>
+<li><strong>Venue</strong>: NAACL 2024</li>
+<li><strong>Summary</strong>: Studies LLMs as fact verifiers and finds that verification quality depends heavily on evidence quality. The paper also reports weaker performance on numeral-related entity types such as cardinal and ordinal values.</li>
+<li><strong>Relevance</strong>: Important warning for OCR because product and medical documents contain many numeric fields and units.</li>
+</ul>
+<h2>Verifier Models and Verifier-as-Reward Direction</h2>
+<h3>CompassVerifier</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://huggingface.co/papers/2508.03686&gt;">https://huggingface.co/papers/2508.03686&gt;</a></li>
+<li><strong>Year</strong>: 2025</li>
+<li><strong>Summary</strong>: Presents answer verification as both an evaluation protocol and a reward signal for model optimization.</li>
+<li><strong>Relevance</strong>: Useful framing if the project later trains a small local verifier for Thai OCR outputs.</li>
+</ul>
+<h3>PAG: Policy as Generative Verifier</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2506.10406&gt;">https://arxiv.org/abs/2506.10406&gt;</a></li>
+<li><strong>Year</strong>: 2025</li>
+<li><strong>Summary</strong>: Alternates between policy and verifier roles, revising only when verification detects an error.</li>
+<li><strong>Relevance</strong>: Useful design pattern for selective OCR post-correction: revise only unsupported fields, not the whole text.</li>
+</ul>
+<h2>Hallucination Detection Tools</h2>
+<h3>HaluCheck</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://colab.ws/articles/10.1016/j.eswa.2025.126712&gt;">https://colab.ws/articles/10.1016/j.eswa.2025.126712&gt;</a></li>
+<li><strong>Year</strong>: 2025</li>
+<li><strong>Summary</strong>: Introduces explainable hallucination detection with evidence-based sentence checking and visual display of hallucination likelihood. Reports that tailored fact-checking can outperform generic LLM-as-a-Judge.</li>
+<li><strong>Relevance</strong>: Supports building explicit OCR verifier prompts and evidence spans instead of relying on generic judge scores.</li>
+</ul>
+<h3>Fact-checking LLM output via token-level uncertainty</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://huggingface.co/papers/2403.04696&gt;">https://huggingface.co/papers/2403.04696&gt;</a></li>
+<li><strong>Year</strong>: 2024</li>
+<li><strong>Summary</strong>: Uses token-level uncertainty for hallucination detection and fact-checking.</li>
+<li><strong>Relevance</strong>: Potential extension: combine OCR confidence scores with LLM verification confidence.</li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-llm-as-verifier-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLM Zero-Shot Image Classifier POC</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <h1>VLM Zero-Shot Image Classifier POC</h1>
+<p>Replaces the hardcoded 700-character text-length OCR threshold (used to label SME product images as &quot;ad/label&quot; vs &quot;product&quot;) with a Vision-Language Model zero-shot classifier.</p>
+<h2>Problem</h2>
+<p>Current system:</p>
+<ul>
+<li>Run OCR on image → count extracted characters</li>
+<li>If chars &gt; 700 → classify as &quot;advertisement/label image&quot;</li>
+<li>Else → classify as &quot;product image&quot;</li>
+</ul>
+<p>Weakness: brittle (depends on OCR quality), language-agnostic, ignores visual layout.</p>
+<h2>Solution</h2>
+<p>Pass the image directly to a VLM with a structured prompt. The model returns:</p>
+<pre><code class="language-json">{
+  &quot;label&quot;: &quot;product&quot;,
+  &quot;confidence&quot;: 0.92,
+  &quot;reasoning&quot;: &quot;The image shows a single product bottle with minimal text on the label.&quot;
+}</code></pre>
+<p>If <code>confidence &lt; 0.7</code> → fall back to the 700-char rule (requires sidecar char count from OCR).</p>
+<h2>Models</h2>
+<table><thead><tr><th>Model</th><th>Notes</th></tr></thead><tbody><tr><td><code>scb10x/typhoon2-qwen2vl-7b-vision-instruct</code></td><td>Primary — Thai-optimised Qwen2-VL-7B fine-tune</td></tr><tr><td><code>Qwen/Qwen2.5-VL-7B-Instruct</code></td><td>Fallback — strong multilingual baseline</td></tr></tbody></table>
+<p>Both use <code>Qwen2VLForConditionalGeneration</code> (Typhoon2) or <code>Qwen2_5_VLForConditionalGeneration</code> (Qwen2.5) — the runner branches automatically on the model ID.</p>
+<h2>Pipeline Stage</h2>
+<pre><code>Stage 2: Layout Detection  ← THIS POC
+         ↓ &quot;product&quot;      → lightweight OCR / metadata only
+         ↓ &quot;advertisement&quot; → full text-extraction pipeline (PaddleOCR, GOT-OCR)</code></pre>
+<h2>Setup</h2>
+<pre><code class="language-bash"># Requires uv — https://docs.astral.sh/uv/
+bash poc/vlm-zero-shot-classifier/run.sh</code></pre>
+<p>Or step by step:</p>
+<pre><code class="language-bash">cd poc/vlm-zero-shot-classifier/
+uv sync
+uv run python generate_sample.py
+uv run python poc_runner.py --image sample_outputs/sample_product.png --save-json
+uv run python poc_runner.py --image sample_outputs/sample_ad_label.png --save-json</code></pre>
+<h2>CLI Options</h2>
+<pre><code>--image                  Path to input image (required)
+--model-id               HuggingFace model ID (default: scb10x/typhoon2-qwen2vl-7b-vision-instruct)
+--device                 &#x27;cuda&#x27; or &#x27;cpu&#x27; (default: auto-detect)
+--load-4bit              Load in 4-bit via bitsandbytes (~8 GB VRAM instead of ~15 GB)
+--confidence-threshold   Float; below this → fallback to 700-char rule (default: 0.7)
+--char-threshold         Integer; OCR char count threshold for legacy rule (default: 700)
+--metadata-json          Path to sidecar JSON with char counts (default: auto-detected)
+--max-new-tokens         Max tokens for VLM generation (default: 256)
+--save-json              Save result to sample_outputs/&lt;stem&gt;_result.json</code></pre>
+<h2>VRAM Requirements</h2>
+<table><thead><tr><th>Mode</th><th>VRAM</th></tr></thead><tbody><tr><td>BF16 (default)</td><td>~14–15 GB</td></tr><tr><td>4-bit (<code>--load-4bit</code>)</td><td>~6–8 GB</td></tr><tr><td>CPU (fallback)</td><td>RAM only; very slow</td></tr></tbody></table>
+<p>If your GPU has &lt; 15 GB VRAM, add <code>--load-4bit</code> to all commands.</p>
+<h2>Output Format</h2>
+<p>The runner prints a comparison table to stdout:</p>
+<pre><code>================================================================
+  VLM Zero-Shot Classifier — Result
+================================================================
+  Image        : sample_ad_label.png
+  Model        : scb10x/typhoon2-qwen2vl-7b-vision-instruct
+----------------------------------------------------------------
+  VLM label    : advertisement    confidence=0.95
+  Parse OK     : yes
+  Reasoning    :
+    The image contains large blocks of Thai promotional text,
+    ingredient lists, and a barcode — consistent with a product
+    label or advertisement flyer.
+----------------------------------------------------------------
+  700-char rule: advertisement    (char_count=843, threshold=700)
+----------------------------------------------------------------
+  Agreement    : AGREE
+----------------------------------------------------------------
+  Final label  : ADVERTISEMENT  (VLM decision, confidence sufficient)
+================================================================</code></pre>
+<p>And optionally a JSON file at <code>sample_outputs/&lt;stem&gt;_result.json</code>.</p>
+<h2>Thai Language Notes</h2>
+<ul>
+<li><strong>Typhoon2-Vision</strong> is explicitly fine-tuned for Thai image understanding — preferred for Thai medical/SME documents.</li>
+<li><strong>Qwen2.5-VL</strong> has broad multilingual coverage but less Thai-specific tuning.</li>
+<li>Both models were NOT trained specifically on Thai medical document formats — monitor accuracy on clinical forms and adjust the confidence threshold as needed.</li>
+<li>For production: consider fine-tuning on a labelled set of Thai SME product images vs. ad flyers.</li>
+</ul>
+<h2>Confidence Note</h2>
+<p>The VLM &quot;confidence&quot; is self-reported (the model is prompted to provide it). It is NOT a calibrated probability. Treat the 0.7 threshold as a tunable heuristic and evaluate it on your labelled dataset before deploying.</p>
+<h2>Model Weight Caching</h2>
+<p>Weights are cached by HuggingFace hub at <code>~/.cache/huggingface/hub/</code> (default). Set <code>HF_HOME</code> to relocate. The runner does NOT re-download on subsequent runs.</p>
+<p>Do NOT commit model weights:</p>
+<ul>
+<li><code><em>.pt</code>, <code></em>.safetensors</code>, <code><em>.bin</code>, <code></em>.onnx</code> are gitignored by convention.</li>
+<li><code>sample_outputs/</code> contents (except <code>.gitkeep</code>) are gitignored.</li>
+</ul>
+      <p class="source-path">Source: <code>poc/vlm-zero-shot-classifier/README.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

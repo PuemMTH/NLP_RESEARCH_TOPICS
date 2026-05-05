@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas from Profile Indexing (March 2026)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>Ideas from Profile Indexing (March 2026)</h1>
+<ul>
+<li>Create a searchable competency matrix with fields: skill, proficiency level, project evidence, recency.</li>
+<li>Build a timeline dataset (CSV/JSON) from the CV to support auto-generated tailored resumes.</li>
+<li>Hypothesis: Positioning around &quot;medical AI deployment engineer&quot; may differentiate better than broad &quot;software engineer&quot; in graduate and job applications.</li>
+<li>Open question: Which 2-3 flagship projects provide the strongest measurable outcomes (latency, accuracy, adoption) for future statements?</li>
+<li>Add a privacy profile layer to split professional vs personal lifestyle fields when exporting summaries.</li>
+</ul>
+<h2>Addendum: Thai Medical OCR + Post-correction</h2>
+<ul>
+<li>Hypothesis: A two-stage pipeline (Thai OCR model + constrained post-correction) will outperform OCR-only on Thai medical reports for entity-critical fields.</li>
+<li>Open question: Should post-correction operate at character level or token level for Thai medical terminology with mixed Thai-English text?</li>
+<li>Research direction: Build a &quot;medical term preservation&quot; metric alongside CER/WER to prevent clinically harmful corrections.</li>
+<li>Research direction: Evaluate compact VLM OCR against classic OCR + language model correction under the same latency and privacy constraints.</li>
+<li>Risk note: General LLM post-correction may improve CER but degrade domain terms; domain lexicon constraints are likely required.</li>
+</ul>
+      <p class="source-path">Source: <code>research/ideas/ideas-2026-03.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

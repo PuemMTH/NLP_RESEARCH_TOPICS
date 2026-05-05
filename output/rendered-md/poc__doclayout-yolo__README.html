@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POC: DocLayout-YOLO — Document Layout Detection</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <h1>POC: DocLayout-YOLO — Document Layout Detection</h1>
+<blockquote>Source: &lt;<a href="https://github.com/opendatalab/DocLayout-YOLO&gt;">https://github.com/opendatalab/DocLayout-YOLO&gt;</a></blockquote>
+<p>DocLayout-YOLO ใช้ YOLOv10 backbone ที่ fine-tune บน DocStructBench เพื่อตรวจจับ layout region ในเอกสาร PDF/รูปภาพ เหมาะมากสำหรับ Stage 2 (Layout Understanding) ของ pipeline OCR ทางการแพทย์ไทย</p>
+<hr>
+<h2>Layout Classes ที่ตรวจจับได้</h2>
+<table><thead><tr><th>ID</th><th>Label</th><th>ใช้กับเอกสารการแพทย์</th></tr></thead><tbody><tr><td>0</td><td>title</td><td>หัวข้อโรค / ชื่อแบบฟอร์ม</td></tr><tr><td>1</td><td>plain_text</td><td>เนื้อหาทั่วไป / บันทึกแพทย์</td></tr><tr><td>2</td><td>abandon</td><td>header / footer / เลขหน้า</td></tr><tr><td>3</td><td>figure</td><td>ภาพ X-ray / กราฟ</td></tr><tr><td>4</td><td>figure_caption</td><td>คำอธิบายภาพ</td></tr><tr><td>5</td><td>table</td><td>ตารางยา / ผลแล็บ</td></tr><tr><td>6</td><td>table_caption</td><td>หัวตาราง</td></tr><tr><td>7</td><td>table_footnote</td><td>หมายเหตุตาราง</td></tr><tr><td>8</td><td>isolate_formula</td><td>สูตรยา / dosage formula</td></tr><tr><td>9</td><td>formula_caption</td><td>คำอธิบายสูตร</td></tr></tbody></table>
+<hr>
+<h2>Setup</h2>
+<pre><code class="language-bash"># สร้าง virtual environment (แนะนำ)
+python -m venv .venv &amp;&amp; source .venv/bin/activate
+
+# ติดตั้ง dependencies
+pip install -r requirements.txt</code></pre>
+<blockquote>Model weights (~120 MB) จะ download อัตโนมัติจาก HuggingFace ครั้งแรกที่รัน</blockquote>
+<blockquote>และ cache ไว้ที่ <code>~/.cache/huggingface/</code></blockquote>
+<hr>
+<h2>Usage</h2>
+<pre><code class="language-bash"># พื้นฐาน
+python poc_runner.py --image path/to/document.png
+
+# ปรับ confidence threshold + บันทึก JSON
+python poc_runner.py --image path/to/document.png --conf 0.3 --save-json
+
+# ใช้ GPU (ถ้ามี)
+python poc_runner.py --image path/to/document.png --device 0
+
+# เปลี่ยน output directory
+python poc_runner.py --image path/to/document.png --output-dir results/</code></pre>
+<h3>Output</h3>
+<ul>
+<li><code>sample_outputs/&lt;name&gt;_annotated.png</code> — รูปที่วาด bounding box + label ครบ</li>
+<li><code>sample_outputs/&lt;name&gt;_detections.json</code> — (ถ้าใส่ <code>--save-json</code>) JSON array ของทุก detection</li>
+</ul>
+<p>ตัวอย่าง JSON ที่ได้:</p>
+<pre><code class="language-json">{
+  &quot;image&quot;: &quot;/path/to/document.png&quot;,
+  &quot;total_detections&quot;: 12,
+  &quot;detections&quot;: [
+    {
+      &quot;label&quot;: &quot;title&quot;,
+      &quot;class_id&quot;: 0,
+      &quot;confidence&quot;: 0.9231,
+      &quot;bbox_xyxy&quot;: [42.0, 58.0, 780.0, 102.0]
+    },
+    {
+      &quot;label&quot;: &quot;table&quot;,
+      &quot;class_id&quot;: 5,
+      &quot;confidence&quot;: 0.8754,
+      &quot;bbox_xyxy&quot;: [38.0, 310.0, 990.0, 620.0]
+    }
+  ]
+}</code></pre>
+<hr>
+<h2>เชื่อมกับ Pipeline OCR ทางการแพทย์ไทย</h2>
+<pre><code>Input image
+     │
+     ▼
+[DocLayout-YOLO]  ◄── Stage 2: Layout Understanding
+     │
+     ├─ title regions ──────► OCR ► post-correction ► structured extraction
+     ├─ table regions ──────► table OCR (PaddleOCR / PP-StructureV3)
+     ├─ figure regions ─────► ข้ามหรือส่งต่อ vision model
+     └─ abandon regions ────► ตัดออกก่อน OCR main content</code></pre>
+<hr>
+<h2>ข้อจำกัด (Thai Medical Context)</h2>
+<ul>
+<li>โมเดลฝึกบนเอกสารภาษาอังกฤษเป็นหลัก — layout ไทยอาจจำแนกผิดบางส่วน</li>
+<li>ฟอร์มใบสั่งยา/ใบรับรองแพทย์ที่สแกนมีคุณภาพต่ำอาจให้ confidence ต่ำ</li>
+<li>แนะนำ <code>--conf 0.15–0.25</code> สำหรับเอกสารสแกน; <code>--conf 0.3+</code> สำหรับ PDF render</li>
+</ul>
+<hr>
+<h2>Next Steps</h2>
+<ul>
+<li>[ ] ทดสอบบนตัวอย่างเอกสารการแพทย์ไทย (ฟอร์ม OPD, lab report, discharge summary)</li>
+<li>[ ] วัด mAP เทียบ baseline บน Thai document dataset</li>
+<li>[ ] Fine-tune ด้วย domain-specific samples ถ้า recall ต่ำ</li>
+<li>[ ] เชื่อม output JSON เข้า Stage 3 (PaddleOCR per region)</li>
+</ul>
+      <p class="source-path">Source: <code>poc/doclayout-yolo/README.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

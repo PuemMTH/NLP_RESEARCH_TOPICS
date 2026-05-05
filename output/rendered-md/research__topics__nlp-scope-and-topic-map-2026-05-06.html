@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NLP Scope and Topic Map</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>NLP Scope and Topic Map</h1>
+<p>This note separates the NLP scope into clear topic groups and marks which directions are most relevant to the NECTEC SME/OCR work.</p>
+<h2>Scope Layers</h2>
+<pre><code class="language-text">NLP
+├── A. Core Text NLP
+├── B. Information Extraction and Structured NLP
+├── C. LLM-era NLP
+├── D. Multimodal and Document AI
+├── E. Thai / Low-Resource NLP
+├── F. Evaluation, Verification, and Safety
+└── G. Deployment and Efficiency</code></pre>
+<h2>A. Core Text NLP</h2>
+<p>Classic text processing tasks where the input is text and the output is a label, cleaned text, tokens, or transformed text.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>Tokenization</td><td>Thai word segmentation with PyThaiNLP <code>newmm</code></td><td>Direct baseline for SME product names and WER</td></tr><tr><td>Text cleaning</td><td>regex filtering, emoji/symbol removal, normalization</td><td>Direct baseline from NECTEC SME product work</td></tr><tr><td>Text classification</td><td>product category, ad vs. product text, spam/noise filtering</td><td>Good near-term extension</td></tr><tr><td>Text similarity</td><td>SentenceTransformer cosine similarity, duplicate detection</td><td>Direct baseline for OCR semantic evaluation</td></tr><tr><td>Summarization</td><td>document/product description summarization</td><td>Lower priority unless needed for reports</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: Thai product-name normalization and noisy text cleaning.</p>
+<h2>B. Information Extraction and Structured NLP</h2>
+<p>Tasks that convert unstructured text into entities, fields, relations, tables, or schema-aligned JSON.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>Named Entity Recognition</td><td>brand, product, ingredient, medicine, lab test</td><td>Strong fit</td></tr><tr><td>Key-value extraction</td><td>test name/value/unit, product size/price/unit</td><td>Strong fit</td></tr><tr><td>Relation extraction</td><td>product-ingredient, test-value-unit relations</td><td>Medium-high fit</td></tr><tr><td>Table extraction</td><td>lab result table, nutrition facts, product specs</td><td>Strong fit with Document AI</td></tr><tr><td>Schema validation</td><td>required fields, unit consistency, range checks</td><td>Strong fit with verifier work</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: Thai OCR field extraction with critical field validation.</p>
+<h2>C. LLM-era NLP</h2>
+<p>Tasks where an LLM performs generation, judgment, correction, planning, or tool use.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>LLM post-correction</td><td>correct OCR text while preserving protected terms</td><td>Strong fit</td></tr><tr><td>LLM-as-a-Judge</td><td>score OCR output quality</td><td>Strong fit, but should not stand alone</td></tr><tr><td>LLM-as-a-Verifier</td><td>supported / unsupported / uncertain with evidence</td><td>Highest fit for reliability</td></tr><tr><td>Agentic workflows</td><td>route OCR, call tools, retry failed fields</td><td>Medium fit after core POC</td></tr><tr><td>Prompt/rubric design</td><td>structured JSON scoring and field checks</td><td>Strong fit</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: evidence-grounded LLM verifier for Thai OCR/product data.</p>
+<h2>D. Multimodal and Document AI</h2>
+<p>NLP tasks where text is tied to images, layout, tables, or visual document structure.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>OCR</td><td>EasyOCR, PaddleOCR, GOT-OCR, Typhoon OCR</td><td>Existing core</td></tr><tr><td>Layout detection</td><td>DocLayout-YOLO, table/region detection</td><td>Existing core</td></tr><tr><td>VLM document parsing</td><td>Typhoon OCR, Qwen2.5-VL, DocOwl</td><td>Strong extension</td></tr><tr><td>OCR-free document understanding</td><td>direct image-to-answer/document JSON</td><td>Medium-high extension</td></tr><tr><td>Image-text alignment</td><td>product image matches OCR/product text</td><td>Strong SME extension</td></tr><tr><td>Visual classification</td><td>product label vs. advertisement image</td><td>Strong SME extension</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: modular OCR as default, VLM fallback for unsupported/uncertain fields.</p>
+<h2>E. Thai / Low-Resource NLP</h2>
+<p>Language-specific work where Thai script, tokenization, mixed Thai-English text, and limited annotated data are central.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>Thai tokenization</td><td>PyThaiNLP <code>newmm</code>, tokenizer comparison</td><td>Direct baseline</td></tr><tr><td>Thai OCR metrics</td><td>WER vs. CER vs. ANLS for Thai</td><td>High-value research gap</td></tr><tr><td>Thai product text</td><td>SME product names, units, promotions</td><td>Direct NECTEC fit</td></tr><tr><td>Thai medical/product lexicons</td><td>protected terms, unit dictionaries</td><td>Strong verifier/correction fit</td></tr><tr><td>Low-resource adaptation</td><td>LoRA/fine-tuning with small data</td><td>Later-stage extension</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: tokenizer-independent Thai OCR evaluation with CER/ANLS/verifier.</p>
+<h2>F. Evaluation, Verification, and Safety</h2>
+<p>This group measures whether outputs are correct, reliable, grounded, and safe enough for downstream use.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>Lexical metrics</td><td>CER, WER</td><td>Existing baseline, improve with CER</td></tr><tr><td>Document metrics</td><td>ANLS, key-value F1, TED for tables</td><td>Strong upgrade</td></tr><tr><td>Semantic metrics</td><td>SentenceTransformer, BERTScore</td><td>Existing and upgrade path</td></tr><tr><td>Verifier metrics</td><td>false-pass rate, unsupported-field F1, abstention quality</td><td>Highest reliability contribution</td></tr><tr><td>Safety validation</td><td>PHI leakage, critical field review, hallucination risk</td><td>Strong medical/product safety angle</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: cost-aware evaluation cascade with verifier for critical fields.</p>
+<h2>G. Deployment and Efficiency</h2>
+<p>System-level NLP work: speed, memory, routing, fallback, cost, and reproducibility.</p>
+<table><thead><tr><th>Subtopic</th><th>Example tasks</th><th>Fit with current work</th></tr></thead><tbody><tr><td>Model routing</td><td>when to call VLM vs. modular OCR</td><td>Strong practical contribution</td></tr><tr><td>Lightweight pipelines</td><td>DocLayout-YOLO + OCR + small LM</td><td>Existing core</td></tr><tr><td>Quantization</td><td>reduce VLM memory</td><td>Later-stage engineering</td></tr><tr><td>Benchmark automation</td><td>repeatable eval report for each model</td><td>Strong near-term POC</td></tr><tr><td>Human-in-the-loop</td><td>review uncertain fields</td><td>Strong verifier deployment story</td></tr></tbody></table>
+<p><strong>Best local angle</strong>: VLM fallback router driven by evaluation/verifier signals.</p>
+<h2>Recommended Topic Separation for This Project</h2>
+<h3>Track 1 — Thai OCR Evaluation and Verification</h3>
+<p><strong>Core question</strong>: How can Thai OCR output be evaluated reliably beyond WER?</p>
+<p>Includes:</p>
+<ul>
+<li>CER / WER comparison for Thai</li>
+<li>ANLS / BERTScore</li>
+<li>LLM-as-a-Judge</li>
+<li>LLM-as-a-Verifier</li>
+<li>critical field false-pass rate</li>
+</ul>
+<p>Best POC:</p>
+<ul>
+<li><code>poc/ocr-evaluation-cascade/</code></li>
+</ul>
+<h3>Track 2 — Thai Product / SME Data Cleaning</h3>
+<p><strong>Core question</strong>: Can NLP+VLM improve noisy SME product data cleaning and image filtering?</p>
+<p>Includes:</p>
+<ul>
+<li>product-name normalization</li>
+<li>brand/unit/quantity preservation</li>
+<li>product label vs. advertisement classification</li>
+<li>image-text alignment</li>
+<li>product deduplication</li>
+</ul>
+<p>Best POC:</p>
+<ul>
+<li><code>poc/vlm-product-image-classifier/</code></li>
+</ul>
+<h3>Track 3 — Document AI / VLM Fallback</h3>
+<p><strong>Core question</strong>: When should the system use a heavy VLM instead of a lightweight OCR pipeline?</p>
+<p>Includes:</p>
+<ul>
+<li>modular OCR pipeline</li>
+<li>Typhoon OCR / Qwen2.5-VL comparison</li>
+<li>VLM fallback router</li>
+<li>evidence-grounded acceptance checks</li>
+</ul>
+<p>Best POC:</p>
+<ul>
+<li><code>poc/vlm-fallback-router/</code></li>
+</ul>
+<h3>Track 4 — Internal Benchmark</h3>
+<p><strong>Core question</strong>: How can NECTEC measure progress across OCR, product, and VLM variants?</p>
+<p>Includes:</p>
+<ul>
+<li>ThaiOCRBench-inspired schema</li>
+<li>product-label benchmark</li>
+<li>ad/package classification benchmark</li>
+<li>key-value extraction benchmark</li>
+<li>medical-like privacy-safe benchmark</li>
+</ul>
+<p>Best POC:</p>
+<ul>
+<li><code>poc/internal-ocrbench-builder/</code></li>
+</ul>
+<h2>Priority Recommendation</h2>
+<table><thead><tr><th>Priority</th><th>Track</th><th>Why</th></tr></thead><tbody><tr><td>1</td><td>Thai OCR Evaluation and Verification</td><td>Directly extends existing WER/cosine work and produces a clear research contribution</td></tr><tr><td>2</td><td>Internal Benchmark</td><td>Makes every later experiment defensible</td></tr><tr><td>3</td><td>Thai Product / SME Data Cleaning</td><td>Directly connects to NECTEC SME module</td></tr><tr><td>4</td><td>Document AI / VLM Fallback</td><td>Practical system contribution once metrics and benchmark exist</td></tr></tbody></table>
+<h2>What Is In Scope vs. Out of Scope</h2>
+<h3>In Scope</h3>
+<ul>
+<li>Thai OCR evaluation</li>
+<li>OCR post-correction</li>
+<li>product-name cleaning</li>
+<li>product/ad image classification</li>
+<li>field extraction and verification</li>
+<li>VLM fallback for document understanding</li>
+<li>benchmark creation</li>
+</ul>
+<h3>Lower Priority / Out of Scope for Now</h3>
+<ul>
+<li>general chatbot building</li>
+<li>generic summarization without OCR/product connection</li>
+<li>broad LLM agent frameworks unless used for OCR routing</li>
+<li>robotics/VLA unless the project intentionally switches away from OCR/SME work</li>
+<li>full medical diagnosis or clinical decision support</li>
+</ul>
+<h2>One-Sentence Scope</h2>
+<p><strong>This project&#x27;s strongest NLP scope is Thai document/product understanding: cleaning noisy Thai text, extracting structured fields from OCR/VLM outputs, and verifying critical facts with tokenizer-aware metrics and evidence-grounded LLM/VLM checks.</strong></p>
+      <p class="source-path">Source: <code>research/topics/nlp-scope-and-topic-map-2026-05-06.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

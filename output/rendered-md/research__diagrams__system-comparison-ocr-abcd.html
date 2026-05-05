@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: Thai Medical OCR — System Comparison (A vs B vs C vs D)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-03-31</p>
+<h1>Diagram: Thai Medical OCR — System Comparison (A vs B vs C vs D)</h1>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph A[&quot;A: OCR-only ⚡ เร็วสุด&quot;]
+        A1[OCR Engine] --&gt; A2[Regex/Rule] --&gt; A3[JSON]
+    end
+
+    subgraph B[&quot;B: OCR + LM ⚠️ เสี่ยง&quot;]
+        B1[OCR Engine] --&gt; B2[Language Model\nUnconstrained] --&gt; B3[JSON]
+    end
+
+    subgraph C[&quot;C: OCR + Constrained ✅ ปลอดภัยขึ้น&quot;]
+        C1[OCR Engine] --&gt; C2[LM + Lexicon Lock\n+ Unit Rules] --&gt; C3[JSON]
+    end
+
+    subgraph D[&quot;D: VLM + Constrained 🎯 เป้าหมาย&quot;]
+        D1[VLM\nภาพ+Layout+ข้อความ] --&gt; D2[Constrained\nPost-correction] --&gt; D3[JSON]
+    end
+
+    IMG([📄 ภาพ]) --&gt; A1 &amp; B1 &amp; C1 &amp; D1</code></pre>
+<h2>Summary Table</h2>
+<table><thead><tr><th>ระบบ</th><th>เข้าใจ Layout</th><th>ทนต่อ Noise</th><th>ปลอดภัย Medical Term</th><th>ความเร็ว</th></tr></thead><tbody><tr><td>A: OCR-only</td><td>❌</td><td>ต่ำ</td><td>✅ (ไม่แตะ)</td><td>เร็วสุด</td></tr><tr><td>B: OCR+LM</td><td>❌</td><td>ปานกลาง</td><td>❌ เสี่ยง</td><td>ปานกลาง</td></tr><tr><td>C: OCR+Constrained</td><td>❌</td><td>ปานกลาง</td><td>✅</td><td>ปานกลาง</td></tr><tr><td>D: VLM+Constrained</td><td>✅</td><td>สูง</td><td>✅</td><td>ช้ากว่า แต่แม่นกว่า</td></tr></tbody></table>
+<h2>Related</h2>
+<ul>
+<li>Topic: <a href="../../research/topics/thai-medical-ocr-post-correction.md">/research/topics/thai-medical-ocr-post-correction.md</a></li>
+<li>Pipeline diagram: <a href="pipeline-thai-medical-ocr-modular.md">pipeline-thai-medical-ocr-modular.md</a></li>
+<li>Experiment Plan: <a href="../../research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md">/research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/diagrams/system-comparison-ocr-abcd.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

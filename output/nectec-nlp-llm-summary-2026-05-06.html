@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NECTEC NLP Work to LLM/VLM Research Summary</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172026;
+      --muted: #5f6b75;
+      --line: #d8dee4;
+      --paper: #ffffff;
+      --soft: #f5f7fa;
+      --accent: #0f766e;
+      --accent-2: #a33a2b;
+      --accent-3: #38598b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--soft);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Thai", "Tahoma", sans-serif;
+      line-height: 1.65;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+
+    header {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    section {
+      margin-top: 24px;
+      padding: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.4rem;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.06rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e7f3f1;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef2f5;
+      color: #29343d;
+      font-weight: 700;
+    }
+
+    .recommendation {
+      border-left: 5px solid var(--accent);
+    }
+
+    .warning {
+      border-left: 5px solid var(--accent-2);
+    }
+
+    .topic-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .topic-item {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .topic-item h3 {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .step {
+      position: relative;
+      padding: 14px 14px 14px 52px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-3);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .arch-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      padding: 16px;
+    }
+
+    .arch-flow {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .arch-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+    }
+
+    .arch-box {
+      min-height: 56px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border: 1px solid #cad3dc;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #24313a;
+      text-align: center;
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .arch-arrow {
+      color: var(--accent);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .arch-stack {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .arch-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    a {
+      color: var(--accent-3);
+      text-decoration-thickness: 1px;
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: #edf1f5;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    footer {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(100% - 20px, 1120px);
+        padding-top: 24px;
+      }
+
+      section {
+        padding: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .arch-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Research Summary · 2026-05-06</p>
+      <h1>ต่อยอดงาน NLP ที่ NECTEC ไปเป็นหัวข้อ LLM/VLM</h1>
+      <p class="lead">
+        สรุปนี้เชื่อมงานเดิมด้านการทำความสะอาดข้อมูลสินค้า SME และการวัดผล OCR
+        เข้ากับแนววิจัย LLM/VLM ที่ทำได้จริง โดยยังคงใช้ PyThaiNLP, WER,
+        SentenceTransformer และ cosine similarity เป็น baseline หลัก
+      </p>
+    </header>
+
+    <section>
+      <h2>ฐานงานเดิม</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">SME Data Cleaning</span>
+          <h3>Product Name Cleaning & Classification</h3>
+          <ul>
+            <li>ตัดคำภาษาไทยด้วย PyThaiNLP <code>word_tokenize</code> engine <code>newmm</code></li>
+            <li>ใช้ regex คัดกรองภาษาไทย อังกฤษ และตัวเลข</li>
+            <li>ตัดสัญลักษณ์พิเศษและ emoji ด้วย dictionary/set</li>
+            <li>นับ word frequency และตัดคำที่พบน้อยกว่า threshold</li>
+            <li>ใช้ text length threshold 700 อักขระเพื่อแยกรูปที่มีข้อความเยอะ</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag">OCR Evaluation</span>
+          <h3>Thai OCR Metrics</h3>
+          <ul>
+            <li>คำนวณ WER หลังตัดคำภาษาไทยด้วย PyThaiNLP</li>
+            <li>ใช้ SentenceTransformer สร้าง text embedding</li>
+            <li>ใช้ cosine similarity วัดความใกล้เคียงเชิงความหมาย</li>
+            <li>เหมาะสำหรับต่อเป็น reliability metric ที่ละเอียดกว่า exact string match</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="recommendation">
+      <h2>หัวข้อที่แนะนำที่สุด</h2>
+      <h3>Reliability-Aware Evaluation and Correction of Thai OCR Outputs using Deterministic Metrics, Sentence Embeddings, and LLM-as-a-Judge</h3>
+      <p>
+        หัวข้อนี้ต่อจากงานเดิมตรงที่สุด เพราะไม่ต้องทิ้ง WER หรือ semantic similarity
+        แต่เพิ่ม LLM เป็น evaluator อีกชั้นหนึ่งเพื่อวัดว่า OCR output ใช้งานจริงได้หรือไม่
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>ส่วนประกอบ</th>
+            <th>บทบาท</th>
+            <th>เหตุผล</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PyThaiNLP + WER/CER</td>
+            <td>Deterministic baseline</td>
+            <td>ทำซ้ำได้ อธิบายง่าย เหมาะกับภาษาไทยที่ต้องตัดคำก่อนวัด WER</td>
+          </tr>
+          <tr>
+            <td>SentenceTransformer</td>
+            <td>Semantic baseline</td>
+            <td>วัดความหมายที่ใกล้กัน แม้ข้อความไม่ตรงตัวอักษรแบบเป๊ะ</td>
+          </tr>
+          <tr>
+            <td>LLM-as-a-Judge</td>
+            <td>Reliability layer</td>
+            <td>ให้คะแนน readability, meaning preservation, numeric/unit preservation และ hallucination risk</td>
+          </tr>
+          <tr>
+            <td>Constrained correction</td>
+            <td>Post-OCR improvement</td>
+            <td>ให้ LLM แก้ข้อความโดยล็อก entity สำคัญ เช่น brand, number, unit, medical/product term</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>ทางเลือกวิจัยที่ต่อยอดได้</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Direction 1</span>
+          <h3>LLM-Assisted Thai Product Name Normalization</h3>
+          <p>เทียบ regex/PyThaiNLP cleaning กับ LLM ที่ normalize ชื่อสินค้าโดยต้องรักษา brand, quantity, unit และชื่อเฉพาะ</p>
+        </div>
+        <div class="card">
+          <span class="tag">Direction 2</span>
+          <h3>LLM-as-a-Judge for Thai OCR Evaluation</h3>
+          <p>เพิ่ม judge score ข้าง WER และ cosine similarity เพื่อประเมินว่า OCR output ยังสื่อความหมายถูกและใช้ได้จริงไหม</p>
+        </div>
+        <div class="card">
+          <span class="tag">Direction 3</span>
+          <h3>VLM-Based Text-Heavy Image Classification</h3>
+          <p>แทน threshold 700 อักขระด้วย VLM หรือ OCR+classifier เพื่อแยกรูปสินค้าออกจากภาพโฆษณา/ป้ายข้อความ</p>
+        </div>
+        <div class="card">
+          <span class="tag">Direction 4</span>
+          <h3>Thai OCR Post-Correction With Constrained LLMs</h3>
+          <p>ใช้ LLM แก้ OCR แต่ป้องกัน over-correction ด้วย protected spans สำหรับตัวเลข หน่วย brand และคำเฉพาะทาง</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>สรุปหัวข้อ Research ที่เพิ่มมา</h2>
+      <p>
+        ส่วนนี้สรุปจากไฟล์ <code>research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md</code>
+        โดยเน้นว่าแต่ละหัวข้อช่วยต่อยอด module เดิมตรงไหน และควรใช้เป็น POC หรือ thesis direction แบบใด
+      </p>
+      <div class="topic-list">
+        <div class="topic-item">
+          <h3>1. Replace 700-Char Heuristic with VLM Zero-Shot Classifier <span class="meta">Effort: 1-2 days</span></h3>
+          <p>
+            ใช้ VLM เช่น Typhoon2-Vision หรือ Qwen2.5-VL แทน threshold 700 อักขระ
+            เพื่อแยกภาพ product label/packaging ออกจากภาพโฆษณา วิธีนี้ลดความเปราะของ rule เดิม
+            และเริ่มได้แบบ zero-shot โดยยังใช้ threshold เดิมเป็น fallback เมื่อ confidence ต่ำ
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>2. Upgrade OCR Evaluation to CER + ANLS + LLM-Judge <span class="meta">Effort: 2-3 days</span></h3>
+          <p>
+            ปรับ Module 2 จาก WER + cosine similarity เป็น 3-layer evaluation stack:
+            CER สำหรับลดปัญหา tokenizer bias ในภาษาไทย, ANLS สำหรับ tolerance ต่อ OCR typo,
+            และ LLM-as-a-Judge สำหรับตรวจ semantic correctness เช่น medical term, number และ unit
+            หัวข้อนี้ควรทำก่อนสุดเพราะ effort ต่ำแต่ impact สูง
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>3. VLM as Unified Stage 3+4+5 <span class="meta">Effort: 3-5 days</span></h3>
+          <p>
+            ใช้ Typhoon OCR หรือ Qwen2.5-VL ทำ OCR, correction และ structured extraction ใน pass เดียว
+            แทน pipeline แยก Stage 3 → Stage 4 → Stage 5 ข้อดีคือเข้าใจ layout ได้ดีกว่าและลด error accumulation
+            แต่กิน memory/latency มากกว่า modular pipeline จึงเหมาะเป็น fallback เมื่อ confidence ต่ำ
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>4. VLM/LLM for Semantic OCR Evaluation <span class="meta">Effort: 1-2 days</span></h3>
+          <p>
+            อัปเกรด semantic similarity จาก SentenceTransformer cosine similarity ไปเป็น BERTScore ด้วย WangchanBERTa
+            หรือใช้ Typhoon2-Text เป็น LLM judge สำหรับ domain-specific correctness
+            อีกทางคือใช้ CLIP/SigLIP วัด image-text alignment ในงานสินค้า SME
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>5. ThaiOCRBench as Internal Evaluation Framework <span class="meta">Effort: 2-3 weeks</span></h3>
+          <p>
+            สร้าง benchmark ภายในสำหรับ product labels, prescription forms, lab results และเอกสารไทยอื่น ๆ
+            โดย annotate ground truth text และ key-value fields แล้วรันเทียบ OCR-only, OCR+correction,
+            WangchanBERTa/ByT5 และ VLM-unified หัวข้อนี้ดีมากสำหรับงานระยะกลางเพราะใช้วัด regression ได้
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>6. Low-Resource Fine-Tuning of Typhoon OCR for Medical Domain <span class="meta">Effort: 4-6 weeks</span></h3>
+          <p>
+            Fine-tune Typhoon OCR ด้วย LoRA บนเอกสารการแพทย์ไทย 100-300 หน้า
+            เพื่อให้จับ medical layout และ vocabulary ได้ดีขึ้น เหมาะเป็นหัวข้อ publishable
+            แต่มีความเสี่ยงเรื่อง annotation และ clinical review จึงควรเริ่มจาก product/pharmacy label ก่อน
+          </p>
+        </div>
+
+        <div class="topic-item">
+          <h3>7. Multimodal Product Data Cleaning <span class="meta">Effort: 3 days-3 weeks</span></h3>
+          <p>
+            ยกเครื่อง Module 1 จาก text-only pipeline เป็น image+text representation
+            โดยใช้ CLIP, BLIP-2 หรือ VLM ไทยเพื่อวัดว่า OCR text สอดคล้องกับภาพสินค้าจริงไหม
+            ใช้ได้ทั้ง data quality checking, product classification และ product deduplication
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Priority Ranking</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>อันดับ</th>
+            <th>หัวข้อ</th>
+            <th>เหตุผลที่ควรทำ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>3-layer OCR evaluation stack</td>
+            <td>แก้จุดอ่อนของ WER ภาษาไทยทันที และต่อยอดจากงานเดิมตรงที่สุด</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>VLM zero-shot ad/label classifier</td>
+            <td>แทน heuristic 700 อักขระด้วย model-based classifier ที่ test ได้เร็ว</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>BERTScore with WangchanBERTa</td>
+            <td>อัปเกรด semantic metric โดยยังใช้โมเดลไทยที่เข้ากับ pipeline เดิม</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>VLM unified OCR → correction → extraction</td>
+            <td>เหมาะสำหรับเอกสาร layout ซับซ้อน และใช้เป็น fallback ของ modular pipeline ได้</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Internal ThaiOCRBench adaptation</td>
+            <td>สร้าง benchmark กลางเพื่อวัด OCR pipeline variants ระยะยาว</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Multimodal Module 1 overhaul</td>
+            <td>เพิ่ม image-text alignment ให้ SME data cleaning แต่ต้องระวัง Thai CLIP gap</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>LoRA fine-tune Typhoon OCR</td>
+            <td>impact สูงสุดแต่ต้องใช้ข้อมูล annotate และเวลามากที่สุด</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Reference Groups จาก Research ล่าสุด</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">Thai VLM/OCR</span>
+          <h3>Typhoon OCR, ThaiOCRBench, Typhoon2</h3>
+          <p>ใช้เป็นแกน Thai-specific document understanding, benchmark design และ candidate model สำหรับ VLM classifier หรือ unified OCR pipeline</p>
+        </div>
+        <div class="card">
+          <span class="tag">General VLM</span>
+          <h3>Qwen2.5-VL, DocOwl, InternVL</h3>
+          <p>ใช้เป็น open VLM baseline สำหรับ layout understanding, key-value extraction และ document VQA</p>
+        </div>
+        <div class="card">
+          <span class="tag">Evaluation</span>
+          <h3>ANLS, BERTScore, LLM-as-a-Judge</h3>
+          <p>ใช้ยกระดับ Module 2 จาก WER/cosine similarity ไปเป็น reliability-aware evaluation ที่เหมาะกับ OCR และ document tasks</p>
+        </div>
+        <div class="card">
+          <span class="tag">Product Understanding</span>
+          <h3>VLM classification, product deduplication, CLIP alignment</h3>
+          <p>ใช้ต่อยอด Module 1 จาก text cleaning เป็น multimodal product data cleaning และ quality control</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="recommendation">
+      <h2>เพิ่มใหม่: LLM as a Verifier</h2>
+      <p>
+        งาน verifier ต่อจาก LLM-as-a-Judge โดยตรง แต่เปลี่ยนคำถามจาก
+        “output นี้ดีแค่ไหน” เป็น “field หรือ claim นี้มีหลักฐานรองรับจริงไหม”
+        จึงเหมาะกับ OCR มากกว่า generic judge score โดยเฉพาะเอกสารที่มีตัวเลข หน่วย วันที่ ชื่อยา ชื่อสินค้า และ key-value fields
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>แนวทาง</th>
+            <th>Output</th>
+            <th>ใช้กับงานเดิมยังไง</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LLM-as-a-Judge</td>
+            <td>score, ranking, explanation</td>
+            <td>ใช้เสริม WER/CER/cosine similarity เพื่อประเมินคุณภาพ OCR โดยรวม</td>
+          </tr>
+          <tr>
+            <td>LLM-as-a-Verifier</td>
+            <td><code>supported</code>, <code>unsupported</code>, <code>uncertain</code> + evidence span</td>
+            <td>ตรวจว่า field ที่ OCR/extractor สร้างขึ้นมีหลักฐานจาก OCR line, bbox, image crop หรือ reference text จริงไหม</td>
+          </tr>
+          <tr>
+            <td>Evidence-grounded verifier</td>
+            <td>label + reason + severity</td>
+            <td>เหมาะกับ critical fields เช่น dosage, lab value, unit, brand, quantity และ product name</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Verifier Pipeline ที่ควรเพิ่ม</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Claim / Field Decomposition</h3>
+          <p>แยก OCR output หรือ extracted JSON เป็น field ย่อย เช่น product name, brand, quantity, unit, test name, value, date</p>
+        </div>
+        <div class="step">
+          <h3>Evidence Retrieval</h3>
+          <p>ดึงหลักฐานจาก OCR line, bbox, image crop, product dictionary, medical lexicon หรือ reference text</p>
+        </div>
+        <div class="step">
+          <h3>LLM Verification</h3>
+          <p>ให้ verifier ตรวจทีละ field และคืน <code>supported</code>, <code>unsupported</code> หรือ <code>uncertain</code> พร้อมเหตุผลสั้น ๆ</p>
+        </div>
+        <div class="step">
+          <h3>Safety Action</h3>
+          <p>field ที่ unsupported หรือ uncertain ต้อง fallback ไป rule check, VLM re-read, หรือ human review โดยเฉพาะ field ความเสี่ยงสูง</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Research Value ของ Verifier</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="tag">SME Product</span>
+          <h3>Faithful Product Normalization</h3>
+          <p>ตรวจว่า LLM-normalized product name ไม่ลบ brand/quantity/unit และไม่เพิ่ม attribute ที่ไม่มีใน OCR evidence</p>
+        </div>
+        <div class="card">
+          <span class="tag">OCR Evaluation</span>
+          <h3>Field-Level Verification</h3>
+          <p>เพิ่ม metric จากระดับข้อความเป็นระดับ field โดยวัด unsupported-field detection F1 และ critical false-pass rate</p>
+        </div>
+        <div class="card">
+          <span class="tag">Medical OCR</span>
+          <h3>Safety Gate</h3>
+          <p>ใช้ verifier เป็นด่านก่อนส่ง downstream JSON เพื่อกัน lab value, unit, dosage หรือ patient field ที่ไม่มีหลักฐานชัดเจน</p>
+        </div>
+        <div class="card">
+          <span class="tag">POC</span>
+          <h3><code>poc/llm-ocr-verifier/</code></h3>
+          <p>รับ OCR JSON + extracted fields แล้วสร้าง verification report JSON พร้อม field-level Markdown summary</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Deep Research เพิ่มจาก VLM Thai OCR References</h2>
+      <p>
+        ส่วนนี้สรุป research เพิ่มจากไฟล์ <code>vlm-thai-ocr-research-summary-2026-05-06.html</code>
+        และ reference set ที่เกี่ยวข้อง โดยแปลงเป็น action ที่ทำต่อได้ในงาน NECTEC
+      </p>
+      <div class="topic-list">
+        <div class="topic-item">
+          <h3>Internal Thai Product/Medical OCRBench <span class="meta">Priority 1</span></h3>
+          <p>
+            ใช้ ThaiOCRBench เป็น template แต่สร้าง benchmark เฉพาะ domain:
+            product label OCR, ad vs. package classification, product key-value extraction,
+            และ medical-like fields ที่ปลอดภัยด้าน privacy
+          </p>
+        </div>
+        <div class="topic-item">
+          <h3>Cost-Aware OCR Evaluation Cascade <span class="meta">Priority 2</span></h3>
+          <p>
+            วาง evaluation เป็นชั้น: exact/rule/CER → ANLS/BERTScore → LLM judge/verifier
+            โดยเรียก LLM เฉพาะกรณี metric ขัดแย้ง, confidence ต่ำ หรือ field มี criticality สูง
+          </p>
+        </div>
+        <div class="topic-item">
+          <h3>Typhoon OCR vs Qwen2.5-VL vs Modular Pipeline <span class="meta">Baseline Study</span></h3>
+          <p>
+            เปรียบเทียบ modular pipeline เดิมกับ Thai-specific VLM และ general VLM
+            ด้วย metric เดียวกัน: CER, key-value F1, ANLS, verifier false-pass rate, latency และ VRAM
+          </p>
+        </div>
+        <div class="topic-item">
+          <h3>Thai Product Image-Text Alignment <span class="meta">Gap Updated</span></h3>
+          <p>
+            gap ที่ถูกต้องไม่ใช่ “ไม่มี Thai CLIP” แต่คือ public Thai/multilingual image-text models
+            ยังไม่ถูก validate กับ noisy SME product-label OCR โดยตรง ควรทดสอบ Thai-light multimodal,
+            Jina CLIP v2 และ Typhoon2-Vision
+          </p>
+        </div>
+        <div class="topic-item">
+          <h3>Evidence-Grounded VLM Fallback <span class="meta">Deployment Design</span></h3>
+          <p>
+            ไม่ควรใช้ VLM-only ตั้งแต่ต้น ให้ modular OCR เป็น default แล้วใช้ verifier/router
+            เรียก VLM เฉพาะ field หรือ region ที่ unsupported, uncertain, low-confidence หรือ layout ซับซ้อน
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Architecture ภาพรวมที่เพิ่มมา</h2>
+      <p>
+        ภาพด้านล่างวาดใหม่จาก paper/model architecture notes เพื่อใช้ใน proposal และ POC planning
+        โดยไม่คัดลอกรูปจาก paper ตรง ๆ
+      </p>
+      <div class="arch-grid">
+        <div class="arch-card">
+          <span class="tag">Recommended System</span>
+          <h3>Modular OCR + Verifier + VLM Fallback</h3>
+          <div class="arch-flow">
+            <div class="arch-row">
+              <div class="arch-box">Input Thai document image</div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-box">Preprocess + layout detection</div>
+            </div>
+            <div class="arch-row">
+              <div class="arch-box">OCR per region + correction</div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-box">Field extraction + schema</div>
+            </div>
+            <div class="arch-row">
+              <div class="arch-box">CER / ANLS / BERTScore</div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-box">LLM verifier</div>
+            </div>
+            <div class="arch-row">
+              <div class="arch-box">Supported fields accepted</div>
+              <div class="arch-arrow">↘</div>
+              <div class="arch-box">Unsupported fields route to VLM fallback</div>
+            </div>
+          </div>
+          <p class="arch-note">ใช้เป็น architecture หลักของงาน NECTEC เพราะคุม cost ได้และยังมี safety gate</p>
+        </div>
+
+        <div class="arch-card">
+          <span class="tag">Thai-Specific VLM</span>
+          <h3>Typhoon OCR-Style Pipeline</h3>
+          <div class="arch-stack">
+            <div class="arch-box">Raw Thai/English documents</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Traditional OCR output</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">VLM restructuring + curated synthetic data</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Fine-tuned OCR VLM</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Markdown / structured extraction + verifier</div>
+          </div>
+          <p class="arch-note">เหมาะเป็น baseline Stage 3+4+5 แต่ควรมี verifier เพราะ model card เตือนเรื่อง hallucination</p>
+        </div>
+
+        <div class="arch-card">
+          <span class="tag">General VLM Baseline</span>
+          <h3>Qwen2.5-VL Concept</h3>
+          <div class="arch-stack">
+            <div class="arch-box">Image / document / video</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Dynamic resolution processor</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Native ViT vision encoder + window attention</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Multimodal fusion with text prompt</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Qwen LLM output: text / bbox / structured answer</div>
+          </div>
+          <p class="arch-note">ใช้เทียบกับ Typhoon OCR เพื่อดูว่า Thai-specific fine-tuning จำเป็นแค่ไหน</p>
+        </div>
+
+        <div class="arch-card">
+          <span class="tag">OCR-Free Document Model</span>
+          <h3>mPLUG-DocOwl Family</h3>
+          <div class="arch-stack">
+            <div class="arch-box">High-resolution document image</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Vision tower / patch features</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Vision-to-text projection</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">Multimodal fusion + LLM decoder</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-box">OCR-free answer for tables / charts / layout</div>
+          </div>
+          <p class="arch-note">ใช้เป็น conceptual reference สำหรับ layout-heavy หรือ multi-page document understanding</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>POC แรกที่ควรทำ</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Create <code>poc/llm-ocr-evaluator/</code></h3>
+          <p>รับ input เป็น <code>reference.txt</code>, <code>hypothesis.txt</code> และ optional OCR detection JSON</p>
+        </div>
+        <div class="step">
+          <h3>Compute baseline metrics</h3>
+          <p>คำนวณ Thai-tokenized WER, CER และ SentenceTransformer cosine similarity</p>
+        </div>
+        <div class="step">
+          <h3>Add LLM judge</h3>
+          <p>ให้ LLM คืน JSON score เช่น readability, semantic preservation, numeric preservation, unit preservation และ hallucination risk</p>
+        </div>
+        <div class="step">
+          <h3>Compare with human labels</h3>
+          <p>ใช้ human annotation ชุดเล็กเพื่อดูว่า LLM judge สัมพันธ์กับการตัดสินของคนแค่ไหน</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="recommendation">
+      <h2>POC Results Update</h2>
+      <p>
+        อัปเดตจากผล run จริงของ 3 งาน: VLM zero-shot classifier, 3-layer OCR evaluation,
+        และ research plan สำหรับ LoRA fine-tune Typhoon OCR V1.5
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Idea</th>
+            <th>Result</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Idea 1 — VLM Zero-Shot Classifier</td>
+            <td>2/2 samples classified correctly; confidence 0.95 both; no fallback used</td>
+            <td>Ready for labelled 100-200 image evaluation before replacing 700-char rule</td>
+          </tr>
+          <tr>
+            <td>Idea 2 — 3-Layer Eval Stack</td>
+            <td>WER tokenizer drift reached 360pp; CER stayed stable; ANLS* and WangchanBERTa scoring worked</td>
+            <td>CER should be primary lexical metric; WER only as tokenizer-fixed legacy metric</td>
+          </tr>
+          <tr>
+            <td>Idea 6 — LoRA Typhoon OCR</td>
+            <td>Correct slug is <code>scb10x/typhoon-ocr1.5-2b</code>; bf16 LoRA preferred on RTX 50xx</td>
+            <td>Do after benchmark schema and annotation format are fixed</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Detailed diagram report:
+        <a href="diagrams/poc-results-vlm-eval-lora-2026-05-06.html">output/diagrams/poc-results-vlm-eval-lora-2026-05-06.html</a>
+      </p>
+    </section>
+
+    <section class="warning">
+      <h2>ข้อควรระวัง</h2>
+      <p>
+        LLM-as-a-Judge ไม่ควรแทน deterministic metrics ทั้งหมด เพราะผลอาจไวต่อ prompt,
+        model version และรูปแบบการ aggregate score งานวิจัยควรวาง LLM judge เป็น metric เสริม
+        แล้วเทียบกับ WER, CER, cosine similarity และ human judgment
+      </p>
+    </section>
+
+    <section>
+      <h2>References</h2>
+      <ul>
+        <li><a href="https://pythainlp.org/docs/2.0/api/tokenize.html">PyThaiNLP word_tokenize / newmm</a></li>
+        <li><a href="https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html">SentenceTransformers semantic textual similarity</a></li>
+        <li><a href="https://huggingface.co/papers/2411.05945">NeKo: Post-recognition generative correction</a></li>
+        <li><a href="https://huggingface.co/papers/2403.12895">mPLUG-DocOwl 1.5: OCR-free document understanding</a></li>
+        <li><a href="https://docs.opentyphoon.ai/en/ocr/">Typhoon OCR documentation</a></li>
+        <li><a href="https://huggingface.co/typhoon-ai/typhoon-ocr-7b">Typhoon OCR 7B model</a></li>
+        <li><a href="https://arxiv.org/abs/2511.04479">ThaiOCRBench: task-diverse Thai VLM benchmark</a></li>
+        <li><a href="https://arxiv.org/abs/2502.13923">Qwen2.5-VL technical report</a></li>
+        <li><a href="https://deepwiki.com/QwenLM/Qwen2.5-VL/2-model-architecture">Qwen2.5-VL model architecture notes</a></li>
+        <li><a href="https://arxiv.org/abs/2402.03848">ANLS*: document processing metric for generative LLMs</a></li>
+        <li><a href="https://deepwiki.com/X-PLUG/mPLUG-DocOwl/1.2-system-architecture">mPLUG-DocOwl system architecture notes</a></li>
+        <li><a href="https://www.research-collection.ethz.ch/entities/publication/dc36c61e-6ae8-4483-8d69-4f57ee0b2229">Chain-of-Verification, Findings of ACL 2024</a></li>
+        <li><a href="https://papers.nips.cc/paper_files/paper/2024/hash/937ae0e83eb08d2cb8627fe1def8c751-Abstract-Conference.html">SAFE / Long-form factuality, NeurIPS 2024</a></li>
+        <li><a href="https://huggingface.co/papers/2410.22257">FactBench / VERIFY factuality pipeline</a></li>
+        <li><a href="https://aclanthology.org/2024.naacl-long.62/">Language Models Hallucinate, but May Excel at Fact Verification</a></li>
+        <li><a href="https://huggingface.co/papers/2406.12624">Judging the Judges: LLM-as-a-Judge evaluation risks</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      Source notes:
+      <code>research/ideas/ideas-2026-05.md</code>,
+      <code>research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md</code>,
+      <code>research/ideas/ideas-vlm-thai-ocr-deep-research-2026-05-06.md</code>,
+      <code>research/ideas/ideas-llm-as-verifier-2026-05.md</code>,
+      <code>research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md</code>,
+      <code>research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md</code>,
+      <code>research/references/refs-nectec-nlp-llm-extension-2026-05.md</code>,
+      <code>research/references/refs-vlm-thai-ocr-extension-2026-05.md</code>,
+      and <code>research/references/refs-llm-as-verifier-2026-05.md</code>
+    </footer>
+  </main>
+</body>
+</html>

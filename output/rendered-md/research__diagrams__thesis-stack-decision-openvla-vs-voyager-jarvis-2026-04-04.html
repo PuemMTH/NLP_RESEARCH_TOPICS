@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram: Thesis Stack Decision OpenVLA vs Voyager/JARVIS</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-04-04</p>
+<h1>Diagram: Thesis Stack Decision OpenVLA vs Voyager/JARVIS</h1>
+<pre><code class="language-mermaid">flowchart TD
+    G[Goal Thesis on NLP plus Robotics in Minecraft context] --&gt; C1[Criterion Domain Fit]
+    G --&gt; C2[Criterion Reproducibility]
+    G --&gt; C3[Criterion Compute and Data Cost]
+    G --&gt; C4[Criterion Publication Novelty]
+
+    C1 --&gt; O1[OpenVLA style strong for real robot manipulation]
+    C1 --&gt; V1[Voyager JARVIS style native fit for Minecraft tasks]
+
+    C2 --&gt; O2[OpenVLA needs robotics setup and control stack]
+    C2 --&gt; V2[Voyager JARVIS uses established Minecraft environments]
+
+    C3 --&gt; O3[Higher infra complexity for embodied robot control]
+    C3 --&gt; V3[Lower barrier with MineDojo and game APIs]
+
+    C4 --&gt; O4[Strong novelty in robot safety and action constraints]
+    C4 --&gt; V4[Strong novelty in long horizon planning and tool use]
+
+    V1 --&gt; R[Recommended Primary Stack Voyager JARVIS style]
+    V2 --&gt; R
+    V3 --&gt; R
+    O4 --&gt; H[Hybrid Option add OpenVLA style safety decoding ideas later]
+    R --&gt; H</code></pre>
+      <p class="source-path">Source: <code>research/diagrams/thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

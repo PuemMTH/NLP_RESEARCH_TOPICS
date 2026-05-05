@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>References: NECTEC NLP Work → LLM/VLM Extension</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-05</p>
+<h1>References: NECTEC NLP Work → LLM/VLM Extension</h1>
+<h2>Thai NLP Foundations</h2>
+<ul>
+<li>PyThaiNLP <code>word_tokenize</code> supports Thai word tokenization with the <code>newmm</code> engine. Useful as the deterministic baseline for Thai WER and product-name token analysis. Source: &lt;<a href="https://pythainlp.org/docs/2.0/api/tokenize.html&gt;">https://pythainlp.org/docs/2.0/api/tokenize.html&gt;</a></li>
+<li>KhanomTanLLM is a bilingual Thai-English language model from PyThaiNLP. Useful as a local/open Thai LLM candidate for product-name normalization experiments. Source: &lt;<a href="https://github.com/PyThaiNLP/KhanomTanLLM&gt;">https://github.com/PyThaiNLP/KhanomTanLLM&gt;</a></li>
+<li>WangChanGLM is a multilingual instruction-following model from PyThaiNLP. Useful background for Thai instruction-following LLM work. Source: &lt;<a href="https://github.com/PyThaiNLP/WangChanGLM&gt;">https://github.com/PyThaiNLP/WangChanGLM&gt;</a></li>
+</ul>
+<h2>Semantic Similarity / Embedding Metrics</h2>
+<ul>
+<li>SentenceTransformers documentation describes semantic textual similarity by embedding texts and comparing vectors, commonly with cosine similarity. This supports the existing OCR semantic-similarity metric. Source: &lt;<a href="https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html&gt;">https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html&gt;</a></li>
+<li>Sentence-BERT introduced sentence embeddings that can be compared using cosine similarity for semantic textual similarity tasks. Source: &lt;<a href="https://arxiv.org/abs/1908.10084&gt;">https://arxiv.org/abs/1908.10084&gt;</a></li>
+</ul>
+<h2>OCR / Document Understanding With LLMs and VLMs</h2>
+<ul>
+<li>NeKo studies post-recognition generative correction with task-oriented experts, including post-OCR correction. Source: &lt;<a href="https://huggingface.co/papers/2411.05945&gt;">https://huggingface.co/papers/2411.05945&gt;</a></li>
+<li>mPLUG-DocOwl 1.5 focuses on OCR-free document understanding and structure learning for text-rich document images. Source: &lt;<a href="https://huggingface.co/papers/2403.12895&gt;">https://huggingface.co/papers/2403.12895&gt;</a></li>
+<li>Ocean-OCR presents a multimodal LLM for general OCR applications across document understanding, scene text recognition, and handwritten text recognition. Source: &lt;<a href="https://huggingface.co/papers/2501.15558&gt;">https://huggingface.co/papers/2501.15558&gt;</a></li>
+<li>Typhoon OCR is a Thai-English document parsing VLM designed for real-world Thai and English documents. Source: &lt;<a href="https://docs.opentyphoon.ai/en/ocr/&gt;">https://docs.opentyphoon.ai/en/ocr/&gt;</a> and &lt;<a href="https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;">https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;</a></li>
+<li>Typhoon OCR paper presents an open VLM for Thai and English document extraction. Source: &lt;<a href="https://arxiv.org/abs/2601.14722&gt;">https://arxiv.org/abs/2601.14722&gt;</a></li>
+</ul>
+<h2>LLM-as-a-Judge / Evaluation</h2>
+<ul>
+<li>Judging the Judges studies alignment and vulnerabilities in LLM-as-a-Judge evaluation, useful as a caution that LLM judging must be validated and not treated as ground truth. Source: &lt;<a href="https://huggingface.co/papers/2406.12624&gt;">https://huggingface.co/papers/2406.12624&gt;</a></li>
+<li>MLLM-as-a-Judge evaluates multimodal LLMs as judges for vision-language tasks. Relevant if OCR evaluation includes the image crop, not only reference/hypothesis text. Source: &lt;<a href="https://www.sciencestack.ai/paper/2402.04788&gt;">https://www.sciencestack.ai/paper/2402.04788&gt;</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-nectec-nlp-llm-extension-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

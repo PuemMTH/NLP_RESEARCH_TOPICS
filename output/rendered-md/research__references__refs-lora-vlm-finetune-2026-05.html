@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>References: LoRA/QLoRA Fine-Tuning for VLMs — May 2026</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>References: LoRA/QLoRA Fine-Tuning for VLMs — May 2026</h1>
+<p>Topic: Fine-tuning vision-language models with LoRA/QLoRA, specifically for Qwen3-VL-based models and document OCR tasks.</p>
+<hr>
+<h2>Primary Sources (Fetched and Verified)</h2>
+<h3>1. Typhoon OCR Paper (arXiv 2601.14722)</h3>
+<p><strong>URL</strong>: <a href="https://arxiv.org/html/2601.14722">https://arxiv.org/html/2601.14722</a> <strong>Authors</strong>: SCB10X <strong>Key data</strong>:</p>
+<ul>
+<li>V1.5 trained on 155,403 samples (doubled from 77,029 in V1)</li>
+<li>Base model for V1.5: Qwen3-VL 2B</li>
+<li>Training: full-parameter SFT on 4×H100, 2 epochs</li>
+<li>Data mix: synthetic structured docs (37.6%), general infographics (45.6%), Thai financial reports (7.2%), Thai books (5.6%), handwritten (5.5%), scanned (6.2%)</li>
+<li>No medical documents in training set — confirms domain gap</li>
+</ul>
+<h3>2. HuggingFace Model Card: scb10x/typhoon-ocr1.5-2b</h3>
+<p><strong>URL</strong>: <a href="https://huggingface.co/scb10x/typhoon-ocr1.5-2b">https://huggingface.co/scb10x/typhoon-ocr1.5-2b</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Confirmed slug: <code>scb10x/typhoon-ocr1.5-2b</code></li>
+<li>Base: <code>Qwen/Qwen3-VL-2B-Instruct</code></li>
+<li>Tensor type: BF16, Apache 2.0 license</li>
+<li>CRITICAL: Model only works with the canonical prompt provided in the model card. Non-standard prompts break performance.</li>
+<li>Output format: Markdown with <code>&lt;table&gt;</code> HTML, LaTeX <code>$...$</code>/<code>$$...$$</code>, <code>&lt;figure&gt;</code>, <code>&lt;page_number&gt;</code>, ☐/☑ checkboxes</li>
+</ul>
+<h3>3. Phil Schmid — Fine-Tune Multimodal LLMs with TRL</h3>
+<p><strong>URL</strong>: <a href="https://www.philschmid.de/fine-tune-multimodal-llms-with-trl">https://www.philschmid.de/fine-tune-multimodal-llms-with-trl</a> <strong>Key data</strong>:</p>
+<ul>
+<li>LoRA r=8, alpha=16, dropout=0.05, target=[&quot;q_proj&quot;,&quot;v_proj&quot;], task_type=&quot;CAUSAL_LM&quot;</li>
+<li>SFT on ~1,000 samples, 3 epochs, g6.2xlarge (24GB GPU), wall-clock ~1.5h</li>
+<li>QLoRA: load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type=&quot;nf4&quot;, bnb_4bit_compute_dtype=bfloat16</li>
+<li>SFTConfig: lr=2e-4, per_device_train_batch_size=4, gradient_accumulation_steps=8, num_train_epochs=3, max_grad_norm=0.3, warmup_ratio=0.03</li>
+</ul>
+<h3>4. Shaaf Salman — Fine-Tuning Qwen3-VL-30B-MoE with LoRA</h3>
+<p><strong>URL</strong>: <a href="https://medium.com/@ishaafsalman/fine-tuning-qwen-qwen3-vl-30b-a3b-moe-architecture-with-lora-2365359e870f">https://medium.com/@ishaafsalman/fine-tuning-qwen-qwen3-vl-30b-a3b-moe-architecture-with-lora-2365359e870f</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Full projection set: target=[&quot;q_proj&quot;,&quot;k_proj&quot;,&quot;v_proj&quot;,&quot;o_proj&quot;,&quot;gate_proj&quot;,&quot;up_proj&quot;,&quot;down_proj&quot;]</li>
+<li>r=64, alpha=128, dropout=0.05</li>
+<li>8×A100 80GB, 24–36h per 3 epochs</li>
+<li>ZeRO-2 recommended (ZeRO-3 breaks LoRA gradient flow)</li>
+<li>53M trainable params = 0.17% of 31B total</li>
+</ul>
+<h3>5. Nanonets — Fine-Tuning VLMs for Data Extraction</h3>
+<p><strong>URL</strong>: <a href="https://nanonets.com/blog/fine-tuning-vision-language-models-vlms-for-data-extraction/">https://nanonets.com/blog/fine-tuning-vision-language-models-vlms-for-data-extraction/</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Qwen2-VL-2B, CORD dataset, 800 training samples × 10 epochs</li>
+<li>~20GB GPU VRAM, ~30 min training time</li>
+<li>Recommended sample target: &quot;10,000 to 100,000 total training samples based on variation in the image&quot;</li>
+<li>For limited data (200–800 pages): LoRA outperforms full fine-tune</li>
+</ul>
+<h3>6. 2U1/Qwen-VL-Series-Finetune (GitHub)</h3>
+<p><strong>URL</strong>: <a href="https://github.com/2U1/Qwen-VL-Series-Finetune">https://github.com/2U1/Qwen-VL-Series-Finetune</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Supports Qwen2-VL, Qwen2.5-VL, Qwen3-VL including LoRA and QLoRA</li>
+<li>Data format: LLaVA-style JSON with image paths and multi-turn conversation</li>
+<li>Vision LR typically 5–10× smaller than language model LR</li>
+<li>QLoRA with vision modules requires 16-bit precision for vision encoder</li>
+</ul>
+<h3>7. Unsloth — Qwen3-VL Run &amp; Fine-tune</h3>
+<p><strong>URL</strong>: <a href="https://unsloth.ai/docs/models/tutorials/qwen3-how-to-run-and-fine-tune/qwen3-vl-how-to-run-and-fine-tune">https://unsloth.ai/docs/models/tutorials/qwen3-how-to-run-and-fine-tune/qwen3-vl-how-to-run-and-fine-tune</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Unsloth claims 1.7× faster training, 60% less VRAM for Qwen3-VL</li>
+<li>Supports 2B, 4B, 8B, 32B Qwen3-VL</li>
+<li>Notebooks available and runnable on Colab for 8B; 2B is lighter</li>
+<li>Estimated throughput: 140k examples ≈ 13h, 160k examples ≈ 16h on consumer hardware</li>
+</ul>
+<h3>8. HuggingFace Cookbook — Fine-Tuning VLM with TRL</h3>
+<p><strong>URL</strong>: <a href="https://huggingface.co/learn/cookbook/en/fine_tuning_vlm_trl">https://huggingface.co/learn/cookbook/en/fine_tuning_vlm_trl</a> <strong>Key data</strong>:</p>
+<ul>
+<li>Standard Qwen2-VL recipe using SFTTrainer</li>
+<li>process_vision_info() required for image preprocessing in data collator</li>
+<li>OpenAI-style conversation format (system, user, assistant roles)</li>
+</ul>
+<hr>
+<h2>Dataset Sources Found (Thai / Medical)</h2>
+<table><thead><tr><th>Dataset</th><th>URL</th><th>Notes</th></tr></thead><tbody><tr><td>openthaigpt/thai-ocr-evaluation</td><td><a href="https://huggingface.co/datasets/openthaigpt/thai-ocr-evaluation">https://huggingface.co/datasets/openthaigpt/thai-ocr-evaluation</a></td><td>General Thai OCR eval; not medical</td></tr><tr><td>iapp/thai_handwriting_dataset</td><td><a href="https://huggingface.co/datasets/iapp/thai_handwriting_dataset">https://huggingface.co/datasets/iapp/thai_handwriting_dataset</a></td><td>Used in Typhoon OCR training (5.5%)</td></tr><tr><td>lst-nectec/lst20</td><td><a href="https://huggingface.co/datasets/lst-nectec/lst20">https://huggingface.co/datasets/lst-nectec/lst20</a></td><td>Text-only NLP corpus (NER, POS); no images</td></tr><tr><td>Synthetic Medical Prescription OCR</td><td><a href="https://www.kaggle.com/datasets/priyanshuyav13/synthetic-medical-prescription-ocr-dataset">https://www.kaggle.com/datasets/priyanshuyav13/synthetic-medical-prescription-ocr-dataset</a></td><td>English; useful as structure template</td></tr></tbody></table>
+<p><strong>Conclusion</strong>: No public Thai medical document OCR dataset with annotated images exists. Training data must be constructed in-house.</p>
+<hr>
+<h2>Useful Community Resources</h2>
+<ul>
+<li>Qwen3-VL issues tracker: <a href="https://github.com/QwenLM/Qwen3-VL/issues">https://github.com/QwenLM/Qwen3-VL/issues</a></li>
+<li>DataCamp fine-tuning Qwen3-VL-8B: <a href="https://www.datacamp.com/tutorial/fine-tuning-qwen3-vl-8b">https://www.datacamp.com/tutorial/fine-tuning-qwen3-vl-8b</a></li>
+<li>ROCm LoRA Qwen2-VL guide: <a href="https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/fine_tune/fine_tuning_lora_qwen2vl.html">https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/fine_tune/fine_tuning_lora_qwen2vl.html</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/references/refs-lora-vlm-finetune-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas: NECTEC NLP Work → LLM/VLM Extensions (2026-05)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-05</p>
+<h1>Ideas: NECTEC NLP Work → LLM/VLM Extensions (2026-05)</h1>
+<h2>Context From Prior Work</h2>
+<p>Prior NECTEC work has two useful NLP foundations:</p>
+<ul>
+<li>SME product data cleaning and classification: Thai word tokenization with PyThaiNLP <code>newmm</code>, regex language filtering, symbol/emoji cleanup, word frequency thresholding, and text-length heuristics for image-type separation.</li>
+<li>OCR evaluation: Thai-tokenized WER using PyThaiNLP and semantic similarity using SentenceTransformer embeddings plus cosine similarity.</li>
+</ul>
+<p>This is a strong base for research because it already has practical data noise, Thai-language preprocessing, image/text coupling, and evaluation metrics.</p>
+<h2>Best LLM/VLM Extension Directions</h2>
+<h3>1. LLM-Assisted Thai Product Name Normalization</h3>
+<p>Core idea: compare rule-based/PyThaiNLP cleaning against LLM-assisted normalization for noisy SME product names.</p>
+<p>Research question:</p>
+<ul>
+<li>Can a Thai-capable LLM normalize SME product names better than dictionary + regex + frequency filtering while preserving brand, quantity, unit, and product-specific terms?</li>
+</ul>
+<p>Possible method:</p>
+<ul>
+<li>Baseline A: existing PyThaiNLP + regex + word-frequency filtering.</li>
+<li>Baseline B: SentenceTransformer clustering + nearest canonical product name.</li>
+<li>Proposed: LLM generates normalized product name with constraints: preserve brand, preserve numbers/units, remove promotional words, remove emoji/symbol noise.</li>
+</ul>
+<p>Metrics:</p>
+<ul>
+<li>Exact match to manually normalized names.</li>
+<li>Token-level F1 after Thai tokenization.</li>
+<li>Brand/number/unit preservation rate.</li>
+<li>Human preference score for product search quality.</li>
+</ul>
+<h3>2. LLM-as-a-Judge for Thai OCR Evaluation</h3>
+<p>Core idea: extend WER and cosine similarity with an LLM judge that scores whether OCR output is acceptable for downstream use.</p>
+<p>Research question:</p>
+<ul>
+<li>Can LLM-as-a-Judge better capture Thai OCR usability than WER and embedding cosine similarity alone?</li>
+</ul>
+<p>Possible method:</p>
+<ul>
+<li>Input: reference text, OCR hypothesis, optional image crop.</li>
+<li>Output: structured scores for readability, semantic preservation, numeric preservation, unit preservation, and hallucination risk.</li>
+<li>Compare judge scores with human annotations.</li>
+</ul>
+<p>Important caveat:</p>
+<ul>
+<li>LLM judge should not replace deterministic metrics. Use it as an additional semantic/reliability layer because LLM judging can be prompt-sensitive and less reproducible.</li>
+</ul>
+<h3>3. VLM-Based Text-Heavy Image Classification for SME Products</h3>
+<p>Core idea: replace the fixed 700-character threshold with a learned or VLM-assisted classifier.</p>
+<p>Research question:</p>
+<ul>
+<li>Can a VLM classify SME product images into &quot;product photo&quot; vs &quot;text-heavy advertisement/claim label&quot; more robustly than OCR text-length thresholding?</li>
+</ul>
+<p>Possible method:</p>
+<ul>
+<li>Baseline A: existing OCR text length threshold.</li>
+<li>Baseline B: OCR + classical classifier using text length, keyword density, and bounding-box coverage.</li>
+<li>Proposed: VLM prompt or fine-tuned lightweight classifier using image + OCR text.</li>
+</ul>
+<p>Metrics:</p>
+<ul>
+<li>Image-type classification F1.</li>
+<li>False rejection rate for valid product images.</li>
+<li>Error breakdown by packaging text, promotional poster, ingredient label, and certificate image.</li>
+</ul>
+<h3>4. Thai OCR Post-Correction With Constrained LLMs</h3>
+<p>Core idea: use the existing OCR evaluation work as a benchmark for post-correction, not only metric reporting.</p>
+<p>Research question:</p>
+<ul>
+<li>Can an LLM correct Thai OCR output while preserving critical entities such as product names, brands, numbers, units, and medical/product terms?</li>
+</ul>
+<p>Possible method:</p>
+<ul>
+<li>Baseline A: raw OCR.</li>
+<li>Baseline B: ByT5 or WangchanBERTa correction.</li>
+<li>Proposed: constrained LLM correction with protected spans for numbers, units, named entities, and dictionary terms.</li>
+</ul>
+<p>Metrics:</p>
+<ul>
+<li>CER/WER.</li>
+<li>Semantic similarity.</li>
+<li>Protected-span preservation rate.</li>
+<li>Over-correction rate.</li>
+</ul>
+<h2>Recommended Thesis/Research Angle</h2>
+<p>Best risk-adjusted direction:</p>
+<p><strong>&quot;Reliability-Aware Evaluation and Correction of Thai OCR Outputs using Deterministic Metrics, Sentence Embeddings, and LLM-as-a-Judge&quot;</strong></p>
+<p>Why this fits:</p>
+<ul>
+<li>Directly extends prior NECTEC OCR evaluation work.</li>
+<li>Does not require collecting a huge dataset first.</li>
+<li>Keeps PyThaiNLP and SentenceTransformer as strong baselines.</li>
+<li>Adds an LLM contribution without making the whole system dependent on an LLM.</li>
+<li>Can be tested on both SME product text and Thai medical/OCR documents already represented in this workspace.</li>
+</ul>
+<h2>First POC Candidate</h2>
+<p>Create <code>poc/llm-ocr-evaluator/</code>:</p>
+<ul>
+<li>Input: <code>reference.txt</code>, <code>hypothesis.txt</code>, optional OCR detection JSON.</li>
+<li>Compute: Thai-tokenized WER, CER, SentenceTransformer cosine similarity.</li>
+<li>Add: LLM judge prompt that returns JSON scores.</li>
+<li>Output: one evaluation report JSON plus a Markdown summary.</li>
+</ul>
+<p>This POC can reuse prior logic and become the bridge from classical NLP evaluation to LLM-based reliability evaluation.</p>
+      <p class="source-path">Source: <code>research/ideas/ideas-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

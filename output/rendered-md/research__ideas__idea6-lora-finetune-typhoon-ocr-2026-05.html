@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Idea 6: LoRA Fine-Tune Typhoon OCR V1.5 for Thai Medical Domain</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>Idea 6: LoRA Fine-Tune Typhoon OCR V1.5 for Thai Medical Domain</h1>
+<h2>Implementation Plan — Ready to Run in 1–2 Days</h2>
+<p><strong>Context</strong>: Stage 3 (Text Recognition) and Stage 5 (Struct Extraction) of the NECTEC Thai Medical OCR pipeline. <strong>Goal</strong>: Domain-adapt <code>scb10x/typhoon-ocr1.5-2b</code> to Thai medical documents (lab results, prescriptions, referral letters, discharge summaries) using LoRA on a small in-house annotated dataset.</p>
+<p>References: <a href="../../research/references/refs-lora-vlm-finetune-2026-05.md">/research/references/refs-lora-vlm-finetune-2026-05.md</a></p>
+<hr>
+<h2>1. Correct Model Slug</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>HuggingFace slug</td><td><code>scb10x/typhoon-ocr1.5-2b</code></td></tr><tr><td>Mirror slug</td><td><code>typhoon-ai/typhoon-ocr1.5-2b</code> (same weights)</td></tr><tr><td>Base model</td><td><code>Qwen/Qwen3-VL-2B-Instruct</code></td></tr><tr><td>Parameters</td><td>2B (dense, not MoE)</td></tr><tr><td>Precision</td><td>BF16</td></tr><tr><td>License</td><td>Apache 2.0</td></tr><tr><td>Architecture</td><td>Qwen3-VL vision encoder + language model</td></tr></tbody></table>
+<hr>
+<h2>2. Critical Constraint: Prompt-Lock</h2>
+<p>Typhoon OCR V1.5 is trained and evaluated with one fixed prompt. Deviating from it at inference degrades performance significantly (documented in model card).</p>
+<p><strong>Canonical inference prompt (must be preserved in all fine-tuning data):</strong></p>
+<pre><code>Extract all text from the image.
+
+Instructions:
+- Only return the clean Markdown.
+- Do not include any explanation or extra text.
+- You must include all information on the page.
+
+Formatting Rules:
+- Tables: Render tables using &lt;table&gt;...&lt;/table&gt; in clean HTML format.
+- Equations: Render equations using LaTeX syntax with inline ($...$) and block ($$...$$).
+- Images/Charts/Diagrams: Wrap in &lt;figure&gt;...&lt;/figure&gt; with descriptions
+- Page Numbers: Wrap in &lt;page_number&gt;...&lt;/page_number&gt;
+- Checkboxes: Use ☐ for unchecked and ☑ for checked boxes.</code></pre>
+<p><strong>Implication for data annotation</strong>: Every training sample&#x27;s <code>assistant</code> turn MUST be a valid Markdown document following these formatting rules. If you want structured field extraction (JSON), it must be a post-processing layer applied to the Markdown output — NOT a different fine-tune target format. Changing the output format will break the prompt-lock and likely degrade on non-medical documents.</p>
+<hr>
+<h2>3. Data Requirements</h2>
+<h3>3.1 How Many Samples?</h3>
+<table><thead><tr><th>Scenario</th><th>Pages</th><th>Training Samples (@ 3 epochs)</th><th>Expected Outcome</th></tr></thead><tbody><tr><td>Minimal POC</td><td>100</td><td>~300</td><td>Domain vocabulary shift; reduced medical term errors</td></tr><tr><td>Recommended first run</td><td>200–300</td><td>~600–900</td><td>Measurable F1 improvement on lab result fields</td></tr><tr><td>Full domain adaptation</td><td>500–1,000</td><td>~1,500–3,000</td><td>Robust generalization across form types</td></tr></tbody></table>
+<p>Empirical basis: Nanonets demonstrated meaningful improvement on Qwen2-VL-2B with 800 training samples (10 epochs). Phil Schmid achieved good VLM task adaptation with ~1,000 samples on a 7B model. For a 2B model on a more focused domain shift, 200 pages is a viable minimum.</p>
+<h3>3.2 Data Mix Proposal (No Public Thai Medical Dataset Exists)</h3>
+<p>No public Thai medical document OCR dataset with annotated images exists. The following in-house construction strategy is required:</p>
+<table><thead><tr><th>Source</th><th>Approximate Share</th><th>Notes</th></tr></thead><tbody><tr><td>De-identified lab result forms (real)</td><td>40%</td><td>Highest value; requires PHI scrubbing per PDPA</td></tr><tr><td>De-identified prescription slips (real)</td><td>20%</td><td>Pharmacy-grade forms are lower PHI risk</td></tr><tr><td>Synthetic Thai medical forms</td><td>30%</td><td>Generate using PyThaiNLP vocabulary + HTML/LaTeX templates rendered to PDF then image</td></tr><tr><td>Typhoon OCR general domain samples (replay)</td><td>10%</td><td>Prevents catastrophic forgetting; pull from the Typhoon paper&#x27;s CoSyn-style pipeline</td></tr></tbody></table>
+<h3>3.3 Data Format</h3>
+<p>Use LLaVA-style JSON (required by 2U1/Qwen-VL-Series-Finetune and TRL SFTTrainer):</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;medocr-lab-001&quot;,
+  &quot;image&quot;: &quot;images/lab_result_001.png&quot;,
+  &quot;conversations&quot;: [
+    {
+      &quot;from&quot;: &quot;human&quot;,
+      &quot;value&quot;: &quot;&lt;image&gt;\nExtract all text from the image.\n\nInstructions:\n- Only return the clean Markdown.\n- Do not include any explanation or extra text.\n- You must include all information on the page.\n\nFormatting Rules:\n- Tables: Render tables using &lt;table&gt;...&lt;/table&gt; in clean HTML format.\n- Equations: Render equations using LaTeX syntax with inline ($...$) and block ($$...$$).\n- Images/Charts/Diagrams: Wrap in &lt;figure&gt;...&lt;/figure&gt; with descriptions\n- Page Numbers: Wrap in &lt;page_number&gt;...&lt;/page_number&gt;\n- Checkboxes: Use ☐ for unchecked and ☑ for checked boxes.&quot;
+    },
+    {
+      &quot;from&quot;: &quot;gpt&quot;,
+      &quot;value&quot;: &quot;# Lab Result\n\nPatient: [NAME REDACTED] ...\n\n&lt;table&gt;&lt;tr&gt;&lt;th&gt;Test&lt;/th&gt;&lt;th&gt;Result&lt;/th&gt;&lt;th&gt;Unit&lt;/th&gt;&lt;th&gt;Reference Range&lt;/th&gt;&lt;/tr&gt;...&lt;/table&gt;&quot;
+    }
+  ]
+}</code></pre>
+<h3>3.4 Annotation Protocol</h3>
+<ol>
+<li>Render each page at 150–300 DPI (match Typhoon OCR&#x27;s training resolution).</li>
+<li>Annotate the assistant turn as a faithful Markdown transcription of all visible text.</li>
+<li>Use <code>&lt;table&gt;</code> HTML for tabular lab values (critical: numeric values and units must be exact).</li>
+<li>Redact PHI in both the image and the annotation if using real documents.</li>
+<li>Quality-check: two annotators per sample; resolve disagreements on numeric fields by returning to source.</li>
+<li>Split: 80% train, 10% validation, 10% held-out test.</li>
+</ol>
+<hr>
+<h2>4. Training Recipe</h2>
+<h3>4.1 Environment Setup</h3>
+<pre><code class="language-bash"># Create project directory
+mkdir -p poc/typhoon-ocr-lora &amp;&amp; cd poc/typhoon-ocr-lora
+
+# Initialize with uv
+uv init .
+uv python pin 3.11
+
+# Add dependencies (no version pins per project convention)
+uv add torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+uv add transformers peft trl accelerate
+uv add bitsandbytes  # verify sm_120 Blackwell support before enabling 4-bit
+uv add qwen-vl-utils  # required for process_vision_info()
+uv add datasets pillow
+
+# Flash Attention 2 (install after other packages to avoid conflicts)
+uv add flash-attn --no-build-isolation</code></pre>
+<p><strong>Blackwell (sm_120) caveat on bitsandbytes</strong>: As of early 2026, bitsandbytes 4-bit (QLoRA) support on RTX 50xx Blackwell is not universally stable. Test with:</p>
+<pre><code class="language-python">import bitsandbytes as bnb
+print(bnb.__version__)
+# Run: python -c &quot;import torch; print(torch.cuda.get_device_capability())&quot;
+# sm_120 needs bnb &gt;= 0.44.0 with cu128 wheels</code></pre>
+<p>If QLoRA 4-bit fails or produces NaN losses, fall back to plain bf16 LoRA. The 2B model loads comfortably in ~8–10GB VRAM at bf16, leaving room for optimizer states with gradient checkpointing.</p>
+<h3>4.2 LoRA Configuration (Recommended for 2B Dense Qwen3-VL)</h3>
+<pre><code class="language-python">from peft import LoraConfig, TaskType
+
+lora_config = LoraConfig(
+    r=16,                          # rank; start here for domain shift with small data
+    lora_alpha=32,                 # alpha = 2× rank is standard
+    lora_dropout=0.05,
+    bias=&quot;none&quot;,
+    task_type=TaskType.CAUSAL_LM,
+    target_modules=[               # 7-module set for Qwen3-VL language model
+        &quot;q_proj&quot;,
+        &quot;k_proj&quot;,
+        &quot;v_proj&quot;,
+        &quot;o_proj&quot;,
+        &quot;gate_proj&quot;,
+        &quot;up_proj&quot;,
+        &quot;down_proj&quot;,
+    ],
+    # Freeze the vision tower on the first run.
+    # Vision encoder already understands document layouts.
+    # Only unlock if medical-specific visual features are needed.
+    modules_to_save=None,
+)</code></pre>
+<p><strong>Why r=16/alpha=32</strong>: Phil Schmid&#x27;s r=8 recipe was designed for a simple product-description task on 7B. The 30B-MoE recipe (r=64) is overparameterized for a 2B dense model. For a domain-shift task with 200–300 samples on a 2B model, r=16–32 is the appropriate starting point — enough capacity to shift medical vocabulary without overfitting on limited data.</p>
+<p><strong>Ablation order if results are poor</strong>:</p>
+<ol>
+<li>Increase r to 32 (alpha=64)</li>
+<li>Unfreeze vision encoder (add vision projection layers to target_modules)</li>
+<li>Add more synthetic data</li>
+</ol>
+<h3>4.3 QLoRA Variant (Optional — Verify bitsandbytes First)</h3>
+<pre><code class="language-python">from transformers import BitsAndBytesConfig
+import torch
+
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type=&quot;nf4&quot;,
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+# Pass to AutoModelForCausalLM.from_pretrained(quantization_config=bnb_config)
+# Note: vision encoder must remain in bf16 (set llm_int8_skip_modules or equivalent)</code></pre>
+<h3>4.4 Training Script (TRL SFTTrainer)</h3>
+<pre><code class="language-python">from transformers import AutoProcessor, AutoModelForCausalLM
+from trl import SFTConfig, SFTTrainer
+from peft import LoraConfig, get_peft_model
+import torch
+
+MODEL_ID = &quot;scb10x/typhoon-ocr1.5-2b&quot;
+
+# Load model in bf16 (default path; switch to BnB config for QLoRA)
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_ID,
+    torch_dtype=torch.bfloat16,
+    attn_implementation=&quot;flash_attention_2&quot;,  # remove if flash-attn install fails
+    device_map=&quot;auto&quot;,
+)
+processor = AutoProcessor.from_pretrained(MODEL_ID)
+
+# Apply LoRA
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()
+# Expected output: ~10–15M trainable params (0.5–0.75% of 2B)
+
+# SFT configuration
+sft_config = SFTConfig(
+    output_dir=&quot;./output/typhoon-ocr-lora-medical&quot;,
+    num_train_epochs=3,
+    per_device_train_batch_size=2,       # safe default for 24GB; increase to 4 if memory allows
+    gradient_accumulation_steps=8,       # effective batch size = 16
+    learning_rate=2e-4,
+    lr_scheduler_type=&quot;cosine&quot;,
+    warmup_ratio=0.05,
+    max_grad_norm=1.0,
+    bf16=True,
+    gradient_checkpointing=True,
+    gradient_checkpointing_kwargs={&quot;use_reentrant&quot;: False},
+    logging_steps=10,
+    save_strategy=&quot;epoch&quot;,
+    eval_strategy=&quot;epoch&quot;,
+    report_to=&quot;none&quot;,                    # switch to &quot;wandb&quot; if tracking
+    dataloader_num_workers=4,
+    remove_unused_columns=False,         # required for multimodal collator
+)
+
+# Custom data collator (required for Qwen3-VL image handling)
+from qwen_vl_utils import process_vision_info
+
+def collate_fn(examples):
+    texts = [processor.apply_chat_template(ex[&quot;messages&quot;], tokenize=False, add_generation_prompt=False)
+             for ex in examples]
+    image_inputs = [process_vision_info(ex[&quot;messages&quot;])[0] for ex in examples]
+    batch = processor(
+        text=texts,
+        images=image_inputs,
+        return_tensors=&quot;pt&quot;,
+        padding=True,
+    )
+    labels = batch[&quot;input_ids&quot;].clone()
+    labels[labels == processor.tokenizer.pad_token_id] = -100
+    batch[&quot;labels&quot;] = labels
+    return batch
+
+trainer = SFTTrainer(
+    model=model,
+    args=sft_config,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    data_collator=collate_fn,
+)
+trainer.train()
+trainer.save_model(&quot;./output/typhoon-ocr-lora-medical/final&quot;)</code></pre>
+<p><strong>Alternative training framework</strong>: <code>2U1/Qwen-VL-Series-Finetune</code> (GitHub) provides a ready-made training script for Qwen3-VL with LoRA. Clone and run with the JSON dataset format described in Section 3.3. This avoids writing a custom collator.</p>
+<h3>4.5 Optimizer Note</h3>
+<p>Use <code>adamw_torch_fused</code> for speed, or <code>adamw_bnb_8bit</code> if GPU memory is tight:</p>
+<pre><code class="language-python">optim=&quot;adamw_torch_fused&quot;  # add to SFTConfig</code></pre>
+<hr>
+<h2>5. GPU Memory and Time Estimates</h2>
+<table><thead><tr><th>Configuration</th><th>VRAM Usage</th><th>Training Time (200 pages × 3 epochs)</th></tr></thead><tbody><tr><td>bf16 LoRA, batch=2, grad_accum=8</td><td>~14–16 GB</td><td>~25–40 min</td></tr><tr><td>bf16 LoRA, batch=4, grad_accum=4</td><td>~20–22 GB</td><td>~20–30 min</td></tr><tr><td>QLoRA (nf4), batch=4, grad_accum=4</td><td>~10–12 GB</td><td>~35–50 min (slower due to dequant overhead)</td></tr><tr><td>Unsloth-optimized (bf16 LoRA)</td><td>~8–10 GB</td><td>~15–25 min (1.7× speedup claimed)</td></tr></tbody></table>
+<p><strong>Total end-to-end budget (first iteration)</strong>:</p>
+<ul>
+<li>Data prep + annotation: 8–16h (depends on annotation tooling)</li>
+<li>Synthetic data generation: 2–4h (script rendering Thai forms to images)</li>
+<li>Environment setup + debugging: 2–4h</li>
+<li>Training runs (3 experiments): 1–3h</li>
+<li>Evaluation: 1–2h</li>
+<li><strong>Total: ~14–29h of elapsed work</strong> (hardware runs only ~3–8h)</li>
+</ul>
+<p>This fits within a 2-day sprint if annotations are pre-existing or partially available.</p>
+<hr>
+<h2>6. Evaluation Plan</h2>
+<h3>6.1 Primary Metrics (Medical Domain)</h3>
+<table><thead><tr><th>Metric</th><th>What It Measures</th><th>Tool</th></tr></thead><tbody><tr><td>CER (Character Error Rate)</td><td>Character-level transcription accuracy; tokenizer-independent</td><td><code>jiwer</code> or <code>fastwer</code></td></tr><tr><td>ANLS (Avg. Normalized Levenshtein Similarity)</td><td>Tolerates minor OCR confusions; standard for document VQA</td><td><code>anls</code> (PyPI)</td></tr><tr><td>Field-level F1</td><td>Precision/recall on extracted key fields (test name, value, unit, date)</td><td>Custom extractor on Markdown output</td></tr><tr><td>Medical Term Preservation Rate</td><td>Fraction of medical terms (ICD, drug names, lab names) correctly transcribed</td><td>Build term lexicon from Thai SNOMED/ICD-10</td></tr><tr><td>Numeric + Unit Accuracy</td><td>Exact match on numeric values and their units (critical for lab results)</td><td>Regex-based field extractor</td></tr></tbody></table>
+<h3>6.2 Baseline Comparison</h3>
+<table><thead><tr><th>System</th><th>CER</th><th>ANLS</th><th>Notes</th></tr></thead><tbody><tr><td>Typhoon OCR V1.5 2B (no fine-tune)</td><td>measure</td><td>measure</td><td>Baseline</td></tr><tr><td>+ LoRA r=16 (proposed)</td><td>measure</td><td>measure</td><td>Target: &gt;5% ANLS gain</td></tr><tr><td>PaddleOCR (current Stage 3)</td><td>measure</td><td>measure</td><td>Existing system comparison</td></tr><tr><td>EasyOCR (current Stage 3)</td><td>measure</td><td>measure</td><td>Existing system comparison</td></tr></tbody></table>
+<h3>6.3 Field-Level F1 Extraction Protocol</h3>
+<p>After the model outputs Markdown, apply a rule-based or regex extractor to pull structured fields:</p>
+<pre><code class="language-python">import re
+
+def extract_lab_fields(markdown_text):
+    # Extract table rows from HTML tables in output
+    rows = re.findall(r&quot;&lt;tr&gt;(.*?)&lt;/tr&gt;&quot;, markdown_text, re.DOTALL)
+    fields = []
+    for row in rows:
+        cells = re.findall(r&quot;&lt;t[dh]&gt;(.*?)&lt;/t[dh]&gt;&quot;, row)
+        fields.append(cells)
+    return fields</code></pre>
+<p>Compare extracted fields against ground-truth annotations at the field level. Report precision, recall, F1 per field type.</p>
+<h3>6.4 Anti-Regression Check</h3>
+<p>Run fine-tuned model on a sample of the Typhoon OCR benchmark domains (financial reports, government forms) to confirm catastrophic forgetting has not occurred. The 10% general-domain replay samples in the training mix are the primary mitigation.</p>
+<hr>
+<h2>7. Step-by-Step Implementation Roadmap</h2>
+<h3>Day 1: Data and Environment</h3>
+<p><strong>Morning (3–4h): Environment</strong></p>
+<ol>
+<li>Create <code>poc/typhoon-ocr-lora/</code> with uv</li>
+<li>Install dependencies per Section 4.1</li>
+<li>Verify: <code>python -c &quot;import torch; print(torch.cuda.get_device_capability())&quot;</code> → expect <code>(12, 0)</code> for Blackwell</li>
+<li>Verify bitsandbytes: run a 4-bit load test. If it fails, proceed with bf16 LoRA only</li>
+<li>Download model: <code>huggingface-cli download scb10x/typhoon-ocr1.5-2b</code></li>
+<li>Run baseline inference on 5 sample medical images to establish CER/ANLS floor</li>
+</ol>
+<p><strong>Afternoon (4–6h): Data Preparation</strong></p>
+<ol>
+<li>Collect 100–200 page images (lab results, prescriptions, referral letters)</li>
+<li>PHI scrub: redact patient names, HN, dates of birth (use PIL rectangle overlay or text masking)</li>
+<li>Annotate ground-truth Markdown using the canonical Typhoon prompt format</li>
+<li>Write to LLaVA-style JSON (see Section 3.3 format)</li>
+<li>Generate 50–80 synthetic pages:</li>
+</ol>
+<ul>
+<li>Use PyThaiNLP to generate realistic Thai lab value tables</li>
+<li>Render to HTML, convert to PDF via <code>weasyprint</code>, convert to PNG via <code>pdf2image</code></li>
+<li>Annotate synthetics programmatically (source is the HTML template itself)</li>
+</ul>
+<ol>
+<li>Split: 80/10/10 train/val/test</li>
+</ol>
+<h3>Day 2: Training and Evaluation</h3>
+<p><strong>Morning (2–3h): Training</strong></p>
+<ol>
+<li>Run training with the recipe from Section 4.4</li>
+<li>Monitor: loss should decrease within first 50 steps; if NaN, check learning rate (reduce to 5e-5) or switch to QLoRA</li>
+<li>Save checkpoint at each epoch; evaluate val loss</li>
+<li>Run 3 epochs; select best checkpoint by val ANLS</li>
+</ol>
+<p><strong>Afternoon (2–3h): Evaluation and Iteration</strong></p>
+<ol>
+<li>Run held-out test set through baseline and fine-tuned model</li>
+<li>Compute CER, ANLS, field-level F1, medical term preservation rate</li>
+<li>Run anti-regression test on 20 non-medical Thai documents</li>
+<li>If performance is poor: increase r to 32, add more synthetic data, or unfreeze vision encoder</li>
+<li>Save adapter weights: <code>model.save_pretrained(&quot;./output/typhoon-ocr-lora-medical/adapter&quot;)</code></li>
+<li>Document results in evaluation report</li>
+</ol>
+<hr>
+<h2>8. Inference After Fine-Tuning</h2>
+<pre><code class="language-python">from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoProcessor
+import torch
+
+base = AutoModelForCausalLM.from_pretrained(
+    &quot;scb10x/typhoon-ocr1.5-2b&quot;,
+    torch_dtype=torch.bfloat16,
+    device_map=&quot;auto&quot;
+)
+model = PeftModel.from_pretrained(base, &quot;./output/typhoon-ocr-lora-medical/adapter&quot;)
+model.eval()
+
+# Use the canonical prompt (do not modify)
+PROMPT = &quot;&quot;&quot;Extract all text from the image.
+
+Instructions:
+- Only return the clean Markdown.
+- Do not include any explanation or extra text.
+- You must include all information on the page.
+
+Formatting Rules:
+- Tables: Render tables using &lt;table&gt;...&lt;/table&gt; in clean HTML format.
+- Equations: Render equations using LaTeX syntax with inline ($...$) and block ($$...$$).
+- Images/Charts/Diagrams: Wrap in &lt;figure&gt;...&lt;/figure&gt; with descriptions
+- Page Numbers: Wrap in &lt;page_number&gt;...&lt;/page_number&gt;
+- Checkboxes: Use ☐ for unchecked and ☑ for checked boxes.&quot;&quot;&quot;</code></pre>
+<hr>
+<h2>9. Risks and Mitigations</h2>
+<table><thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead><tbody><tr><td>bitsandbytes 4-bit broken on sm_120 Blackwell</td><td>Medium</td><td>Default to bf16 LoRA; 2B fits in 24GB without 4-bit</td></tr><tr><td>Catastrophic forgetting on general Thai docs</td><td>Low-Medium</td><td>Include 10% replay samples from CoSyn/Typhoon training distribution</td></tr><tr><td>Prompt-lock degradation if output format changes</td><td>High if ignored</td><td>Strictly follow canonical Typhoon output format in all annotations</td></tr><tr><td>PHI exposure in training data</td><td>High (legal risk)</td><td>PHI scrub before any data leaves the NECTEC environment</td></tr><tr><td>Overfitting on &lt;100 samples</td><td>Medium</td><td>LoRA inherently regularizes; use dropout=0.05; validate after each epoch</td></tr><tr><td>ZeRO-3 + LoRA gradient flow issue</td><td>Low (single GPU)</td><td>Use accelerate default (no ZeRO or ZeRO-2) for single GPU</td></tr></tbody></table>
+<hr>
+<h2>10. Structured Extraction Pipeline (Post Fine-Tune)</h2>
+<p>The LoRA fine-tuned model outputs Markdown. To get structured JSON for Stage 5 (Struct Extraction), add a downstream extraction layer:</p>
+<pre><code>[Image] → [Typhoon OCR + LoRA adapter] → [Markdown text]
+                                              ↓
+                                   [Rule-based HTML table parser]
+                                              ↓
+                                   [Named field extractor (regex / small LLM)]
+                                              ↓
+                                   [Validated JSON for Stage 6]</code></pre>
+<p>This keeps the model&#x27;s output format unchanged (preserving prompt-lock) while adding structure downstream. Thai medical field names can be matched using a Thai ICD-10 / lab code lexicon as the anchor vocabulary.</p>
+<hr>
+<h2>11. Connection to Pipeline Stages</h2>
+<table><thead><tr><th>Pipeline Stage</th><th>Role of This Work</th></tr></thead><tbody><tr><td>Stage 3: Text Recognition</td><td>Replaces or augments PaddleOCR/EasyOCR for full-page medical document understanding</td></tr><tr><td>Stage 4: Post-correction</td><td>Partially replaces ByT5/WangchanBERTa — the fine-tuned VLM corrects during recognition</td></tr><tr><td>Stage 5: Struct Extraction</td><td>Downstream extractor on Markdown output (Section 10 above)</td></tr><tr><td>Stage 6: Validation</td><td>Numeric and unit exact-match checks apply directly to extracted fields</td></tr></tbody></table>
+<hr>
+<h2>12. Next Steps After POC</h2>
+<ol>
+<li>If field-level F1 improves significantly (&gt;10% over PaddleOCR baseline): expand dataset to 500 pages and retrain</li>
+<li>Consider GRPO/DPO alignment if the model produces hallucinated values on edge-case lab forms</li>
+<li>Publish internal benchmark: 200-page Thai medical OCR evaluation set with CER/ANLS/field-F1 scoring</li>
+<li>Upstream contribution: release the synthetic Thai medical form generator as open-source to reduce the data scarcity problem for the community</li>
+</ol>
+      <p class="source-path">Source: <code>research/ideas/idea6-lora-finetune-typhoon-ocr-2026-05.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

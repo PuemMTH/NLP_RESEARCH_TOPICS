@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic: Thai Medical OCR + Post-correction</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06 (VLM Thai OCR deep research indexed)</p>
+<h1>Topic: Thai Medical OCR + Post-correction</h1>
+<h2>Included Sources</h2>
+<ul>
+<li>thai-medical-ocr-post-correction-2026-03-31.md</li>
+<li><a href="../../research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md">/research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md</a></li>
+<li><a href="../../research/ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md">/research/ideas/draft-proposal-thai-medical-ocr-masters-2026-03-31.md</a></li>
+<li><a href="../../research/diagrams/pipeline-thai-medical-ocr-modular.md">/research/diagrams/pipeline-thai-medical-ocr-modular.md</a></li>
+<li><a href="../../research/diagrams/system-comparison-ocr-abcd.md">/research/diagrams/system-comparison-ocr-abcd.md</a></li>
+<li><a href="../../research/references/refs-ocr-pipeline-papers-2026-04.md">/research/references/refs-ocr-pipeline-papers-2026-04.md</a></li>
+<li><a href="../../research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md">/research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md</a></li>
+<li><a href="../../research/references/refs-vlm-thai-ocr-extension-2026-05.md">/research/references/refs-vlm-thai-ocr-extension-2026-05.md</a></li>
+<li><a href="../../research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md">/research/ideas/ideas-vlm-thai-ocr-extension-2026-05.md</a></li>
+<li><a href="../../research/topics/nlp-scope-and-topic-map-2026-05-06.md">/research/topics/nlp-scope-and-topic-map-2026-05-06.md</a></li>
+</ul>
+<h2>Topic Summary</h2>
+<p>This topic connects Thai OCR model design, medical-document extraction requirements, and post-OCR correction reliability. It is highly aligned with practical pipeline work involving FastAPI services, OCR processing, and medical data constraints.</p>
+<h2>NLP Scope Link</h2>
+<p>The broader NLP scope is separated in <a href="../../research/topics/nlp-scope-and-topic-map-2026-05-06.md">/research/topics/nlp-scope-and-topic-map-2026-05-06.md</a>. The strongest project scope is Thai document/product understanding: cleaning noisy Thai text, extracting structured fields from OCR/VLM outputs, and verifying critical facts with tokenizer-aware metrics and evidence-grounded LLM/VLM checks.</p>
+<h2>Subtopics</h2>
+<ul>
+<li>Thai script-aware OCR and layout reconstruction</li>
+<li>Medical visual information extraction (field-level exactness)</li>
+<li>LLM-based post-correction under low-resource constraints</li>
+<li>Evaluation and deployment trade-offs (quality vs compute)</li>
+</ul>
+<h2>Open Threads</h2>
+<ul>
+<li>Build a Thai medical OCR benchmark slice (reports/prescriptions/scans)</li>
+<li>Compare OCR-only vs OCR+LLM post-correction with strict medical term preservation</li>
+<li>Test PHI-safe processing and de-identification impact on OCR quality</li>
+<li>Extend prior NECTEC OCR evaluation work into deterministic metrics + embedding similarity + LLM-as-a-Judge reliability scoring</li>
+<li>Add evidence-grounded LLM-as-a-Verifier for critical OCR fields: supported / unsupported / uncertain with evidence spans</li>
+</ul>
+<h2>POC Results Update (2026-05-06)</h2>
+<p>Three follow-up items have concrete results:</p>
+<ol>
+<li><strong>VLM zero-shot classifier</strong>: <code>poc/vlm-zero-shot-classifier/</code> classified both sample images correctly with confidence 0.95. The VLM agreed with the legacy 700-character rule for both product and advertisement samples, and fallback was not used.</li>
+<li><strong>3-layer OCR evaluation stack</strong>: <code>poc/ocr-eval-3layer/</code> confirmed severe Thai tokenizer drift in WER. The largest observed drift was 360 percentage points (<code>pair_02</code>: newmm 400% vs attacut 40%), while CER remained tokenizer-independent.</li>
+<li><strong>Typhoon OCR LoRA research</strong>: <code>research/ideas/idea6-lora-finetune-typhoon-ocr-2026-05.md</code> identifies the correct model slug as <code>scb10x/typhoon-ocr1.5-2b</code>, recommends bf16 LoRA on RTX 50xx/Blackwell instead of unstable 4-bit QLoRA, and notes that no public Thai medical OCR dataset exists.</li>
+</ol>
+<p>Updated diagram report: <a href="../../output/diagrams/poc-results-vlm-eval-lora-2026-05-06.html">/output/diagrams/poc-results-vlm-eval-lora-2026-05-06.html</a></p>
+<h2>Why VLM Helps with Complex Thai Medical Layouts</h2>
+<ul>
+<li>VLM reads both visual structure and text, so it can use spatial cues (table cells, headers, stamps, handwritten notes) that OCR-only pipelines often miss.</li>
+<li>Thai script has no explicit word boundaries in many contexts, and medical forms mix Thai-English terms, abbreviations, and numbers; VLM can leverage document context to reduce segmentation and label-association errors.</li>
+<li>For medical documents, correctness is often field-level (patient name, test name, value, unit, reference range), not just line-level text quality. VLMs are better suited for query-driven extraction into structured fields.</li>
+</ul>
+<h2>Practical Pipeline (Draft)</h2>
+<ol>
+<li>Document preprocessing (denoise, perspective correction, region proposal).</li>
+<li>VLM-based parsing for text + layout + key-value candidates.</li>
+<li>Post-correction with constrained language model (medical lexicon + unit patterns).</li>
+<li>Schema mapping to JSON fields for downstream FastAPI services.</li>
+<li>Validation rules (range checks, unit consistency, mandatory field checks).</li>
+</ol>
+<h2>Evaluation Notes</h2>
+<ul>
+<li>Text quality: CER, WER.</li>
+<li>Extraction quality: field-level exact match, key-value F1.</li>
+<li>Safety quality: PHI leakage rate after processing.</li>
+<li>Clinical robustness: medical-term preservation rate (avoid over-correction).</li>
+<li>Semantic reliability: SentenceTransformer cosine similarity plus optional LLM judge scores for meaning preservation, numeric preservation, unit preservation, and over-correction risk.</li>
+</ul>
+<h2>NECTEC NLP-to-LLM Extension (2026-05-05)</h2>
+<p>Prior NECTEC NLP work on SME product-name cleaning and OCR evaluation can be extended into an LLM/VLM research line:</p>
+<ul>
+<li>SME text cleaning baseline: PyThaiNLP <code>newmm</code>, regex language filtering, symbol/emoji cleanup, word-frequency thresholding, and text-length heuristics.</li>
+<li>OCR evaluation baseline: Thai-tokenized WER and SentenceTransformer cosine similarity.</li>
+<li>LLM extension: constrained product-name normalization, LLM-as-a-Judge OCR evaluation, VLM-based text-heavy image classification, and constrained LLM post-OCR correction.</li>
+</ul>
+<p>Related idea note: <a href="../../research/ideas/ideas-2026-05.md">/research/ideas/ideas-2026-05.md</a> Related references: <a href="../../research/references/refs-nectec-nlp-llm-extension-2026-05.md">/research/references/refs-nectec-nlp-llm-extension-2026-05.md</a></p>
+<h2>LLM-as-a-Verifier Extension (2026-05-06)</h2>
+<p>LLM-as-a-Judge gives quality scores, but LLM-as-a-Verifier should answer whether each extracted field is supported by evidence. This is better aligned with OCR safety because medical and product documents contain critical exact fields such as numeric values, units, dates, dosage, brand, and product/medical terms.</p>
+<p>Proposed verifier labels:</p>
+<ul>
+<li><code>supported</code>: field is backed by OCR text, image crop, or reference evidence.</li>
+<li><code>unsupported</code>: field contradicts or is absent from evidence.</li>
+<li><code>uncertain</code>: evidence is too noisy or ambiguous for a safe decision.</li>
+</ul>
+<p>Related idea note: <a href="../../research/ideas/ideas-llm-as-verifier-2026-05.md">/research/ideas/ideas-llm-as-verifier-2026-05.md</a> Related references: <a href="../../research/references/refs-llm-as-verifier-2026-05.md">/research/references/refs-llm-as-verifier-2026-05.md</a></p>
+<h2>VLM Thai OCR Deep Research (2026-05-06)</h2>
+<p>Additional research from the VLM Thai OCR HTML and reference set identified a stronger direction: build an internal Thai product/medical OCR benchmark, then evaluate modular OCR, Thai-specific VLMs, and general VLMs under the same metric stack.</p>
+<p>Key additions:</p>
+<ul>
+<li>ThaiOCRBench provides a practical schema and task taxonomy for internal benchmark design.</li>
+<li>Typhoon OCR is a strong Thai-English document parsing baseline but should be paired with verifier/validation due to hallucination risk.</li>
+<li>Qwen2.5-VL is the main general VLM baseline to compare against Thai-specific models.</li>
+<li>DocOwl-style work supports layout/structure-aware OCR-free document understanding, especially for tables and multi-page documents.</li>
+<li>Existing Thai/multilingual CLIP-like models mean the research gap should be framed as under-validated Thai product-label image-text alignment, not total absence of Thai CLIP.</li>
+</ul>
+<p>Related source synthesis: <a href="../../research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md">/research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md</a> Related idea note: <a href="../../research/ideas/ideas-vlm-thai-ocr-deep-research-2026-05-06.md">/research/ideas/ideas-vlm-thai-ocr-deep-research-2026-05-06.md</a> Related architecture map: <a href="../../research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md">/research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md</a></p>
+<hr>
+<h2>Concepts Glossary</h2>
+<h3>Noise (ในบริบท OCR เอกสารการแพทย์)</h3>
+<p>สิ่งรบกวนที่ทำให้ OCR อ่านภาพผิดพลาด แบ่งเป็น 3 กลุ่ม:</p>
+<ul>
+<li><strong>จากการถ่าย/สแกน</strong>: ภาพเอียง บิดเบี้ยว แสงไม่สม่ำเสมอ เงา ความละเอียดต่ำ ภาพเบลอ</li>
+<li><strong>จากตัวเอกสาร</strong>: กระดาษเก่า รอยพับ หมึกจาง ตราประทับทับข้อความ ลายมือแพทย์</li>
+<li><strong>จาก layout</strong>: ตารางซ้อน เส้นชิด ตัวอักษรเล็ก ค่าตัวเลขและหน่วยอยู่ใกล้กัน</li>
+</ul>
+<h3>Post-Correction</h3>
+<p>ขั้นตอนแก้ไขข้อความที่ OCR อ่านแล้วก่อนส่งต่อ:</p>
+<ul>
+<li><strong>Rule-based</strong>: regex แก้ pattern ที่รู้อยู่แล้ว</li>
+<li><strong>LM-based (Unconstrained)</strong>: โมเดลภาษาอ่านบริบทแล้วเดาคำที่ถูก — เสี่ยงแก้ศัพท์แพทย์ผิด</li>
+<li><strong>Constrained</strong>: ล็อก medical lexicon + กฎหน่วยวัด ป้องกันการแก้ที่อันตรายเชิงคลินิก</li>
+</ul>
+<h3>ความแตกต่างระหว่าง 4 ระบบ</h3>
+<table><thead><tr><th>ระบบ</th><th>เข้าใจ Layout</th><th>ทนต่อ Noise</th><th>ปลอดภัย Medical Term</th><th>ความเร็ว</th></tr></thead><tbody><tr><td>A: OCR-only</td><td>❌</td><td>ต่ำ</td><td>✅ (ไม่แตะ)</td><td>เร็วสุด</td></tr><tr><td>B: OCR+LM</td><td>❌</td><td>ปานกลาง</td><td>❌ เสี่ยง</td><td>ปานกลาง</td></tr><tr><td>C: OCR+Constrained</td><td>❌</td><td>ปานกลาง</td><td>✅</td><td>ปานกลาง</td></tr><tr><td>D: VLM+Constrained</td><td>✅</td><td>สูง</td><td>✅</td><td>ช้ากว่า แต่แม่นกว่า</td></tr></tbody></table>
+<p>VLM ทนต่อ Noise ได้ดีกว่าเพราะไม่ได้แค่ &quot;อ่านพิกเซล&quot; แต่ &quot;เข้าใจว่าฟิลด์นี้ควรมีอะไร&quot; จากบริบทรอบข้าง</p>
+<hr>
+<h2>Modular Lightweight Pipeline (ทางเลือกเบากว่า VLM เดี่ยว)</h2>
+<p>แทนที่จะให้ VLM ตัวเดียวรับทุกอย่าง ให้แยกเป็นชิ้นเล็กๆ เฉพาะทาง:</p>
+<pre><code>ภาพ
+ │
+ ▼
+[1] Preprocessing       ← OpenCV
+    denoise, deskew, binarize
+ │
+ ▼
+[2] Layout Detection    ← DocLayout-YOLO (~30 MB)
+    detect: ตาราง, หัวข้อ, ช่องฟอร์ม
+ │
+ ▼
+[3] OCR per region      ← EasyOCR Thai (~200 MB)
+    อ่านข้อความใน region ที่ detect มา
+ │
+ ▼
+[4] Post-correction     ← ByT5-small หรือ WangchanBERTa
+    + Medical Lexicon Lock (~300–400 MB)
+ │
+ ▼
+[5] Field Structuring   ← Regex + Rules
+    → JSON schema → FastAPI</code></pre>
+<h3>Tool Stack Reference</h3>
+<table><thead><tr><th>ขั้นตอน</th><th>Tool</th><th>ขนาด</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>Preprocessing</td><td>OpenCV</td><td>~0 MB</td><td>ใช้อยู่แล้ว</td></tr><tr><td>Layout Detection</td><td><strong>DocLayout-YOLO</strong></td><td>~30 MB</td><td>คล้าย YOLO11 ที่รู้จัก</td></tr><tr><td>OCR</td><td><strong>EasyOCR Thai</strong></td><td>~200 MB</td><td>ใช้อยู่แล้ว</td></tr><tr><td>Post-correction</td><td><strong>ByT5-small</strong></td><td>~300 MB</td><td>character-level, ไม่ต้อง tokenize Thai</td></tr><tr><td>Post-correction (Thai)</td><td><strong>WangchanBERTa</strong></td><td>~400 MB</td><td>Thai BERT จาก NECTEC/VISTEC</td></tr><tr><td>Field Structuring</td><td>Regex + Rules</td><td>~0 MB</td><td>ไม่ต้องโมเดล</td></tr></tbody></table>
+<p><strong>รวม ~930 MB</strong> vs Typhoon OCR VLM (~5–10x หนักกว่า)</p>
+<h3>จุดสำคัญ</h3>
+<ul>
+<li>Layout Detection (ขั้นที่ 2) คือหัวใจ — detect region ถูก ที่เหลือง่ายขึ้นมาก</li>
+<li>WangchanBERTa มาจาก NECTEC/VISTEC ตรง context งานที่ NECTEC โดยตรง</li>
+<li>ByT5-small ทำงานระดับ character ไม่ต้อง word tokenizer ภาษาไทย</li>
+</ul>
+<hr>
+<h2>OCR Broad Context (2026-04-05)</h2>
+<h3>ภาพใหญ่ของสนาม OCR</h3>
+<ul>
+<li>OCR ไม่ได้จบที่ text transcription อีกต่อไป แต่เป็น end-to-end document understanding pipeline.</li>
+<li>งานที่เด่นขึ้นคือ layout-aware recognition, field-level extraction, และ post-correction ที่ควบคุมข้อผิดพลาดเชิงโดเมน.</li>
+<li>ในโดเมนการแพทย์ ความถูกต้องระดับ field (ค่า, หน่วย, ชื่อการทดสอบ) สำคัญกว่าคะแนนข้อความรวมเพียงอย่างเดียว.</li>
+</ul>
+<h3>4 แกนวิจัยหลักที่กำลังเร่ง</h3>
+<ul>
+<li>Image quality and restoration: ลด noise ที่ทำให้ downstream error สะสม.</li>
+<li>Layout and multimodal parsing: เข้าใจโครงสร้างเอกสาร ไม่ใช่แค่อ่านทีละบรรทัด.</li>
+<li>Constrained post-correction: ใช้ lexicon/rules เพื่อลด over-correction ของคำเฉพาะทาง.</li>
+<li>Reliability and compliance: วัดความเสี่ยง PHI leakage, consistency, และ fail-safe behavior.</li>
+</ul>
+<h3>แนวโน้มประเมินผล</h3>
+<ul>
+<li>จาก CER/WER อย่างเดียว ไปสู่ metric ผสม: field-level exact match, key-value F1, term-preservation, latency/memory.</li>
+<li>เน้นรายงาน failure mode และ recovery strategy มากขึ้น โดยเฉพาะเอกสาร noisy และ layout ซับซ้อน.</li>
+</ul>
+<h3>Related Diagram</h3>
+<ul>
+<li><a href="../../research/diagrams/ocr-research-landscape-2026-04-05.md">/research/diagrams/ocr-research-landscape-2026-04-05.md</a></li>
+</ul>
+<hr>
+<h2>POC Log</h2>
+<table><thead><tr><th>วันที่</th><th>Tool</th><th>Stage</th><th>ไฟล์</th><th>สถานะ</th></tr></thead><tbody><tr><td>2026-04-05</td><td>DocLayout-YOLO</td><td>Stage 2: Layout Detection</td><td><a href="../../poc/doclayout-yolo/">/poc/doclayout-yolo/</a></td><td>✅ Run success (RTX 5070, cu128, 13 detections)</td></tr><tr><td>2026-04-05</td><td>EasyOCR Thai</td><td>Stage 3: Text Recognition</td><td><a href="../../poc/easyocr-thai/">/poc/easyocr-thai/</a></td><td>✅ PASS — 42 regions (sample), 107 regions (real paper)</td></tr><tr><td>2026-04-06</td><td>PaddleOCR v5</td><td>Stage 3: Text Recognition</td><td><a href="../../poc/paddleocr-v5/">/poc/paddleocr-v5/</a></td><td>✅ PASS — 8 regions (sample), 53 regions (real paper); HF transformers backend</td></tr><tr><td>2026-04-05</td><td>GOT-OCR2.0</td><td>Stage 3: Text Recognition (VLM)</td><td><a href="../../poc/got-ocr2/">/poc/got-ocr2/</a></td><td>✅ PASS — 53 lines/2978 chars (real paper, 6.9s)</td></tr><tr><td>2026-04-05</td><td>ByT5-small</td><td>Stage 4: Post-correction</td><td><a href="../../poc/byt5-ocr-correction/">/poc/byt5-ocr-correction/</a></td><td>✅ PASS — 8 samples, 0/8 exact (pretrained base, not fine-tuned)</td></tr><tr><td>2026-04-05</td><td>WangchanBERTa</td><td>Stage 4: Post-correction (MLM)</td><td><a href="../../poc/wangchanberta-correction/">/poc/wangchanberta-correction/</a></td><td>✅ PASS — 8 samples, 1/8 exact (pretrained MLM)</td></tr><tr><td>2026-05-06</td><td>3-Layer OCR Eval (CER/ANLS*/BERTScore)</td><td>Stage 6: Validation / Evaluation</td><td><a href="../../poc/ocr-eval-3layer/">/poc/ocr-eval-3layer/</a></td><td>✅ PASS — 5 Thai medical pairs; demonstrates tokenizer drift (up to 100pp WER gap); L3 WangchanBERTa layer-9</td></tr></tbody></table>
+<h3>2026-04-05 — DocLayout-YOLO POC</h3>
+<ul>
+<li><strong>Source</strong>: &lt;<a href="https://github.com/opendatalab/DocLayout-YOLO&gt;">https://github.com/opendatalab/DocLayout-YOLO&gt;</a></li>
+<li><strong>Stage</strong>: 2 — Layout Understanding</li>
+<li><strong>Model</strong>: <code>juliozhao/DocLayout-YOLO-DocStructBench</code> (~120 MB, HuggingFace)</li>
+<li><strong>Detects</strong>: title, plain_text, abandon, figure, figure_caption, table, table_caption, table_footnote, isolate_formula, formula_caption</li>
+<li><strong>CLI</strong>: <code>python poc/doclayout-yolo/poc_runner.py --image doc.png --save-json</code></li>
+<li><strong>Integration point</strong>: JSON output (label + bbox_xyxy + confidence) feeds directly into Stage 3 — crop each region and pass to PaddleOCR/EasyOCR</li>
+<li><strong>Thai caveats</strong>: Model trained on English-heavy data; test on Thai forms with <code>--conf 0.15</code> first; consider fine-tuning if recall on Thai table layouts is &lt;0.6</li>
+</ul>
+<h3>2026-05-06 — 3-Layer OCR Evaluation Stack POC</h3>
+<ul>
+<li><strong>Source</strong>: custom implementation (CER via jiwer, ANLS* via anls, BERTScore direct transformers)</li>
+<li><strong>Stage</strong>: 6 — Validation / Evaluation (replaces Module 2: WER + cosine sim)</li>
+<li><strong>Model</strong>: <code>airesearch/wangchanberta-base-att-spm-uncased</code> for L3 BERTScore</li>
+<li><strong>Metrics</strong>: L1 CER (tokenizer-agnostic), L2 ANLS* (threshold 0.5), L3 BERTScore-F1 (WangchanBERTa layer 9)</li>
+<li><strong>CLI</strong>: <code>uv run python poc/ocr-eval-3layer/poc_runner.py --test-suite sample_outputs/test_pairs.json --save-json out.json</code></li>
+<li><strong>Key finding</strong>: WER tokenizer drift demonstrated — pair_02 shows 400% (newmm) vs 500% (longest) on the same OCR output. CER stays at 11.1%.</li>
+<li><strong>Integration point</strong>: JSON output feeds quality signal back into Stage 4 post-correction training loop</li>
+<li><strong>Thai caveats</strong>: BERTScore uses raw cosine similarity (no baseline rescaling) — values not directly comparable to English BERTScore benchmarks. WangchanBERTa was pretrained on Thai Wikipedia/news; fine-tuning on medical Thai would improve medical term discrimination.</li>
+</ul>
+      <p class="source-path">Source: <code>research/topics/thai-medical-ocr-post-correction.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

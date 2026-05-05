@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Source Synthesis: VLM Thai OCR Reference Deep Dive</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <p class="source-path">Last Updated: 2026-05-06</p>
+<h1>Source Synthesis: VLM Thai OCR Reference Deep Dive</h1>
+<p>This note expands references used in <a href="../../output/diagrams/vlm-thai-ocr-research-summary-2026-05-06.html">/output/diagrams/vlm-thai-ocr-research-summary-2026-05-06.html</a> and <a href="../../research/references/refs-vlm-thai-ocr-extension-2026-05.md">/research/references/refs-vlm-thai-ocr-extension-2026-05.md</a>.</p>
+<h2>Topic Map</h2>
+<table><thead><tr><th>Group</th><th>Main references</th><th>Best use in this project</th></tr></thead><tbody><tr><td>Thai-specific OCR/VLM</td><td>Typhoon OCR, ThaiOCRBench, Typhoon 2</td><td>Primary Thai document OCR baseline and benchmark template</td></tr><tr><td>General document VLM</td><td>Qwen2.5-VL, mPLUG-DocOwl 1.5/2, InternVL</td><td>Strong open baselines for structured extraction and layout-heavy documents</td></tr><tr><td>Evaluation metrics</td><td>ANLS*, multi-layered evaluation, BERTScore</td><td>Replace WER/cosine-only evaluation with layered OCR reliability scoring</td></tr><tr><td>Multimodal product understanding</td><td>Zero-shot VLM classification, product deduplication, CLIP-style alignment</td><td>Upgrade SME product cleaning from text-only to image+text checks</td></tr><tr><td>Low-resource VLM</td><td>low-resource multimodal surveys, cross-lingual transfer</td><td>Justification for Thai-specific adaptation and small-data fine-tuning</td></tr></tbody></table>
+<hr>
+<h2>Typhoon OCR</h2>
+<p><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2601.14722&gt;,">https://arxiv.org/abs/2601.14722&gt;,</a> &lt;<a href="https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;">https://huggingface.co/typhoon-ai/typhoon-ocr-7b&gt;</a></p>
+<p><strong>Topic(s)</strong>: Thai OCR, VLM document parsing, layout reconstruction, OCR post-correction</p>
+<p><strong>Summary</strong>: Typhoon OCR is an open Thai-English VLM for document extraction. The paper frames Thai OCR as difficult because of Thai script complexity, missing explicit word boundaries, and unstructured real-world documents. The model combines text transcription, layout reconstruction, and document-level structure in one framework.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Strong fit for Stage 3+4+5 replacement: text recognition, post-correction, and structured extraction.</li>
+<li>The training pipeline is a useful template: traditional OCR output, VLM restructuring, and curated synthetic data.</li>
+<li>The Hugging Face model card warns that the model is task-specific, intended for provided prompts, and can hallucinate.</li>
+<li>Product/medical workflows should therefore use Typhoon OCR behind a verifier or validation stage, not as an unchecked final source of truth.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Test Typhoon OCR on SME product labels, because existing benchmark categories emphasize broader Thai document types.</li>
+<li>Use Typhoon OCR as a fallback only when modular OCR confidence or ANLS is low.</li>
+<li>Add field-level verifier for critical values after Typhoon OCR extraction.</li>
+</ul>
+<hr>
+<h2>ThaiOCRBench</h2>
+<p><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2511.04479&gt;,">https://arxiv.org/abs/2511.04479&gt;,</a> &lt;<a href="https://huggingface.co/datasets/typhoon-ai/ThaiOCRBench/blob/main/README.md&gt;">https://huggingface.co/datasets/typhoon-ai/ThaiOCRBench/blob/main/README.md&gt;</a></p>
+<p><strong>Topic(s)</strong>: Thai OCR benchmark, VLM evaluation, document understanding</p>
+<p><strong>Summary</strong>: ThaiOCRBench is a Thai text-rich VLM benchmark with 2,808 human-annotated samples across 13 task categories. The Hugging Face dataset card lists fields <code>image</code>, <code>Task</code>, <code>question</code>, <code>answer</code>, and <code>category</code>, making it directly reusable as a template for an internal benchmark format.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Categories include text recognition, table parsing, full-page OCR, chart parsing, key information extraction, document classification, handwritten extraction, document parsing, and VQA.</li>
+<li>The benchmark is designed for zero-shot evaluation of proprietary and open-source VLMs.</li>
+<li>Error analysis identifies language bias, structural mismatch, and hallucinated content.</li>
+<li>It avoids a single metric family; tasks use different metrics according to task type.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Build a smaller internal NECTEC benchmark using the same schema:</li>
+<li><code>image</code></li>
+<li><code>task</code></li>
+<li><code>question</code></li>
+<li><code>answer</code></li>
+<li><code>category</code></li>
+<li><code>field_type</code></li>
+<li><code>criticality</code></li>
+<li>Add product-specific categories not covered by ThaiOCRBench:</li>
+<li>product label OCR</li>
+<li>ad vs. package classification</li>
+<li>ingredient/key-value extraction</li>
+<li>brand and unit preservation</li>
+</ul>
+<hr>
+<h2>Typhoon 2</h2>
+<p><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2412.13702&gt;">https://arxiv.org/abs/2412.13702&gt;</a></p>
+<p><strong>Topic(s)</strong>: Thai LLM, Thai VLM, Thai document understanding</p>
+<p><strong>Summary</strong>: Typhoon 2 is a family of Thai-optimized text and multimodal models, including text, vision, audio, and safety components. Typhoon2-Vision is relevant because it improves Thai document understanding while retaining general visual capabilities.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Typhoon2-Text can support LLM-as-a-Judge or LLM-as-a-Verifier experiments.</li>
+<li>Typhoon2-Vision can support ad/product-label classification and OCR quality auditing.</li>
+<li>Typhoon2-Safety is relevant if outputs include Thai cultural or sensitive content handling.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Compare Typhoon2-Text verifier vs. GPT-style verifier on product and OCR field verification.</li>
+<li>Use Typhoon2-Vision for zero-shot product-label vs. advertising-image classification before trying fine-tuning.</li>
+</ul>
+<hr>
+<h2>Qwen2.5-VL</h2>
+<p><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2502.13923&gt;">https://arxiv.org/abs/2502.13923&gt;</a></p>
+<p><strong>Topic(s)</strong>: general VLM baseline, structured extraction, layout understanding</p>
+<p><strong>Summary</strong>: Qwen2.5-VL is a strong open VLM family used as a general-purpose baseline for OCR, document understanding, structured extraction, and visual reasoning. It is useful as a non-Thai-specific comparison model against Typhoon OCR and Typhoon2-Vision.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Good baseline for zero-shot key-value extraction from forms, tables, and product labels.</li>
+<li>Useful for measuring whether Thai-specific fine-tuning is necessary.</li>
+<li>Should be evaluated under the same internal benchmark as Typhoon OCR, not only with ad hoc examples.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Compare Qwen2.5-VL 7B vs. Typhoon OCR/Typhoon2-Vision on:</li>
+<li>Thai product label OCR</li>
+<li>key-value extraction</li>
+<li>handwritten/noisy text</li>
+<li>Thai-English mixed layout</li>
+</ul>
+<hr>
+<h2>mPLUG-DocOwl 1.5 and DocOwl2</h2>
+<p><strong>Sources</strong>: &lt;<a href="https://arxiv.org/abs/2403.12895&gt;,">https://arxiv.org/abs/2403.12895&gt;,</a> &lt;<a href="https://arxiv.org/abs/2409.03420&gt;">https://arxiv.org/abs/2409.03420&gt;</a></p>
+<p><strong>Topic(s)</strong>: OCR-free document understanding, structure learning, multi-page documents</p>
+<p><strong>Summary</strong>: DocOwl 1.5 emphasizes unified structure learning for OCR-free document understanding across documents, webpages, tables, charts, and natural images. DocOwl2 extends this line to high-resolution multi-page document understanding by compressing high-resolution pages into fewer visual tokens.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>DocOwl 1.5 is most relevant to complex layout understanding and table/chart structure.</li>
+<li>DocOwl2 is relevant if the project expands from single product/document images to multi-page PDFs.</li>
+<li>Their technical contribution is not Thai-specific, but the structure-learning framing is useful for Thai forms and tables.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Use DocOwl-style structure learning as conceptual backing for why layout-aware evaluation matters.</li>
+<li>If local deployment is the goal, benchmark latency and memory before adopting OCR-free multi-page models.</li>
+</ul>
+<hr>
+<h2>ANLS*</h2>
+<p><strong>Source</strong>: &lt;<a href="https://arxiv.org/abs/2402.03848&gt;">https://arxiv.org/abs/2402.03848&gt;</a></p>
+<p><strong>Topic(s)</strong>: document evaluation metric, generative model evaluation, OCR/VQA scoring</p>
+<p><strong>Summary</strong>: ANLS* extends Average Normalized Levenshtein Similarity for evaluating generative document-processing outputs across classification and information extraction tasks. It is positioned as a drop-in replacement compatible with ANLS while supporting more complex generated outputs.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Better fit than WER for field extraction because it tolerates small OCR errors without requiring exact word segmentation.</li>
+<li>Useful for Thai because WER depends on tokenizer choice.</li>
+<li>Works best as part of a layered metric stack, not alone.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Use CER for raw transcription, ANLS/ANLS* for field string similarity, and verifier labels for critical field correctness.</li>
+<li>Add field criticality: an ANLS score can be acceptable for non-critical text but not for dosage/unit fields.</li>
+</ul>
+<hr>
+<h2>Multi-Layered Evaluation with LLMs as Judges</h2>
+<p><strong>Source</strong>: &lt;<a href="https://aclanthology.org/2025.coling-main.408.pdf&gt;">https://aclanthology.org/2025.coling-main.408.pdf&gt;</a></p>
+<p><strong>Topic(s)</strong>: evaluation stack, LLM-as-a-Judge, metric fusion</p>
+<p><strong>Summary</strong>: This COLING 2025 paper argues that lexical metrics, semantic metrics, and LLM judges each have trade-offs. Its key project-relevant idea is a layered evaluation design that routes easy cases through cheaper deterministic metrics and reserves LLM judging for harder cases.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Supports a cost-aware evaluation cascade.</li>
+<li>OCR evaluation can use the same idea:</li>
+<li>Layer 1: exact match/CER/rules</li>
+<li>Layer 2: ANLS/BERTScore</li>
+<li>Layer 3: LLM judge or verifier for disagreement/critical fields</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Add routing logic: call LLM verifier only when CER and ANLS disagree, confidence is low, or the field is high severity.</li>
+</ul>
+<hr>
+<h2>Zero-Shot VLM Classification with Contrastive Text Descriptions</h2>
+<p><strong>Source</strong>: &lt;<a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Saha_Improved_Zero-Shot_Classification_by_Adapting_VLMs_with_Text_Descriptions_CVPR_2024_paper.pdf&gt;">https://openaccess.thecvf.com/content/CVPR2024/papers/Saha_Improved_Zero-Shot_Classification_by_Adapting_VLMs_with_Text_Descriptions_CVPR_2024_paper.pdf&gt;</a></p>
+<p><strong>Topic(s)</strong>: VLM classification, prompt engineering, product image filtering</p>
+<p><strong>Summary</strong>: This work improves zero-shot VLM classification by adapting classes with text descriptions. The directly useful idea is to give contrastive descriptions for ambiguous classes instead of short labels only.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Better than asking only &quot;product or ad?&quot; because SME images can be ambiguous.</li>
+<li>Prompt classes should describe visual intent:</li>
+<li>product package / label / ingredient / specification</li>
+<li>advertisement / promotion / lifestyle / claim-heavy poster</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Build a prompt set with Thai and English descriptions.</li>
+<li>Evaluate whether Typhoon2-Vision or Qwen2.5-VL is more stable for Thai product images.</li>
+</ul>
+<hr>
+<h2>Multimodal Thai / CLIP-Style Embeddings</h2>
+<p><strong>Sources</strong>: &lt;<a href="https://huggingface.co/patomp/thai-light-multimodal-clip-and-distill&gt;,">https://huggingface.co/patomp/thai-light-multimodal-clip-and-distill&gt;,</a> &lt;<a href="https://huggingface.co/tomaarsen/jina-clip-v2&gt;">https://huggingface.co/tomaarsen/jina-clip-v2&gt;</a></p>
+<p><strong>Topic(s)</strong>: image-text alignment, product data cleaning, multilingual retrieval</p>
+<p><strong>Summary</strong>: The original research note marked a &quot;Thai CLIP gap&quot;. A more precise statement is that public Thai/multilingual image-text embedding options exist, but they are not yet validated for noisy SME product-label OCR. The Thai-light multimodal model is tied to Thai MS COCO-style captions, while Jina CLIP v2 is multilingual and supports 89 languages, but remains general-purpose rather than product/OCR-specific.</p>
+<p><strong>Key Points</strong>:</p>
+<ul>
+<li>Thai-light multimodal CLIP/distill models are possible lightweight candidates for image-text alignment.</li>
+<li>Jina CLIP v2 is a stronger multilingual embedding baseline and supports image-text retrieval.</li>
+<li>Neither should be assumed reliable for Thai product OCR without domain testing.</li>
+</ul>
+<p><strong>Ideas / Gaps</strong>:</p>
+<ul>
+<li>Reframe the research gap as:</li>
+<li>&quot;Thai product-label image-text alignment remains under-validated.&quot;</li>
+<li>POC:</li>
+<li>compute image-text alignment between product image and OCR text</li>
+<li>compare Thai-light, Jina CLIP v2, and Typhoon2-Vision judgment</li>
+<li>measure against human labels for match / mismatch</li>
+</ul>
+<hr>
+<h2>Research Decision</h2>
+<p>The most practical next research line is not &quot;replace OCR with VLM&quot; immediately. The stronger path is:</p>
+<ol>
+<li>Build an internal benchmark slice inspired by ThaiOCRBench.</li>
+<li>Upgrade Module 2 evaluation from WER/cosine to CER + ANLS + verifier.</li>
+<li>Add VLM fallback for low-confidence or unsupported fields.</li>
+<li>Test Typhoon OCR and Qwen2.5-VL as competing Stage 3+4+5 systems.</li>
+<li>Only then consider LoRA fine-tuning on product/medical documents.</li>
+</ol>
+      <p class="source-path">Source: <code>research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md</code></p>
+    </article>
+  </main>
+</body>
+</html>
