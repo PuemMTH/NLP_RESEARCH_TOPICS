@@ -1,0 +1,26 @@
+[project]
+name = "vlm-zero-shot-classifier-poc"
+version = "0.1.0"
+description = "POC: VLM zero-shot image classifier (ad/label vs product) using Typhoon2-Vision or Qwen2.5-VL"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers",
+    "accelerate",
+    "pillow",
+    "torch",
+    "torchvision",
+    "huggingface_hub",
+    "bitsandbytes",
+    "qwen-vl-utils",
+]
+
+# cu128 = CUDA 12.8 — required for Blackwell GPUs (RTX 50xx, sm_120+)
+# Supports: sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

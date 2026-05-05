@@ -1,0 +1,14 @@
+[
+  {
+    "filename": "/home/puem/Desktop/research/NLP_RESEARCH_TOPICS/poc/vlm-zero-shot-classifier/sample_outputs/sample_product.png",
+    "image_type": "product",
+    "approx_char_count": 33,
+    "threshold_decision": "product"
+  },
+  {
+    "filename": "/home/puem/Desktop/research/NLP_RESEARCH_TOPICS/poc/vlm-zero-shot-classifier/sample_outputs/sample_ad_label.png",
+    "image_type": "advertisement",
+    "approx_char_count": 795,
+    "threshold_decision": "advertisement"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "image": "/home/puem/Desktop/research/NLP_RESEARCH_TOPICS/poc/vlm-zero-shot-classifier/sample_outputs/sample_product.png",
+  "model_id": "scb10x/typhoon2-qwen2vl-7b-vision-instruct",
+  "vlm_label": "product",
+  "vlm_confidence": 0.95,
+  "vlm_reasoning": "The image shows a single product, a bottle, with minimal text on the label. There is no additional context or promotional text that would suggest it is an advertisement.",
+  "vlm_parse_ok": true,
+  "char_count": 33,
+  "char_threshold": 700,
+  "confidence_threshold": 0.7,
+  "threshold_decision": "product",
+  "final_label": "product",
+  "fallback_used": false
+}

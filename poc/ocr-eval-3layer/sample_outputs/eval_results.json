@@ -1,0 +1,67 @@
+[
+  {
+    "id": "pair_01",
+    "reference": "ยาแก้ปวดหัว",
+    "hypothesis": "ยาแกปวดหว",
+    "wer_newmm_pct": 200.0,
+    "wer_attacut_pct": 50.0,
+    "cosine_sim": 0.5815,
+    "cer_pct": 18.18,
+    "anls_star": 0.8182,
+    "bs_precision": 0.3825,
+    "bs_recall": 0.4792,
+    "bs_f1": 0.4254
+  },
+  {
+    "id": "pair_02",
+    "reference": "โรคความดันโลหิตสูง",
+    "hypothesis": "โรคความดันโลหตสง",
+    "wer_newmm_pct": 400.0,
+    "wer_attacut_pct": 40.0,
+    "cosine_sim": 0.9846,
+    "cer_pct": 11.11,
+    "anls_star": 0.8889,
+    "bs_precision": 0.7625,
+    "bs_recall": 0.6917,
+    "bs_f1": 0.7254
+  },
+  {
+    "id": "pair_03",
+    "reference": "รับประทานวันละ 2 เม็ด หลังอาหาร",
+    "hypothesis": "รบประทานวนล 2 เมด หลงอาหาร",
+    "wer_newmm_pct": 133.33,
+    "wer_attacut_pct": 71.43,
+    "cosine_sim": 0.4969,
+    "cer_pct": 16.13,
+    "anls_star": 0.8387,
+    "bs_precision": 0.4643,
+    "bs_recall": 0.5569,
+    "bs_f1": 0.5064
+  },
+  {
+    "id": "pair_04",
+    "reference": "แพ้ยาเพนิซิลลิน",
+    "hypothesis": "แพยาเพนซลน",
+    "wer_newmm_pct": 100.0,
+    "wer_attacut_pct": 100.0,
+    "cosine_sim": 0.5328,
+    "cer_pct": 33.33,
+    "anls_star": 0.6667,
+    "bs_precision": 0.1886,
+    "bs_recall": 0.0333,
+    "bs_f1": 0.0566
+  },
+  {
+    "id": "pair_05",
+    "reference": "ผลเลือดปกติ น้ำตาลในเลือด 95 mg/dL",
+    "hypothesis": "ผลเลือดปกติ น้ำตาลในเลอด 95 mg/dL",
+    "wer_newmm_pct": 22.22,
+    "wer_attacut_pct": 11.11,
+    "cosine_sim": 0.9826,
+    "cer_pct": 2.94,
+    "anls_star": 0.9706,
+    "bs_precision": 0.8813,
+    "bs_recall": 0.9334,
+    "bs_f1": 0.9066
+  }
+]

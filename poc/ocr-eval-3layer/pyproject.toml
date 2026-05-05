@@ -1,0 +1,28 @@
+[project]
+name = "ocr-eval-3layer-poc"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "torchvision",
+    "jiwer",
+    "anls",
+    "bert-score",
+    "transformers",
+    "sentencepiece",
+    "sentence-transformers",
+    "pythainlp",
+    "tabulate",
+    "protobuf",
+    "attacut",
+]
+
+# cu128 = CUDA 12.8 — supports sm_50 through sm_120 (Blackwell RTX 50xx)
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

@@ -1,0 +1,14 @@
+{
+  "image": "/home/puem/Desktop/research/NLP_RESEARCH_TOPICS/poc/vlm-zero-shot-classifier/sample_outputs/sample_ad_label.png",
+  "model_id": "scb10x/typhoon2-qwen2vl-7b-vision-instruct",
+  "vlm_label": "advertisement",
+  "vlm_confidence": 0.95,
+  "vlm_reasoning": "The image contains a flyer with extensive promotional text and a barcode, which is not typical of a plain product image.",
+  "vlm_parse_ok": true,
+  "char_count": 795,
+  "char_threshold": 700,
+  "confidence_threshold": 0.7,
+  "threshold_decision": "advertisement",
+  "final_label": "advertisement",
+  "fallback_used": false
+}
