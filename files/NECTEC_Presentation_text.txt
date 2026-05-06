@@ -1,0 +1,1532 @@
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 1 วันที่ 9/12/67
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+OCR & SME
+1.แยกและจำแนกรูปภาพระหวางภาพที่มีขอความกับภาพสินคา (พี่ทิพย)
+2.บันทึกขอความจากเอกสารทางการแพทย (พี่นก)
+3.ทำความสะอาดชื่อผลิตภัณฑ SME (พี่ทิพย)
+4.ดึงรูป SME ของหมวดหมูตามจํานวนที่ตองการ (กําลังดําเนินการ) (พี่ทิพย)
+5.หา Bounding box บนภาพ (กำลังดําเนินการ) (พี่ริน)
+
+หน้า 2
+
+แยกรูปภาพที่่่ม
+แยกรูปภาพที่มีข้อความเยอะๆ
+ีีี 
+กับรูป
+กับรูปภาพสินค้า
+ภาพสิ ค (1)
+
+ตัวอยางรูปภาพตัวอักษรเยอะๆ
+
+ตัวอยางรูปภาพสินคา
+
+แยกรูป
+แยกรูปภาพที่่่มีีีขอความเยอะๆ กับรูปภาพสินคา (2)
+ได้ภาพตัวอย่างมา หมวดหมู่ละ 200 ภาพ
+นำมา plot เพื่อหาคาที่จะนําไปตัดในขอมูล Set ใหญ
+ขั้นตอน
+1. ใช้โปรแกรม OCR Tesseract แปลงข้อความจาก
+ภาพ
+2. เก็บผลลัพทไวในไฟล CSV
+3. นำผลลัพท์มา plot เป็นความถี่ของจำนวน
+อักขระ(X)และจํานวนภาพ(Y)
+4. เลือกคาความถี่ไปใชในขั้นตอนการเลือกภาพ = 700
+
+plot ค่าความถี่จากภาพตัวอยาง
+
+หน้า 3
+
+แยกรูป
+แยกรูปภาพที่่่มีีีขอความเยอะๆ กับรูปภาพสินคา (3)
+
+หน้า 4
+
+หาจำนวนตัวอักษรของภาพ เพื่อใช้สำหรับกำหนดค่า
+threshold แยกภาพข้อความกับภาพสินคาออกจากกัน
+ขั้นตอน
+1. ใช้ค่าจากไฟล์ CSV มาตัดตามค่า Threshold ตามที่
+ต้องการ
+2. เก็บผลลัพทที่ไดจากการแยกไวใน Folder ที่ตองการ
+3. ได้ผลลัพท์จากการ run ด้วยค่า Threshold 700
+ได้ภาพที่มีตัวอักษรเยอะ 7973 ภาพ
+
+รูปภาพบน dataset ~370,000 ภาพ
+
+กลุ่มภาพที่มีตัวอักษรเยอะๆ ที่คัดออก
+
+หน้า 5
+
+บันทึกขอ
+บันทึกข้อความจากเอกสารทางการแพทย์
+ความจากเอกสารทางการแพทย (1)
+
+ขั้นตอน
+1. ใช้ OCR tesseract แปลวเอกสารเป็นข้อความจาก
+folder
+2. เก็บผลลัพท์ที่ได้จากการแปลงข้อความและบันทึกเป็น
+ไฟล์ .txt พรอมกับ ไฟลรูปภาพคูกัน
+
+ไฟล์ผลลัพท .txt
+ภาพเอกสารทางการแพทย์
+
+ทําความสะอาดชื
+ทำความสะอาดชื่อผลิตภัณฑ์
+่่่ ผลิ ภั ฑ SME (1)
+
+ตัดคำที่เป็นชื่อเฉพาะ ชื่อรุน อักขระพิเศษ ตัวเลขที่บอกปริมาณ
+
+หน้า 6
+
+หน้า 7
+
+ทํา
+ทำความสะอาดชื่่่อผลิตภัณฑ SME (2)
+1. แยกคำภาษาไทยด้วย pythainlp (word_tokenize)
+2. ตรวจสอบและกรองภาษา
+- เก็บเฉพาะภาษาไทย
+- เก็บเฉพาะภาษาอังกฤษ
+- เก็บเฉพาะตัวเลข
+3. วิเคราะห์ความถี่ของคำ
+- นับจำนวนครั้งที่คำแต่ละคำปรากฎ
+- กรองคำที่มีความถี่ต่ำกว่าที่กำหนด (threshold) กำหนดไว้ 10
+4. กรองสัญลักษณ์พิเศษและ emoji ออก
+5. สร้างขอมูลสะอาดในคอลัมนใหม (PRODUCT_NAME_NEW)
+
+ตัวอยาง Emoji or Symbol ที่ใชตัดคําออก
+
+Split คำ
+
+ตรวจจับภาษาไทย ภาษาอังกฤษ และตัวเลข
+
+หน้า 8
+
+ทํา
+ทำความสะอาดชื่่่อผลิตภัณฑ SME (3)
+
+ภาพผลลัพท
+ภาพผลลัพท
+
+ภาพผลลัพท
+
+หน้า 9
+
+YOLO Model
+1. ศึกษา Roboflow (พี่ริน)
+2. ศึกษา YOLOv8 ทําการ fine-tuning จากขอมูล Roboflow (พี่ริน)
+a. ดึงขอมูลจาก Roboflow โดยตรง
+b. ดึงขอมูลจาก local หรือ Mount Drive
+3. SAM: Segmentation Anything Model ศึกษา (กําลังดําเนินการ) (พี่ริน)
+
+ศึก
+ศึกษา YOLOv8 ทํา
+ทำการ fine-tuning จากข
+จากข้อมูล
+มู Roboflow (1)
+
+Roboflow Project Type
+
+หน้า 10
+
+หน้า 11
+
+ศึก
+ศึกษา YOLOv8 ทําการ fine-tuning จากขอมูล Roboflow (2)
+จาก https://universe.roboflow.com/rf-projects/x-ray-id
+
+ชนิด segmentation
+
+ภาพใช้ Train
+
+ภาพผลเฉลย
+
+ผลลัพทที่ไดจาก Base Model YOlOv8
+ไฟล์ data.yaml
+
+ศึก
+ศึกษา YOLOv8 ทํา
+ทำการ fine-tuning จากข
+จากข้อมูล
+มู Roboflow (3) dataset: วัต
+วัตถุดิิิบอาหาร
+จาก https://universe.roboflow.com/diallo/food_isntance_segmentation_104
+
+ภาพใช้ Train
+
+ภาพการ Predict
+
+หน้า 12
+
+ศึก
+ศึกษา YOLOv8 ทํา
+ทำการ fine-tuning จากข
+จากข้อมูล
+มู Roboflow (4) dataset: รอยแตกของซี
+รอยแตกของซีเมนต
+จาก https://universe.roboflow.com/senior-design-1a3ye/crack-finder-bbzjj
+
+ภาพการ Predict
+
+ภาพการ Predict
+
+หน้า 13
+
+สรุป ครั้ ง ที่ 1 วั น ที่ 9/12/67
+OCR & SME
+
+ผู้รับผิดชอบ
+
+แยกและจำแนกรูปภาพระหวางภาพที่มีขอความกับภาพสินคา (พี่ทิพย)
+
+ปลื้ม
+
+บันทึกขอความจากเอกสารทางการแพทย (พี่นก)
+
+ปลื้ม
+
+ทำความสะอาดชื่อผลิตภัณฑ SME (พี่ทิพย)
+
+ฮอลล์
+
+YOLO Model
+
+ผู้รับผิดชอบ
+
+ศึกษา Roboflow (พี่ริน)
+
+ปลื้มและฮอลล
+
+ศึกษา YOLOv8 ทําการ fine-tuning จากขอมูล Roboflow (พี่ริน)
+ดึงขอมูลจาก Roboflow โดยตรง
+ดึงขอมูลจาก local หรือ Mount Drive
+
+ปลื้มและฮอลล
+
+หมายเหตุ
+
+หมายเหตุ
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 2 วันที่ 24/12/67
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+OCR & SME
+1.ดึงรูป SME ของหมวดหมูตามจํานวนที่ตองการ (พี่ทิพย)
+2.แก้ไข Data SME (พี่ทิพย)
+a.แก้ไข product name ใหมีชองวางเวนวรรค
+b.รวมไฟล์ Column 1) Text length 2) OCR at Text
+3.หา Bounding box บนภาพ (พี่ริน)
+
+ดึง
+ดึงรูป
+รู SME ของหมวดหมูตามจํ
+ของหมวดหมู่ตามจำนวนที่ต้องการ
+านวนที่่่ 
+(1) ตัว
+ตัวอยางไฟล
+ชื่อไฟล์ 8 หลักแรก หมวดหมูของสินคา
+
+ไฟล์ excel แสดงชื่อไฟล
+
+หน้า 2
+
+ดึง
+ดึงรูป
+รู SME ของหมวดหมูตามจํ
+ของหมวดหมู่ตามจำนวนที่ต้องการ
+านวนที่่่ 
+(2) ขั้้้น
+ขั้นตอนการดึงขอมูล
+
+หน้า 3
+
+ขั้นตอน
+1. ทำการหา percentage (นำจำนวนที่ต้องการ/จำนวน
+Row ทั้งหมด * 100)
+2. และนำไปหาจำนวนที่ต้องสุ่มภาพออกมา โดย (จำนวน
+กลุ่มตามเลขหลัก * (percentage/100))
+3. จากนั้นจะทำการ sample รูปตามเลขหลักและจำนวน
+ภาพที่สุ่มออกมา
+4. Output ผลลัพธเปนไฟล .csv
+
+plot ค่าจํานวนภาพที่ดึงและเปอรเซ็นตของการดึงภาพ
+
+ดึง
+ดึงรูป
+รู SME ของหมวดหมูตามจํ
+ของหมวดหมู่ตามจำนวนที่ต้องการ
+านวนที่่่ 
+(3) ไฟล​์์ ์ผลลัพท
+
+ภาพผลลัพธ
+
+หน้า 4
+
+หน้า 5
+
+แก
+แก้ไข Data SME (1) แก
+แก้ไข PRDUCCT_NAME ใหมีีีชองวางเวนวรรค
+PRODUCT_NAME
+
+ผลลัพธเดิม
+
+ผลลัพธใหม
+
+หน้า 6
+
+แก
+แก้ไข Data SME (2)
+แก
+แก้ไข PRDUCCT_NAME ใหมีีีชองวางเวนวรรค
+
+เพิ่มสวนของการนําเอาเวนวรรคกลับมา
+
+เพ่ิมสวนของการลบ Dupicate Space
+การเว้นชองวาง
+
+หน้า 7
+
+แก
+แก้ไข Data SME (3) รวม Column 1.Text length 2.OCR at Text
+
+ข้อมูลสําหรับการนําไปเลือกขอมูล
+มี data ~19,000 row
+
+ข้อมูลจำนวน character
+มี data ~360,000 row
+
+Set ข้อมูลใหญ
+มี data ~500,000 row
+
+แก
+แก้ไข Data SME (3) เพิ
+เพิ่ม
+่่่ Column 1. Text length 2. OCR at Text
+
+การเช็คแบบเกา for loop
+
+แบบเดิม
+โดยใช้ for วนเช็คหา image_name ไปเรื่อยๆ
+~500,000 ข้อมูล จนเจอชื่อที่ตรงกันแล้วใส่ 1 โดย
+หากไม่เจอจะใส่ 0 และข้อมูลจำนวน character ที่จะ
+นำมาใสใน Set ขอมูลใหญ
+แบบใหม่
+แปลงข้อมูลใช้เทียบเป็น dict และสร้าง
+image_name เป็น set แล้วดึงชื่อที่ตรงกันออกมา
+เลยและนำ legth_text ออกมาด้วย จึงทำงานได้ไว้
+กว่า โดยไมจําเปนจะตองไลไปทีละตัว
+
+การเช็คแบบใหม set
+
+หน้า 8
+
+หน้า 9
+
+หา Bounding box บนภาพ (1)
+
+ตัวอยางรูปภาพ
+
+หน้า 10
+
+หา Bounding box บนภาพ (2)
+ขั้นตอน
+1. pre_image ปรับขยายขนาด
+2. ใช้ pytesseract อ่านตัวอักษรและทำ
+boundarybox
+3. แล้วทำการเก็บ text, x1, y1, x2, y2 (x, y จะ
+ต้องทำการหารด้วย size ภาพ x/width,
+y/height) เพื่อให้เราสามารถนำไปใช้กับรูปที่ถูกขยาย
+หรือยอได
+4. สร้าง argument ในการสั่งใชงาน program
+-i, --image: Path to single image file
+-d, --directory: Path to directory containing images
+-l, --list: List of image paths
+-c, --confidence: Confidence threshold for OCR text (default: 80)
+-o, --output: Output directory for JSON files (default: data)
+--config: Tesseract configuration (default: --psm 11 --oem 3 eng+tha)
+--extensions: List of file extensions to process (default: .jpg .jpeg .png)
+
+หาตัวอักษรทํา Bounding Box
+
+EX: python program.py -d <folder> -o <folder>
+
+หน้า 11
+
+หา Bounding box บนภาพ (3)
+ตัวอยางการเก็บขอมูล
+{
+key: [text, x1, y1, x2, y2],
+key: [text, x1, y1, x2, y2],
+key: [text, x1, y1, x2, y2],
+...
+}
+
+ภาพผลลัพธ
+
+Segmentation Model & Classification Model
+1. ศึกษา SAM: Segmentation Anything Model (พี่ริน)
+2. YOLO Classification แยกอวัยวะวาใชหรือไม (พี่ริน)
+3. SAM Segment วัตถุตามจํานวนที่กําหนดในภาพโฆษณา (พี่ปน)
+4. ทำ Bounding box บนภาพ mask prostate (พี่ริน)
+
+ศึก
+ศึกษา SAM: Segmentation Anything Model (1) ตัว
+ตัวอยางการ Segment
+
+ผลลัพท MaskAnnotator
+
+ภาพ Mask ที่ไดจากการ segmentation
+
+ภาพผลลัพธ + bbox prompt
+
+หน้า 12
+
+ศึก
+ศึกษา SAM: Segmentation Anything Model (2) dataset: เมื
+เมือง
+
+ภาพ segmentation แบบ point
+
+ภาพ segmentation แบบ bbox
+
+หน้า 13
+
+ภาพ segmentation แบบทั้งภาพ
+
+ศึก
+ศึกษา SAM: Segmentation Anything Model (3) dataset: มือ
+มือ(คอน, กระดาษ, กรรไกร)
+จาก https://universe.roboflow.com/roboflow-58fyf/rock-paper-scissors-sxsw
+
+ภาพการ Predict
+
+ภาพการ Predict
+
+หน้า 14
+
+ศึก
+ศึกษา SAM: Segmentation Anything Model (4) dataset: มะเร็
+มะเร็งเตานม
+จาก: https://huggingface.co/datasets/nielsr/breast-cancer
+
+ภาพ Ground truth mask
+
+ภาพการ Predict
+
+หน้า 15
+
+SAM Segment วัตถุตามจํานวนที่่่กํํํา
+วัตถุตามจำนวนที่กำหนดในภาพโฆษณา (1) dataset: Logo โฆษณา
+
+1. ใช้ SAM ในการ Segment วัตถุในภาพ
+2. เลือก masks ที่มีพื้นที่ใหญ่ที่สุดตาม
+จำนวนที่กําหนด (num_segments)
+3. บันทึก segment ที่ไดในรูปแบบไฟลภาพ
+
+ภาพต้นฉบับ
+
+ภาพการ Segmentation
+ภาพการ Segmentation
+
+หน้า 16
+
+หน้า 17
+
+YOLO Classification แยกอวัยวะว
+แยกอวัยวะว่าใช่หรือไม่
+ใช รื ไม (1) dataset: สมองและอื
+และอื่นๆ
+่่่
+
+ภาพ axial_brain
+
+ภาพ frontal_brain
+
+ภาพ other
+
+YOLO Classification แยกอวัยวะว
+แยกอวัยวะว่าใช่หรือไม่
+ใช รื ไม (2) dataset: สมองและอื
+และอื่นๆ
+่่่
+
+predict
+confusion matrix
+
+หน้า 19
+
+YOLO Classification แยกอวัยวะว
+แยกอวัยวะว่าใช่หรือไม่
+ใช รื ไม (2) dataset: ดวงตาและอื
+และอื่นๆ
+่่่
+
+ภาพดวงตา (oct)
+
+ภาพดวงตา (eyes)
+
+confusion matrix
+ภาพอื่นๆ (other)
+
+หน้า 20
+
+หน้า 21
+
+ทํทำา Bounding box บนภาพ mask prostate (1) dataset: Prostate
+ทำบนภาพ mask
+
+ภาพต้นฉบับ
+
+ภาพ mask
+
+ภาพ predict
+
+ทํทำา Bounding box บนภาพ mask prostate (2) dataset: Prostate
+
+หน้า 22
+
+output
+YOLOv11
+ภาพไฟล์ data.yaml
+ภาพทำ bbox
+
+ภาพไฟล์ .text
+
+ทำการ bounding box ในภาพของ mask prostate
+โดยภาพเดิมเปน .png ตองทําการแปลงเปนไฟล .jpg กอนจึงนําเขาใน roboflow ได
+และเมื่อนําเขา roboflow จากภาพทั้งหมด 476 ภาพ จะเหลือ 351 ภาพ เนื่องจาก roboflow ทําการนําภาพที่
+เปนสีดําลวนออก เหลือเพียงไมกี่ภาพ แลวทําการ output เปน YOLOv11
+
+สรุป ครั้ ง ที่ 2 วั น ที่ 24/12/67
+OCR & SME
+ดึงรูป SME ของหมวดหมูตามจํานวนที่ตองการ (พี่ทิพย)
+แก้ไข Data SME (พี่ทิพย)
+แก้ไข product name ใหมีชองวางเวนวรรค
+รวมไฟล์ Column 1) Text length 2) OCR at Text
+หา Bounding box บนภาพ (พี่ริน)
+
+Segmentation Model & Classification Model
+
+ผู้รับผิดชอบ
+
+หมายเหตุ
+
+ปลื้มและฮอลล
+
+ฮอลล์ เช็คและตรวจสอบโปรแกรม
+
+ปลื้ม
+ฮอลล์ ศึกษา Tools ปลื้ม ทำส่วนของ args และการ export json
+ปลื้มและฮอลล
+ที่ไดจาก ocr
+
+ผู้รับผิดชอบ
+
+ศึกษา SAM: Segmentation Anything Model (พี่ริน)
+
+ปลื้มและฮอลล
+
+YOLO Classification แยกอวัยวะวาใชหรือไม (พี่ริน)
+
+ปลื้มและฮอลล
+
+SAM Segment วัตถุตามจํานวนที่กําหนดในภาพโฆษณา (พี่ปน)
+ทำ Bounding box บนภาพ mask prostate (พี่ริน)
+
+หมายเหตุ
+ฮอลล์ แยกสมองกับอื่นๆ ปลื้ม แยกดวงตากับอื่นๆ
+
+ปลื้ม
+ปลื้มและฮอลล
+
+ฮอลล์ ทําสวนของการเตรียม dataset ปลื้มทําสวนของ model
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 3 วันที่ 8/1/2568
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+งานต
+งานต่อ
+
+1.YOLO Classification แยกอวัยวะวาใชหรือไม (พี่ริน)
+a. ทำการปรับแกไข dataset สวนของ other
+2.ทำ Bounding box บนภาพ mask prostate (พี่ริน)
+a. เข้า Yolo11 detect สวนของ Bounding box
+b. นำภาพที่ detect เขา SAM เพื่อได mask prostate
+3.Estimate Blood loss (พี่ทิพย)
+a.สร้าง Figma ตนแบบ
+b.ทำสวนของ API และ หนากาก
+c.คัดแยก dataset
+
+YOLO Classification แยกอวัยวะว
+แยกอวัยวะว่าใช่หรือไม่
+ใช รื ไม dataset: สมองและดวงตา
+
+หน้า 2
+
+จาก HuggingFace, Roboflow
+
+dataset เดิม
+
+ภาพ axial_brain ภาพ frontal_brain
+
+ภาพ eye
+
+ภาพ eye_oct
+
+dataset ใหม่
+
+ภาพ other
+
+ภาพ other
+
+YOLO Classification แยกอวัยวะว
+แยกอวัยวะว่าใช่หรือไม่
+ใช รื ไม dataset: สมองและดวงตา
+
+หน้า 3
+
+จาก HuggingFace, Roboflow
+
+dataset brain
+
+ภาพ axial_brain
+
+ภาพ frontal_brain
+
+ภาพ other
+
+dataset eye
+
+ภาพ eye
+
+ภาพ eye_oct
+
+ภาพ other
+
+ทํทำา Bounding box บนภาพ mask prostate
+Yolo11l.pt
+
+10 epoch
+
+20 epoch
+
+หน้า 4
+
+Yolo11m.pt
+
+หน้า 5
+
+ทํทำา Bounding box บนภาพ mask prostate
+ปรับแก Model เปน Yolo11l.pt 20 epoch
+เข้า Yolo11 detect สวนของ Bounding box
+
+ภาพต้นฉบับ
+
+ปรับแก
+
+.jpg
+roboflow
+
+ภาพ mask
+
+bbox
+ภาพทำ bbox
+
+ภาพ Detect bbox จาก Yolo11
+ปรับแก Model จาก Yolo11n.pt เปน Yolo11l.pt
+
+ทํทำา Bounding box บนภาพ mask prostate
+นำภาพที่ detect เขา SAM เพื่อได mask prostate
+
+ภาพผลลัพธ
+
+หน้า 6
+
+ทํทำา Bounding box บนภาพ mask prostate
+ภาพ Test เพิ่มเติมจากพี่นก
+
+ภาพผลลัพธ
+
+หน้า 7
+
+Estimate Blood loss ตน
+ต้นแบบ UI
+สร้างจําลองโปรแกรมดวย Figma
+
+มี 2 แบบ
+ผ้า gauze
+ผ้า swab
+แบ่งเปนหลายปริมาณ เชน
+5 ml
+10 ml
+แบ่งเปนหลายขนาด เชน
+8 * 12
+12 * 12
+สามารถแก้ไขปริมาณเลือดจาก
+Model แล้ว Output เป็น
+Report รายงานค่า loss,
+ปริมาณเลือด ฯลฯ
+
+หน้า 8
+
+หน้า 9
+
+Estimate Blood loss API
+พัฒนาดวย API (ipu template) ดวย Python Framwork FastAPI
+
+ขั้นตอน
+1.แปลง Code .ipynb ให้อยูในรูปแบบ Module
+2.สร้าง API ที่รับภาพและชนิดของผา swab และ gauze
+3.ปรับผลลัพธเปนรูปแบบ JSON เปนคาที่จะตอบกลับผูใช
+
+เก็บขอมูลอยูในรูปแบบไฟล เพื่อใหผูใชสามารถเรียกไปใชงานได
+1. ผลการ crop ที่ไดจาก Pipeline บันทึกเปนรูปแตละสวน
+2. ภาพ Original
+3. ภาพผลลัพธ
+
+EBL - Pipeline
+
+Module - Python
+
+การเก็บขอมูลภาพ
+
+หน้า 10
+
+Estimate Blood loss API ผลลั
+ผลลัพท
+พัฒนาดวย API (ipu template) ดวย Python Framwork FastAPI
+
+ผลลัพธ JSON
+
+Estimate Blood loss หนา
+หน้ากาก (fontend)
+พัฒนาด้วย Vue3 และใช้งาน lib Konva ในการจัดการเรื่องวัตถุในภาพ
+จัดการ Style ดวย Tailwind CSS + daisyUI
+
+หน้าเว็บไซต
+
+หน้า 11
+
+Estimate Blood loss คัด
+คัดแยก dataset
+คัดแยก dataset ดวยมือ ~1,000 ภาพ
+โดยมีการแยกภาพที่ผ้ายับและผ้าที่กางออก แยกเป็น folder 1.fold 2.unfold
+จากนั้นในภาพผ้าที่กางออก จะแบ่งตามปริมาณเลือด เช่น 5 ml, 30 ml ฯลฯ
+
+หน้า 12
+
+สรุป ครั้ ง ที่ 3 วั น ที่ 8/1/2568
+งานต่อ
+
+ผู้รับผิดชอบ
+
+YOLO Classification แยกอวัยวะวาใชหรือไม (สมอง, ดวงตา) (พี่ริน)
+ทำการปรับแกไข dataset สวนของ other
+
+ฮอลล์
+
+ทํา Bounding box บนภาพ mask prostate (พี่ริน)
+เขา Yolo11 detect สวนของ Bounding box
+นําภาพที่ detect เขา SAM เพื่อได mask prostate
+Estimate Blood loss (พี่ทิพย)
+สร้าง Figma ตนแบบ
+ทำสวนของ API และ หนากาก
+คัดแยก dataset
+
+หมายเหตุ
+
+ปลื้มและฮอลล
+
+ฮอลล์ นําภาพผลลัพธทั้งหมดมาเปรียบเทียบ
+
+ปลื้มและฮอลล
+
+ฮอลล์ ออกแบบหนาเว็บไซตใน Figma
+ทั้ง 5 คนทําการคัดแยก dataset
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 4 วันที่ 27/1/2568
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+งาน
+
+1.ทำ Bounding box บนภาพ mask prostate (พี่ริน)
+a. เพิ่ม dataset
+b. ทำการ train ใหม
+c. ทำ SAM Segment
+2.CLIP DR Level (พี่ปน)
+3.ศึกษา LSTM (พี่ริน)
+4.API Classification (พี่ริน)
+
+หน้า 2
+
+ทํทำา Bounding box บนภาพ mask prostate
+เพิ่ม Dataset ~4,000 ไฟล
+Image ต้นฉบับ
+Image Mask
+
+จะต้องทำการเปลี่ยนชื่อให้ตรงกัน โดยการรับ path รูป mask ตามโฟลเดอร์มาหา bbox โดยออกมาเป็น .txt replace เป็นชื่อตามที่ตองการ
+
+ต้นฉบับ
+
+label.txt
+
+Mask bbox
+
+ทํทำา Bounding box บนภาพ mask prostate
+แบ่งตามโครงสรางของ Yolo
+split ข้อมูลของโฟลเดอรเปน Train 70%, Test 20%, Val 10% และ output แยกตามแตละโฟลเดอร
+
+เพื่อได label.txt
+
+หน้า 3
+
+ทํทำา Bounding box บนภาพ mask prostate
+
+หน้า 4
+
+นำขอมูล Train ใน Model เดิม (Model Yolo11l 20 epoch)
+Train เพิ่มเปน 3 ครั้ง ครั้งละ 10 epoch
+โดยดูจากคา loss และ mAP50 ที่ไมมีแนวโนมลงและขึ้นแลว จึงใชการ Train ในรอบที่ 2(20 epoch)
+และนำภาพไปเขา SAM2b.pt และ SAMMed_vit2b.pt
+
+ในรอบที่ 1(+10 epoch) 3.5 ชั่วโมง
+total 30 epoch
+
+ในรอบที่ 2(+10 epoch) 5.8 ชั่วโมง
+total 40 epoch
+
+ในรอบที่ 3(+10 epoch) 4 ชั่วโมง
+total 50 epoch
+
+หน้า 5
+
+ทํทำา Bounding box บนภาพ mask prostate
+
+SAM2b.pt
+
+SAMMed_vit2b.pt
+
+หน้า 6
+
+CLIP DR Level
+ต้องการใช CLIP ในการแยกวาดวงตาอยูใน level ไหน โดยที่ไมตองทําการ Train
+
+นำ text แต่ละ Level ของ DR เก็บเป็น list และรับภาพจาก
+path แล้วนําเขา CLIP ในฝง text, image เพื่อได feature
+แล้วหาความใกลเคียง (similarities) ของภาพและ text
+จากนั้นทําการเขียนรายงานผลของแตละภาพ
+
+หน้า 7
+
+CLIP DR Level
+
+ViT-L_14
+
+ViT-B_32
+
+ศึก
+ศึกษา LSTM
+ศึกษา Human Action Recogntion
+จุดประสงค คือ ในวิดีโอกําลังทําอะไรอยู
+โดยมีการแบงเฟรมภาพจากวิดีโอแลวปรับขนาดของภาพ จากนั้นทําการจับคูภาพกับ Label และจีงทําการสราง Model ในการ Train
+
+หน้า 8
+
+หน้า 9
+
+ศึก
+ศึกษา LSTM
+
+ภาพตัวอยางขอมูล
+
+ภาพการ Predict
+
+ศึก
+ศึกษา LSTM
+พูดคุยกับพี่ริน
+เลือก Class เหลือ 7 Class เป็น
+HighJump, Diving, GolfSwing, HorseRiding, Mixing, Punch, Skiing
+ปรับ Model ในการเพิ่ม Dense เป็น 256, 512
+ก่อนเขา Dense softmax สุดทาย
+และดูคา loss และ accuracy วาดีขึ้นหรือไม
+
+หน้า 10
+
+ศึก
+ศึกษา LSTM
+พูดคุยกับพี่ริน
+ใช้ Dense 1024 30 epoch และลอง predict โดยใชวิดีโอจากขอมูล train เพื่อดูวาผลทํานายถุกตองหรือไหม
+หากไม่ไดอาจจะตองใชสวนในการ object detect มาชวยในการหาสิ่งของกอนที่จะ predict
+
+เพิ่มขนาดภาพตอน input จาก 64, 64 เปน 128, 128
+และก็ predict vdo แบงเฟรม skip 5 เฟรม กับ predict ทุกเฟรม
+
+หน้า 11
+
+หน้า 12
+
+แก
+แก้ไข dataset ผา gauze
+
+จากตำแหนงของผา gauze อยูในสวนดานบน ตัดใหผา gauze อยูสวนตรงกลาง
+เนื่องจาก Code ในการดึง Object ผ้า gauze ไม่สามารถดึงได้ในตำแหน่งส่วนด้านบน
+จึงจะตองขยับใหผา gauze อยูสวนตรงกลางกอน
+
+ภาพต้นฉบับ
+
+ภาพหลังตัดตอ
+
+งานหลั
+งานหลัก
+
+หน้า 12
+
+API Classification
+
+API Model การจำแนกอวัยวะดวงตา, สมอง
+
+ตอนแรก
+มีการรับภาพเปน ภาพเดียว และ หลายภาพ
+รับ user_id
+และกำหนดขนาดตอไฟล 2 mb
+-----------------------------------------หลังการพูดคุยกับพี่
+เหลือเป็นการรับ ภาพเดียว
+ตัด user_id ออก
+Save ผลลัพธ ป/เดือน/วัน/uuid
+กำหนดรหัสผาน RabbitMQ
+และ Build docker
+
+ภาพ FastAPI
+
+ภาพผลลัพธ
+
+หน้า 13
+
+หน้า 14
+
+หน้า 15
+
+สรุป ครั้ ง ที่ 4 วั น ที่ 27/1/2568
+งานต่อ
+ทำ Bounding box บนภาพ mask prostate (พี่ริน)
+เพิ่ม dataset
+ทำการ train YOLO ใหม เพิ่มเติม จาก base Model เดิม
+ทำ SAM Segment (SAM, Med SAM)
+
+ผู้รับผิดชอบ
+
+หมายเหตุ
+
+ปลื้มและฮอลล
+
+ฮอลล์จัดการสวนของ dataset ในการจัดเตรียม
+
+CLIP DR Level (พี่ปน)
+จำแนกโรคเบาหวานขึ้นตาของแตละระดับ โดยใช CLIP
+
+ปลื้ม
+
+ศึกษา LSTM (พี่ริน)
+Predict ในวิดีโอวาทํากิจกรรมอะไรอยู
+
+ฮอลล์
+
+API Classification (พี่ริน)
+การจำแนก ดวงตา สรางเปน API และ Website
+
+ปลื้มและฮอลล
+
+ฮอลล์จัดการในสวนของ Model
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 5 วันที่ 11/2/2568
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+งานเพิ
+งานเพิ่มเติ
+่่่ ม
+
+1.Estimate Blood loss (พี่ทิพย)
+a.ทำ API และ หนากากของเว็ป
+2.Label ดวงตาของ Level (พี่ริน)
+a.Label ดวงตา
+3.Human Action Recognition (พี่ริน)
+a.Label กีฬา
+b.Train Yolo
+4.Classification อวัยวะ (พี่ริน)
+a.เพิ่ม Dataset
+b.ทำ Augmentation
+c.Train Model ใหม่
+
+หน้า 1
+
+หน้า 2
+
+Estimate Blood loss
+ทำ API และ หนากากของเว็ป
+สร้าง API จาก Pipeline และทําหนาตาเว็ปไซต
+
+ภาพผลลัพธจาก Pipeline
+
+ภาพผลลัพธจาก API
+
+ภาพหน้าเว็ปไซต
+
+Estimate Blood loss
+ทำสวนของการ หนากาก Estimate Blood loss มี 2 pages พัฒนาดวย
+Frontend: Vite + React + TypeScript
+Backend: FastAPI (Python)
+
+หน้า 3
+
+Estimate Blood loss
+ในส่วนของหนาที่ 2 จะมีสวนของการ เพิ่มขอมูล, ยกเลิกการแกไข, ขยายภาพ, และสรางรายงาน
+
+หน้า 4
+
+Estimate Blood loss
+
+หน้า 5
+
+หน้า 6
+
+Label ดวงตาของ Level
+Label ดวงตา
+
+Big dot
+
+Label ดวงตา มี dataset แบ่งเป็น
+Level 2, 3, 4
+จะมี Big dot, Small dot, Sparkling
+และ Diabetic Retinopathy
+
+~900 / ~1400 images
+Small dot
+
+Sparkling
+
+ภาพ Label
+
+Diabetic
+Retinopathy
+
+หน้า 7
+
+Human Action Recognition
+Label กีฬา
+Label กีฬา แบ่งเป็น 7 Class
+dataset Class ละ ~10 ภาพ
+
+ภาพ Label
+
+หน้า 8
+
+Human Action Recognition
+Train Yolo
+นำ dataset มา train แลว Predict แบงเปน 2 ครั้ง
+1. 10 epoch Predict ไม่พบ
+2. 70 epoch Predict ผิด
+
+ภาพ Predict
+
+ภาพ Predict
+
+หน้า 9
+
+Classification อวั
+อวัยวะ
+เพิ่ม Dataset
+
+axial_brain
+
+frontal_brain
+
+หา Dataset
+axial
+frontal
+eye
+oct
+unknown
+
+eye_oct
+
+eye
+
+unknown
+
+URL DATASET
+RUBYSPEEDY/DIABETIC-RETINOPATHY-KAGGLE · DATASETS AT HUGGING FACE
+HTTPS://WWW.KAGGLE.COM/CODE/JAYKUMAR1607/BRAIN-TUMOR-MRI-CLASSIFICATION-TENSORFLOW-CNN/INPUT
+HTTPS://HUGGINGFACE.CO/DATASETS/HAIDERALTAHAN/WDS_DIABETIC_RETINOPATHY
+HTTPS://HUGGINGFACE.CO/DATASETS/RUBYSPEEDY/DIABETIC-RETINOPATHY-KAGGLE
+
+หน้า 10
+
+Classification อวั
+อวัยวะ
+ทำ Augmentation
+
+degrees=30 scale=0.5 fliplr=0.5 flipud=0.5
+
+Classification อวั
+อวัยวะ
+Train Model ใหม่
+
+หน้า 11
+
+สรุป ครั้ ง ที่ 5 วั น ที่ 11/2/2568
+งานต่อ
+
+ผู้รับผิดชอบ
+
+Estimate Blood loss (พี่ทิพย)
+ทำ API และ หนากากของเว็ป
+
+ปลื้ม
+
+Label ดวงตาของ Level (พี่นก)
+Label ดวงตา
+
+ฮอลล์
+
+Human Action Recognition (พี่ริน)
+Label กีฬา
+Train Yolo
+
+ฮอลล์
+
+Classification อวัยวะ (พี่ริน)
+เพิ่ม Dataset
+ทำ Augmentation
+Train Model ใหม่
+
+ฮอลล์
+
+หมายเหตุ
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 6 วันที่ 26/2/2568
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+งานเพิ
+งานเพิ่มเติ
+่่่ ม
+1.Estimate Blood loss (พี่ทิพย)
+a.จัดการ dataset ผา gauze
+b.ออกแบบโครงสร้างการทํางาน
+c.ทำ Mock up Code สำหรับการใช้งาน
+Worker Queue (พี่ตา + อน)
+2.Prostate API (พี่ริน)
+a.แก้ไขการแสดงผลเปน static mount
+
+จัด
+จัดการ dataset ผา gauze Estimate Blood loss
+ข้อมูล ~1,400 ภาพ
+คัดแยกภาพที่ผ่านการ Segment โดยพี่ปาล์ม
+โดยแยกตามโฟลเดอร์ที่พี่ทิพย์สร้างไว้ โดยแบ่งเป็นตาม
+เคส อันดับแรก คือ
+ภาพที่ Segment แล้วติดถุงพลาสติก หรือป้าย
+กำกับ และหากไม่ติดถุง หรือว่าป้ายกำกับ จะแบ่ง
+ตามเคส ได้แก
+Under คือ Segment ไม่เต็มแผนของผา
+Over คือ Segment เกินกวาขอบเขตของผา
+
+หน้า 3
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+พูดคุยกับพี่ต้า เรื่องการ design job งาน
+แบบ worker queue ที่จะนําไปใช ใน AI for Thai
+พูดคุยกับพี่ทิพยและพี่ปารม ในการ เปลี่ยนโมเดล
+
+หน้า 2
+
+หน้า 4
+
+Design worker queue
+design การทำติดตามคิวหาก process นานเกินไป
+และหรือหากตองการมาติดตาม ผลลัพทภายหลัง
+
+เดิมที่มีอยูแลวจะเปนแบบ RPC
+
+Design worker queue
+
+หน้า 5
+
+หน้า 6
+
+Design worker queue
+design การทำติดตามคิวหาก process นานเกินไป
+และหรือหากตองการมาติดตาม ผลลัพทภายหลัง
+
+เดิมที่มีอยูแลวจะเปนแบบ RPC
+
+หน้า 7
+
+Design worker queue
+แก้ไขให้ส่วนของ worker และส่วนของการจัดการ
+database แยกออกจากกัน ให้ worker ทำแต่
+งานเพียงอยางเดียว
+
+เดิมที่มีอยูแลวจะเปนแบบ RPC
+Job
+
+db, queue
+
+Job
+Job
+
+status
+
+หน้า 6
+
+Label ดวงตาของ Level
+แก้ไขการ Label ดวงตา ที่ Label
+ทำได้ ~900 จาก ~1400 images
+โดยจะมีหมอมาช่วยเช็คและพูดคุยกับพี่ จึงทำการ
+เก็บการ Label ที่ทํามากอน
+
+ไว้นําเสนอพี่ๆ NECTEC
+Big dot
+
+Small dot
+
+Sparkling
+
+Diabetic
+Retinopathy
+
+ภาพ Label
+
+API Prostate
+จัดทํา API Prostate พัฒนาดวย
+Frontend: Vite + React + TypeScript
+Backend: FastAPI (Python)
+
+หน้า 8
+
+หน้า 9
+
+API Prostate
+รูปแบบการจัดเก็บไฟล
+folder -> /yyyy/mm/dd/<random uuid>
+
+การเก็บไฟล path
+
+_original.png
+
+_sam_mask.png
+
+_bbox.txt
+
+_bbox.png
+
+ปรับ
+ปรับแก Docker-Compose
+แก้ไขการ mount file (models) แกปญหา image(docker image) ใหญเกินไป
+[/] - API Demo Estimate Blood loss
+[/] - API Prostate
+
+หน้า 10
+
+ปรับ
+ปรับแก API static file
+แก้ไขการ การเรียกไฟล์แบบ static file แทนที่จะใช้งาน enpoint เรียกใช้งาน เพื่อดูรูป
+[ ] - API Demo Estimate Blood loss
+[x] - API Prostate
+
+หน้า 11
+
+สรุป ครั้ ง ที่ 6 วั น ที่ 26/2/2568
+งานต่อ
+
+ผู้รับผิดชอบ
+
+Estimate Blood loss (พี่ทิพย)
+จัดการ dataset ผา gauze
+ออกแบบโครงสร้างการทํางาน
+ทำ Mock up Code สําหรับการใชงาน Worker Queue (พี่ตา + อน)
+
+ปลื้ม
+
+Prostate API (พี่ริน)
+แก้ไขการแสดงผลเป็น static mount
+
+ฮอลล์
+
+หมายเหตุ
+
+สมาชิก
+
+นางสาว ศรินทร วัชรบุศราคํา
+(พี่เลี้ยง)
+
+นาย ธนภัทร เอี่ยมอาจ
+(ปลื้ม)
+
+ครั้งที่ 7 วันที่ 12/3/2568
+
+นาย พัชรพล เลารุจิราลัย
+(ฮอลล์)
+
+หน้า 1
+
+งานเพิ
+งานเพิ่มเติ
+่่่ ม
+1.Estimate Blood loss (พี่ทิพย)
+a.ออกแบบหน้าเว็ปไซตใหมสําหรับรับหลาย ๆ รูป
+b.ออกแบบการทำงานของ API แบบ Worker
+Queue
+2.Label DR (พี่ริน)
+3.Knowledge Sharing Docker & API
+
+หน้า 2
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+หน้าแรก
+
+หน้า 3
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+เมื่ออัปโหลด
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+ประวัติการอัปโหลด
+
+หน้า 4
+
+หน้า 5
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+1. Main Entry Point (ebl-main/main_fastapi.py):
+- เป็น FastAPI server ที่รับ HTTP POST request ที่ endpoint `/ebl`
+- รับ input เป็น image file, sponge type และ uid
+- เป็น Orchestra ในการสงขอมูลไปยัง services ตางๆผาน RabbitMQ
+
+Code จากส่วนของพี่ปารม ทําแบบ RPC
+
+2. Mask Detection (mask/mask_mmdet.py):
+- รับ image จาก main service
+- ใช้ Mask2Former model เพื่อ detect สิ่งของในภาพ
+- แยก crop แต่ละชิ้นและทํา perspective transform
+3. Sponge Classification (sponge/sponge_timm.py):
+- รับ cropped images จาก mask service
+- ใช้ ResNet18 model แยกประเภทว่าเป็น gauze หรือ swab
+- ส่งกลับ labels สำหรับแตละ crop
+4. Blood Loss Estimation (estimate/estimate_xgboost.py):
+- รับ cropped images และ labels จาก sponge service
+- ใช้ XGBoost model แยกตาม type (gauze/swab) เพื่อประเมินปริมาณเลือด
+- ส่งกลับค่าประเมินปริมาณเลือดของแต่ละชิ้นและผลรวมทั้งหมด
+
+เปลี่ยนจาก SAM เป็น mmdet
+เปลี่ยนจาก pipeline ใหเปน function แยกเปน code
+
+หน้า 6
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+ทำแบบ Worker Queue
+ทำแบบ RPC
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+task ID
+
+การเริ่มตนกระบวนการ:
+Client ส่งคําขอประมวลผลภาพไปยัง FastAPI ดวย POST /process-image
+FastAPI สร้างงาน (task) ในสถานะ "PENDING" และบันทึกลงในฐานขอมูล
+FastAPI ส่งขอความไปยัง RabbitMQPublisher ใหสงขอความตอไปยัง RabbitMQ
+FastAPI ส่งรหัส task ID กลับไปให Client
+
+หน้า 7
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+task ID
+
+การเริ่มตนกระบวนการ:
+Client ส่งคําขอประมวลผลภาพไปยัง FastAPI ดวย POST /process-image
+FastAPI สร้างงาน (task) ในสถานะ "PENDING" และบันทึกลงในฐานขอมูล
+FastAPI ส่งขอความไปยัง RabbitMQPublisher ใหสงขอความตอไปยัง RabbitMQ
+FastAPI ส่งรหัส task ID กลับไปให Client
+เก็บ task ID, Status(PENDING)
+
+หน้า 8
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+หน้า 9
+
+การประมวลผล:
+RabbitMQConsumer รับงานจาก RabbitMQ
+RabbitMQConsumer อัปเดตสถานะงานเป็น "PROCESSING" ในฐานข้อมูล
+RabbitMQConsumer ส่งคําขอไปยัง ExternalAPI ดวย POST /example-process
+task ID
+เก็บ task ID, Status(PROCESSING), data จาก ExternalAPI
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+ค่า prediction = ผลรวมของปริมาณเลือดที่ประเมินไดจากทุกชิ้น
+แต่ละชิ้นจะถูกประเมินดวย XGBoost model ที่แตกตางกันตามประเภท (swab/gauze)
+
+หน้า 10
+
+Design การทํ
+การทำงาน
+า
+Estimate Blood loss
+
+หน้า 11
+
+กรณีประมวลผลสําเร็จ:
+ExternalAPI ส่งขอมูลผลลัพธกลับมา
+RabbitMQConsumer อัปเดตสถานะงานเป็น "COMPLETED" ในฐานข้อมูล
+RabbitMQConsumer ส่ง "Acknowledge message" ไปยัง RabbitMQ เพื่อยืนยันวาประมวลผลสําเร็จ
+กรณีประมวลผลลมเหลว:
+ExternalAPI ส่งขอผิดพลาดกลับมา
+RabbitMQConsumer อัปเดตสถานะงานเป็น "FAILED" ในฐานข้อมูล
+RabbitMQConsumer ส่ง "Negative acknowledge" ไปยัง RabbitMQ เพื่อแจงวาการประมวลผลลมเหลว
+
+เก็บ task ID, Status(COMPLETED, FAILED), Data
+
+task ID
+
+Label DR
+
+ทั้งหมด 996 ไฟลรูป
+
+ภาพต้นฉบับ
+
+พิกัดตําแหนง .txt
+
+หน้า 12
+
+Knowledge Sharing Docker & API
+
+IPU API - Presentation - Canva
+
+หน้า 13
+
+สรุป ครั้ ง ที่ 7 วั น ที่ 12/3/2568
+งานต่อ
+Estimate Blood loss (พี่ทิพย)
+ออกแบบหน้าเว็ปไซตใหมสําหรับรับหลาย ๆ รูป
+ออกแบบการทำงานของ API แบบ Worker Queue
+
+ผู้รับผิดชอบ
+
+หมายเหตุ
+
+ปลื้ม, ฮอลล
+
+ฮอลล์สรางจําลองหนาเว็ปไซต
+
+Label DR (พี่ริน)
+
+ฮอลล์
+
+Knowledge Sharing Docker & API
+
+ปลื้ม
+
+
