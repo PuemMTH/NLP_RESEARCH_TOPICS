@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ความสอดคล้องเชิงกลยุทธ์: ปลื้ม & ดร. Chanlekha</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            width: 100%;
+        }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .box { width: 15px; height: 15px; border-radius: 3px; }
+        .user-color { background-color: #3498db; }
+        .advisor-color { background-color: #e67e22; }
+        .overlap-color { background-color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>แผนผังความสอดคล้องเชิงกลยุทธ์</h1>
+        <div class="subtitle">สำหรับการเตรียมตัวหารืออาจารย์ที่ปรึกษาวิทยานิพนธ์</div>
+        
+        <div class="mermaid">
+graph TD
+    subgraph User["คุณปลื้ม (NECTEC/CV/Dev)"]
+        U1["ประมวลผลภาพการแพทย์<br/>(Prostate, MRI, DR)"]
+        U2["การวางระบบ AI Pipeline<br/>(FastAPI, Docker, RabbitMQ)"]
+        U3["พื้นฐาน Thai OCR<br/>(Pytesseract, PyThaiNLP)"]
+    end
+
+    subgraph Advisor["ดร. Chanlekha (NLP/Surveillance)"]
+        A1["เฝ้าระวังสุขภาพสาธารณะ<br/>(Ontology, Event Extraction)"]
+        A2["ระบบ NLP ประยุกต์<br/>(เกษตร, การศึกษา, กฎหมาย)"]
+        A3["NLP ภาษาพม่า/หลายภาษา<br/>(ASR, แก้คำผิด, NMT)"]
+    end
+
+    %% Connection Points
+    U3 <--> |"จุดเชื่อม: High-Acc Medical OCR"| A1
+    U1 <--> |"การวิเคราะห์สุขภาพแบบผสมผสาน"| A1
+    U2 <--> |"แพลตฟอร์มวิจัยที่ขยายสเกลได้"| A2
+    U3 <--> |"NLP สำหรับภาษาทรัพยากรน้อย"| A3
+
+    %% Strategic Themes
+    Theme1["<b>หัวข้อวิจัย 1:</b><br/>การสกัดข้อมูลการแพทย์ด้วย VLM<br/>(ไทย/หลายภาษา)"]
+    Theme2["<b>หัวข้อวิจัย 2:</b><br/>การติดตามโรคเชิงพื้นที่และเวลา<br/>ด้วย AI แบบผสมผสาน (Multimodal)"]
+    
+    A1 --- Theme1
+    U3 --- Theme1
+    A1 --- Theme2
+    U1 --- Theme2
+
+    style User fill:#e1f5fe,stroke:#01579b
+    style Advisor fill:#fff3e0,stroke:#e65100
+    style Theme1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style Theme2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="box user-color"></div> พื้นฐานของคุณ</div>
+            <div class="legend-item"><div class="box advisor-color"></div> ความเชี่ยวชาญของอาจารย์</div>
+            <div class="legend-item"><div class="box overlap-color"></div> หัวข้อวิจัยที่มี Synergy ร่วมกัน</div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</body>
+</html>

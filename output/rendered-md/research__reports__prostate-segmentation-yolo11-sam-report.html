@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Report: Prostate Segmentation via YOLO11 &amp; SAM</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <h1>Research Report: Prostate Segmentation via YOLO11 &amp; SAM</h1>
+<p><strong>Project:</strong> NECTEC Cooperative Education / Master&#x27;s Thesis Prep <strong>Lead Researcher:</strong> Tanapat Eiam-arj <strong>Mentor:</strong> Sarintr Watcharabutsarakham (P&#x27;Rin) <strong>Date:</strong> May 2026 (Consolidated from Jan-Mar 2025 results)</p>
+<hr>
+<h2>1. Objective</h2>
+<p>To develop a high-precision medical imaging pipeline for detecting and segmenting the prostate gland from CT and MRI scans, reducing manual labeling time for radiologists and providing consistent anatomical masks for further clinical analysis.</p>
+<hr>
+<h2>2. Technical Methodology</h2>
+<h3>2.1 The Two-Stage Pipeline</h3>
+<p>The system utilizes a <strong>Detection-to-Segmentation</strong> workflow:</p>
+<ol>
+<li><strong>Stage 1 (Detection):</strong> Use <strong>YOLO11 (Large/Medium)</strong> to identify the Bounding Box of the prostate.</li>
+<li><strong>Stage 2 (Segmentation):</strong> Pass the Bounding Box as a prompt to <strong>SAM (Segment Anything Model)</strong> or <strong>MedSAM</strong> to generate the final high-resolution mask.</li>
+</ol>
+<h3>2.2 Model Evolution</h3>
+<ul>
+<li><strong>Initial Phase:</strong> YOLOv8/YOLO11n (Nano) for quick testing.</li>
+<li><strong>Optimization Phase:</strong> Upgraded to <strong>YOLO11l (Large)</strong> for higher mAP.</li>
+<li><strong>Segmentation Models:</strong></li>
+<li><strong>SAM (Standard):</strong> Good general performance.</li>
+<li><strong>SAM2 (SAM2b.pt):</strong> Tested for improved efficiency.</li>
+<li><strong>MedSAM (SAMMed_vit2b.pt):</strong> Specialized medical foundation model for better domain-specific boundary detection.</li>
+</ul>
+<hr>
+<h2>3. Dataset &amp; Training</h2>
+<h3>3.1 Data Sources</h3>
+<ul>
+<li><strong>Initial Dataset:</strong> ~1,400 images (300 manually labeled by the team).</li>
+<li><strong>Expansion:</strong> Added ~4,000 files from hospital data.</li>
+<li><strong>Preprocessing:</strong></li>
+<li>Conversion from PNG masks to YOLO-compatible <code>.txt</code> labels (x, y, w, h normalized).</li>
+<li>Data split: 70% Train, 20% Test, 10% Val.</li>
+<li>Roboflow used for management and data augmentation.</li>
+</ul>
+<h3>3.2 Training Configuration</h3>
+<ul>
+<li><strong>Model:</strong> YOLO11l.pt</li>
+<li><strong>Epochs:</strong> 20 to 50 epochs (optimized based on mAP50 and Loss curves).</li>
+<li><strong>Inference:</strong> Integrated with SAM to produce final <code>.png</code> masks and <code>.json</code> coordinates.</li>
+</ul>
+<hr>
+<h2>4. System Implementation: Prostate API</h2>
+<p>A specialized web interface was developed to operationalize the model:</p>
+<ul>
+<li><strong>Frontend:</strong> Vite + React + TypeScript + Konva (for canvas visualization).</li>
+<li><strong>Backend:</strong> FastAPI (Python).</li>
+<li><strong>Storage Strategy:</strong> Organized by <code>/yyyy/mm/dd/&lt;uuid&gt;/</code> containing:</li>
+<li><code>_original.png</code></li>
+<li><code>_sam_mask.png</code></li>
+<li><code>_bbox.txt</code></li>
+<li><code>_bbox.png</code></li>
+<li><strong>Infrastructure:</strong> Containerized using Docker-Compose with external model mounting to optimize image size.</li>
+</ul>
+<hr>
+<h2>5. Key Results &amp; Performance</h2>
+<ul>
+<li><strong>Validation:</strong> Best performance achieved at <strong>40-50 epochs</strong> with YOLO11l.</li>
+<li><strong>Visual Accuracy:</strong> MedSAM showed superior boundary definition compared to standard SAM in clinical CT slices.</li>
+<li><strong>Deployment:</strong> Successfully transitioned from a synchronous pipeline to a modular API structure.</li>
+</ul>
+<hr>
+<h2>6. Future Directions (Master&#x27;s Thesis Potential)</h2>
+<ol>
+<li><strong>3D Volumetric Segmentation:</strong> Extending the 2D slice-based approach to full 3D CT volume reconstruction.</li>
+<li><strong>Active Learning:</strong> Implementing a feedback loop where radiologists can correct SAM masks to further fine-tune the YOLO detector.</li>
+<li><strong>Cross-Organ Generalization:</strong> Applying the YOLO+SAM pipeline to other organs (e.g., Kidney, Liver) using the same framework.</li>
+</ol>
+<hr>
+<p><strong>Related Files:</strong></p>
+<ul>
+<li><a href="../../files/NECTEC_Presentation_text.txt">NECTEC Presentation Text</a></li>
+<li><a href="../../research/topics/chanlekha-advisor-meeting-prep-2026-05-06-th.md">Meeting Preparation Guide</a></li>
+</ul>
+      <p class="source-path">Source: <code>research/reports/prostate-segmentation-yolo11-sam-report.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

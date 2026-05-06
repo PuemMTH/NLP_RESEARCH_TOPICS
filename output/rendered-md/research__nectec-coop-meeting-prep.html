@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>สรุปเนื้อหาการนำเสนอสหกิจศึกษา (Cooperative Education Presentation)</title>
+  <style>
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --ink: #172027;
+  --muted: #61707d;
+  --line: #d8dee5;
+  --accent: #0f766e;
+  --blue: #38598b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  line-height: 1.65;
+}
+main {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 36px 0 56px;
+}
+nav {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+}
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; letter-spacing: 0; }
+h1 { margin-top: 0; font-size: 2.1rem; color: var(--accent); }
+h2 { margin-top: 2rem; padding-top: 0.35rem; border-top: 1px solid var(--line); }
+p { margin: 0.75rem 0; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: 0.25rem; }
+a { color: var(--blue); text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+code {
+  background: #edf1f5;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "SFMono-Regular", monospace;
+  font-size: 0.92em;
+}
+pre {
+  overflow-x: auto;
+  background: #10131f;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.94rem;
+}
+th, td {
+  padding: 9px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef2f5; }
+blockquote {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: #f2f7f6;
+  color: #29343d;
+}
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+.source-path {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 760px) {
+  main { width: min(100% - 20px, 980px); padding-top: 20px; }
+  article { padding: 18px; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+</style>
+</head>
+<body>
+  <main>
+    <nav><a href="../index.html">← Back to index</a></nav>
+    <article>
+      <h1>สรุปเนื้อหาการนำเสนอสหกิจศึกษา (Cooperative Education Presentation)</h1>
+<p><strong>หัวข้อ:</strong> การวิเคราะห์ตำแหน่งและจำแนกอวัยวะจากภาพทางการแพทย์ (Location Analysis and Organ Classification from Medical Images)</p>
+<hr>
+<h2>1. ภาพรวมและวัตถุประสงค์</h2>
+<p>โครงการนี้มุ่งเน้นการใช้เทคโนโลยี AI และ Computer Vision เพื่อช่วยสนับสนุนการวินิจฉัยทางการแพทย์ ลดภาระงานของแพทย์ และลดความผิดพลาดในการตีความภาพถ่ายทางการแพทย์ โดยมี 2 งานหลักคือ:</p>
+<ul>
+<li>  <strong>การประมวลผลต่อมลูกหมากจากภาพ CT (Prostate Processing):</strong> เพื่อตรวจจับตำแหน่งและแบ่งส่วน (Segmentation) ต่อมลูกหมาก</li>
+<li>  <strong>การคัดแยกอวัยวะจากภาพทางการแพทย์ (Organ Classification):</strong> เพื่อจำแนกประเภทภาพถ่ายอวัยวะ (เช่น สมอง, ดวงตา) จากแหล่งต่างๆ เช่น MRI, CT, OCT</li>
+</ul>
+<hr>
+<h2>2. ประเด็นสำคัญและข้อมูลที่นำเสนอ</h2>
+<h3>ก. การประมวลผลต่อมลูกหมาก (Prostate)</h3>
+<ul>
+<li>  <strong>เทคนิคที่ใช้:</strong> ใช้ <strong>YOLO11</strong> (โมเดล l และ m) สำหรับการทำ Object Detection เพื่อหา Bounding Box และนำไปใช้ร่วมกับ <strong>SAM (Segment Anything Model)</strong> สำหรับการทำ Segmentation</li>
+<li>  <strong>ข้อมูล (Dataset):</strong></li>
+<li>  ชุดที่ 1: ประมาณ 1,400 ภาพ (ทำ Label เอง 300 ภาพ)</li>
+<li>  ชุดที่ 2: ประมาณ 4,000 ไฟล์ จากโรงพยาบาล (มีการจัดการโครงสร้างข้อมูลและสร้าง Bbox จาก Mask)</li>
+<li>  <strong>ผลการทดลอง:</strong> ทดสอบโมเดลที่ 40 epoch ให้ผลลัพธ์ดีที่สุด (อ้างอิงจากค่า Loss และ mAP50) และทดลองใช้ SAMMed_vit2b.pt เพื่อเพิ่มความแม่นยำในโดเมนการแพทย์</li>
+<li>  <strong>ระบบที่พัฒนา:</strong> เว็บแอปพลิเคชัน (Frontend: Vite+React+TS, Backend: FastAPI)</li>
+</ul>
+<h3>ข. การคัดแยกอวัยวะ (Organ Classification)</h3>
+<ul>
+<li>  <strong>หมวดหมู่การจำแนก:</strong> Axial Brain, Frontal Brain, Eye OCT, Eye, และ Unknown</li>
+<li>  <strong>การพัฒนาโมเดล:</strong></li>
+<li>  เริ่มต้นใช้ YOLO8 ต่อมาอัปเกรดเป็น <strong>YOLO11n</strong> (สมอง) และ <strong>YOLO11m</strong> (ดวงตา)</li>
+<li>  มีการแก้ปัญหาโมเดลทายผิดเมื่อภาพถูกหมุน โดยการทำ <strong>Data Augmentation</strong> (หมุน 30 องศา, ขยายภาพ, พลิกภาพ)</li>
+<li>  <strong>ระบบที่พัฒนา:</strong> เว็บแอปพลิเคชัน (Frontend: Vite+React+TS, Backend: FastAPI)</li>
+</ul>
+<h3>ค. งานอื่นๆ และกิจกรรม</h3>
+<ul>
+<li>  <strong>งานวิจัย/พัฒนาเสริม:</strong></li>
+<li>  OCR เอกสารและภาพทางการแพทย์ (Pytesseract)</li>
+<li>  ระบบแยกสินค้า SME และตัดชื่อสินค้า (PyThaiNLP)</li>
+<li>  ระบบประมาณการสูญเสียเลือด (Estimate Blood Loss API)</li>
+<li>  การจำแนก DR Level (Diabetic Retinopathy) ด้วย CLIP และ Roboflow</li>
+<li>  การทำความสะอาด Dataset ผ้าก๊อซ (Gauze Dataset)</li>
+<li>  LSTM สำหรับ Human Action Recognition</li>
+<li>  <strong>กิจกรรม:</strong> การเป็นผู้ช่วยสอน (TA) โครงการ AI for Thai ที่ มก. กำแพงแสน และ มทร.ธัญบุรี รวมถึงกิจกรรมภายใน สวทช./NECTEC</li>
+</ul>
+<hr>
+<h2>3. จำแนกงานตามสาขา</h2>
+<h3>Computer Vision (CV)</h3>
+<table><thead><tr><th>งาน</th><th>เทคนิค</th><th>หมายเหตุ</th></tr></thead><tbody><tr><td>Prostate Segmentation</td><td>YOLO11 + SAM</td><td>Detection → Segmentation pipeline</td></tr><tr><td>Organ Classification</td><td>YOLO11n/m + Data Augmentation</td><td>Brain / Eye / OCT</td></tr><tr><td>DR Level Classification</td><td>CLIP + Roboflow</td><td>Multimodal — overlap CV+NLP</td></tr><tr><td>Blood Loss Estimation</td><td>Rule-based API</td><td>ไม่ใช้ ML</td></tr><tr><td>Human Action Recognition</td><td>LSTM</td><td>Video sequence</td></tr><tr><td>Gauze Dataset Cleaning</td><td>Manual / Script</td><td>Data prep</td></tr></tbody></table>
+<h3>NLP / ภาษาไทย</h3>
+<table><thead><tr><th>งาน</th><th>เทคนิค</th><th>จุดเชื่อมกับโปรเจกต์เรา</th></tr></thead><tbody><tr><td>OCR เอกสาร/ภาพทางการแพทย์</td><td>Pytesseract</td><td>Thai Medical OCR pipeline ตรงๆ</td></tr><tr><td>แยกสินค้า SME + ตัดชื่อสินค้า</td><td>PyThaiNLP</td><td>Thai text processing / tokenization</td></tr></tbody></table>
+<blockquote><strong>สรุป:</strong> งาน NLP ตรงๆ มี 2 งาน (OCR + PyThaiNLP) ส่วนที่เหลือเป็น CV — จุดเชื่อมสำหรับการคุยกับ NECTEC คือ <strong>OCR pipeline</strong> ที่ยังใช้ Pytesseract ซึ่งมีปัญหากับภาษาไทย เปิดโอกาสเสนอ approach ที่ดีกว่าได้</blockquote>
+<hr>
+<h2>4. คำถามหรือจุดที่ควรถามในการประชุม</h2>
+<ol>
+<li><strong>ด้านประสิทธิภาพ (Performance):</strong></li>
+</ol>
+<ul>
+<li>  ค่า mAP50 หรือ Dice Coefficient ของการทำ Prostate Segmentation อยู่ที่เท่าไร และเพียงพอต่อการนำไปใช้งานจริงในทางการแพทย์หรือไม่?</li>
+<li>  หลังจากการทำ Augmentation ในส่วนของ Organ Classification ความแม่นยำ (Accuracy) เพิ่มขึ้นมากน้อยเพียงใด?</li>
+</ul>
+<ol>
+<li><strong>ด้านการนำไปใช้งาน (Deployment):</strong></li>
+</ol>
+<ul>
+<li>  ระบบที่พัฒนาขึ้น (FastAPI + React) มีแผนจะนำไปทดสอบใช้งานจริง (Pilot Test) กับโรงพยาบาลที่เป็นเจ้าของข้อมูลหรือไม่?</li>
+<li>  การประมวลผลต่อภาพ (Inference Time) ใช้เวลานานเท่าไร หากต้องนำไปรันบนเครื่องคอมพิวเตอร์ทั่วไปในโรงพยาบาล?</li>
+</ul>
+<ol>
+<li><strong>ด้านข้อมูล (Dataset):</strong></li>
+</ol>
+<ul>
+<li>  ปัญหาเรื่องความแตกต่างของข้อมูล (Data Variability) จากต่างแหล่งที่มา (เช่น จาก Kaggle เทียบกับข้อมูลโรงพยาบาล) ส่งผลต่อประสิทธิภาพของโมเดลอย่างไร?</li>
+<li>  มีการทำ Data Privacy หรือ Anonymization อย่างไรสำหรับข้อมูลที่ได้มาจากโรงพยาบาล?</li>
+</ul>
+<ol>
+<li><strong>แผนงานในอนาคต:</strong></li>
+</ol>
+<ul>
+<li>  มีแผนจะขยายขอบเขตไปยังอวัยวะอื่นๆ หรือไม่?</li>
+<li>  งาน OCR ที่พัฒนาขึ้น มีความแม่นยำเพียงพอในการสกัดข้อมูลตัวเลขสำคัญจากเอกสารแพทย์หรือไม่? (เนื่องจาก Pytesseract มักมีปัญหากับภาษาไทยและฟอนต์เฉพาะทาง)</li>
+</ul>
+      <p class="source-path">Source: <code>research/nectec-coop-meeting-prep.md</code></p>
+    </article>
+  </main>
+</body>
+</html>

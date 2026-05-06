@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Strategic Alignment: Tanapat & Dr. Chanlekha</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            width: 100%;
+        }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .box { width: 15px; height: 15px; border-radius: 3px; }
+        .user-color { background-color: #3498db; }
+        .advisor-color { background-color: #e67e22; }
+        .overlap-color { background-color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Strategic Alignment Map</h1>
+        <div class="subtitle">Thesis Advisorship Discussion Prep</div>
+        
+        <div class="mermaid">
+graph TD
+    subgraph User["Tanapat (NECTEC/CV/Dev)"]
+        U1["Medical Image Processing<br/>(Prostate, MRI, DR)"]
+        U2["AI Deployment Pipelines<br/>(FastAPI, Docker, RabbitMQ)"]
+        U3["Thai OCR Baseline<br/>(Pytesseract, PyThaiNLP)"]
+    end
+
+    subgraph Advisor["Dr. Chanlekha (NLP/Surveillance)"]
+        A1["Public Health Surveillance<br/>(Ontology, Event Extraction)"]
+        A2["Applied NLP Systems<br/>(Agri, Edu, Legal)"]
+        A3["Multilingual/Myanmar NLP<br/>(ASR, Correction, NMT)"]
+    end
+
+    %% Connection Points
+    U3 <--> |"Bridge: High-Acc Medical OCR"| A1
+    U1 <--> |"Multimodal Health Analytics"| A1
+    U2 <--> |"Scalable Research Platforms"| A2
+    U3 <--> |"Low-Resource Language NLP"| A3
+
+    %% Strategic Themes
+    Theme1["<b>Research Theme 1:</b><br/>VLM-based Medical Info Extraction<br/>(Thai/Multilingual)"]
+    Theme2["<b>Research Theme 2:</b><br/>Spatiotemporal Disease Tracking<br/>via Multimodal AI"]
+    
+    A1 --- Theme1
+    U3 --- Theme1
+    A1 --- Theme2
+    U1 --- Theme2
+
+    style User fill:#e1f5fe,stroke:#01579b
+    style Advisor fill:#fff3e0,stroke:#e65100
+    style Theme1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style Theme2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="box user-color"></div> Your Background</div>
+            <div class="legend-item"><div class="box advisor-color"></div> Advisor's Focus</div>
+            <div class="legend-item"><div class="box overlap-color"></div> Synergistic Thesis Themes</div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</body>
+</html>
