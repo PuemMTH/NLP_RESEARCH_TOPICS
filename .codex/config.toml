@@ -1,0 +1,27 @@
+# Local non-secret Codex config snapshot.
+# Copied from ~/.codex/config.toml on 2026-05-06.
+# Do not store auth.json, logs, sessions, caches, or other runtime state here.
+
+service_tier = "fast"
+
+[projects."/Users/puem"]
+trust_level = "trusted"
+
+[projects."/Users/puem/Documents/NLP_RESEARCH_TOPICS"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 2
+
+[features]
+memories = true
+
+[memories]
+use_memories = true
+generate_memories = true
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[notice]
+fast_default_opt_out = true
