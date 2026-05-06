@@ -1,0 +1,2128 @@
+{
+  "summary": {
+    "scope": "source files only; generated output/rendered-md HTML excluded",
+    "files_scanned": 77,
+    "unique_web_urls": 159,
+    "ok_web_count": 159,
+    "broken_web_count": 0
+  },
+  "broken_web": [],
+  "all_web": [
+    {
+      "url": "https://aclanthology.org/2024.findings-acl.212/",
+      "status": 200,
+      "final_url": "https://aclanthology.org/2024.findings-acl.212/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "url": "https://aclanthology.org/2024.naacl-long.62/",
+      "status": 200,
+      "final_url": "https://aclanthology.org/2024.naacl-long.62/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "url": "https://aclanthology.org/2025.coling-main.408.pdf",
+      "status": 200,
+      "final_url": "https://aclanthology.org/2025.coling-main.408.pdf",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 80
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 152
+        }
+      ]
+    },
+    {
+      "url": "https://ar5iv.labs.arxiv.org/",
+      "status": 200,
+      "final_url": "https://ar5iv.labs.arxiv.org/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/1908.10084",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/1908.10084",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2204.01691",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2204.01691",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2206.08853",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2206.08853",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2206.11795",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2206.11795",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2305.16291",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2305.16291",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2310.10688",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2310.10688",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2402.03848",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2402.03848",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 68
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 133
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2403.12895",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2403.12895",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 69
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2404.05669",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2404.05669",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2405.11757",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2405.11757",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2406.09246",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2406.09246",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.00114",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2407.00114",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2407.17789",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2407.17789",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2408.14998",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2408.14998",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2409.00527",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2409.00527",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2409.03420",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2409.03420",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 70
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 137
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.12628",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2410.12628",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2410.13305",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2410.13305",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2411.05945",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2411.05945",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 61
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2412.13702",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2412.13702",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 31
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2412.15248",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2412.15248",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 59
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2412.20138",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2412.20138",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2502.01205",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2502.01205",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md",
+          "line": 80
+        },
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 53
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 15
+        },
+        {
+          "file": "research/sources/thai-medical-ocr-post-correction-2026-03-31.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2502.13923",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2502.13923",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 66
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 44
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 92
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2503.16365",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2503.16365",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2504.00414",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2504.00414",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2504.03621",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2504.03621",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2504.04085",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2504.04085",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 35
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2504.08066",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2504.08066",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.20429",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2505.20429",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 14
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2505.24600",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2505.24600",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2506.10406",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2506.10406",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2506.13363",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2506.13363",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.19804",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2507.19804",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2507.23736",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2507.23736",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 85
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2508.11499",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2508.11499",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2508.16279",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2508.16279",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2508.19205",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2508.19205",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2509.13347",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2509.13347",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2509.14464",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2509.14464",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 87
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2509.19345",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2509.19345",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2510.05684",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2510.05684",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2511.04161",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2511.04161",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2511.04479",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2511.04479",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 21
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2511.14998",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2511.14998",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 79
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2512.08789",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2512.08789",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2601.03926",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2601.03926",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 83
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2601.05470",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2601.05470",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2601.07620",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2601.07620",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2601.14722",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2601.14722",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 64
+        },
+        {
+          "file": "research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md",
+          "line": 78
+        },
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 22
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 13
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 12
+        },
+        {
+          "file": "research/sources/thai-medical-ocr-post-correction-2026-03-31.md",
+          "line": 5
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.02212",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.02212",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.05384",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.05384",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.06402",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.06402",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/ideas/experiment-plan-thai-medical-ocr-2026-03-31.md",
+          "line": 79
+        },
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 66
+        },
+        {
+          "file": "research/references/refs-thai-medical-ocr-post-correction.md",
+          "line": 14
+        },
+        {
+          "file": "research/sources/thai-medical-ocr-post-correction-2026-03-31.md",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.07038",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.07038",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2602.12203",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2602.12203",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00024",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00024",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00026",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00026",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00030",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00030",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00077",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00077",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 89
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00296",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00296",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00307",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00307",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 91
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00364",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00364",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00369",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00369",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00426",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00426",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 80
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00573",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00573",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00582",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00582",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00612",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00612",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00686",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00686",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 90
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00702",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00702",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00718",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00718",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00724",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00724",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00823",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00823",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 60
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00829",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00829",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00842",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00842",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00889",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00889",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00907",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00907",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.00924",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.00924",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 79
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.01042",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.01042",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 71
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.01070",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.01070",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.13398",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.13398",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-ocr-pipeline-papers-2026-04.md",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/abs/2603.19461",
+      "status": 200,
+      "final_url": "https://arxiv.org/abs/2603.19461",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-broad-topics.md",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/html/2509.15858v2",
+      "status": 200,
+      "final_url": "https://arxiv.org/html/2509.15858v2",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 104
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/html/2601.14722",
+      "status": 200,
+      "final_url": "https://arxiv.org/html/2601.14722",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "url": "https://arxiv.org/html/2603.13398",
+      "status": 200,
+      "final_url": "https://arxiv.org/html/2603.13398",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md",
+          "line": 198
+        }
+      ]
+    },
+    {
+      "url": "https://deepmind.google/discover/blog/rt-2-new-model-translates-vision-and-language-into-action/",
+      "status": 200,
+      "final_url": "https://deepmind.google/blog/rt-2-new-model-translates-vision-and-language-into-action/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 8
+        },
+        {
+          "file": "research/sources/rt-2-vla-robot-control-2026-04-04.md",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "url": "https://deepwiki.com/QwenLM/Qwen2.5-VL/2-model-architecture",
+      "status": 200,
+      "final_url": "https://deepwiki.com/QwenLM/Qwen2.5-VL/2-model-architecture",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 67
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 152
+        }
+      ]
+    },
+    {
+      "url": "https://deepwiki.com/X-PLUG/mPLUG-DocOwl/1.2-system-architecture",
+      "status": 200,
+      "final_url": "https://deepwiki.com/X-PLUG/mPLUG-DocOwl/1.2-system-architecture",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 68
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 157
+        }
+      ]
+    },
+    {
+      "url": "https://dl.acm.org/doi/10.1145/3581783.3611992",
+      "status": 200,
+      "final_url": "https://dl.acm.org/action/cookieAbsent",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 118
+        }
+      ]
+    },
+    {
+      "url": "https://docs.astral.sh/uv/",
+      "status": 200,
+      "final_url": "https://docs.astral.sh/uv/",
+      "error": null,
+      "refs": [
+        {
+          "file": "poc/ocr-eval-3layer/README.md",
+          "line": 47
+        },
+        {
+          "file": "poc/vlm-zero-shot-classifier/README.md",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "url": "https://docs.opentyphoon.ai/en/ocr/",
+      "status": 200,
+      "final_url": "https://docs.opentyphoon.ai/en/ocr/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "url": "https://download.pytorch.org/whl/cu128",
+      "status": 200,
+      "final_url": "https://download.pytorch.org/whl/cu128",
+      "error": null,
+      "refs": [
+        {
+          "file": ".claude/agents/poc-builder.md",
+          "line": 104
+        },
+        {
+          "file": ".claude/agents/poc-builder.md",
+          "line": 160
+        },
+        {
+          "file": ".github/agents/poc-builder.agent.md",
+          "line": 104
+        },
+        {
+          "file": ".github/agents/poc-builder.agent.md",
+          "line": 160
+        },
+        {
+          "file": "AGENTS.md",
+          "line": 127
+        },
+        {
+          "file": "poc/byt5-ocr-correction/pyproject.toml",
+          "line": 16
+        },
+        {
+          "file": "poc/doclayout-yolo/pyproject.toml",
+          "line": 19
+        },
+        {
+          "file": "poc/easyocr-thai/pyproject.toml",
+          "line": 16
+        },
+        {
+          "file": "poc/got-ocr2/pyproject.toml",
+          "line": 18
+        },
+        {
+          "file": "poc/ocr-eval-3layer/pyproject.toml",
+          "line": 23
+        },
+        {
+          "file": "poc/paddleocr-v5/pyproject.toml",
+          "line": 17
+        },
+        {
+          "file": "poc/vlm-zero-shot-classifier/pyproject.toml",
+          "line": 21
+        },
+        {
+          "file": "poc/wangchanberta-correction/pyproject.toml",
+          "line": 17
+        },
+        {
+          "file": "research/ideas/idea6-lora-finetune-typhoon-ocr-2026-05.md",
+          "line": 121
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/2U1/Qwen-VL-Series-Finetune",
+      "status": 200,
+      "final_url": "https://github.com/2U1/Qwen-VL-Series-Finetune",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/MineDojo/MineDojo",
+      "status": 200,
+      "final_url": "https://github.com/MineDojo/MineDojo",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/MineDojo/Voyager",
+      "status": 200,
+      "final_url": "https://github.com/MineDojo/Voyager",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 43
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/PyThaiNLP/KhanomTanLLM",
+      "status": 200,
+      "final_url": "https://github.com/PyThaiNLP/KhanomTanLLM",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/PyThaiNLP/WangChanGLM",
+      "status": 200,
+      "final_url": "https://github.com/PyThaiNLP/WangChanGLM",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/QwenLM/Qwen3-VL/issues",
+      "status": 200,
+      "final_url": "https://github.com/QwenLM/Qwen3-VL/issues",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 95
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/Tiiiger/bert_score",
+      "status": 200,
+      "final_url": "https://github.com/Tiiiger/bert_score",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 75
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/moojink/openvla-oft",
+      "status": 200,
+      "final_url": "https://github.com/moojink/openvla-oft",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/openai/Video-Pre-Training",
+      "status": 200,
+      "final_url": "https://github.com/openai/Video-Pre-Training",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/opendatalab/DocLayout-YOLO",
+      "status": 200,
+      "final_url": "https://github.com/opendatalab/DocLayout-YOLO",
+      "error": null,
+      "refs": [
+        {
+          "file": "poc/doclayout-yolo/README.md",
+          "line": 3
+        },
+        {
+          "file": "research/topics/thai-medical-ocr-post-correction.md",
+          "line": 221
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/openvla/openvla",
+      "status": 200,
+      "final_url": "https://github.com/openvla/openvla",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/openvla/openvla#pretrained-vlas",
+      "status": 200,
+      "final_url": "https://github.com/openvla/openvla#pretrained-vlas",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/openvla/openvla/issues?q=Minecraft",
+      "status": 200,
+      "final_url": "https://github.com/openvla/openvla/issues?q=Minecraft",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/rail-berkeley/tensorrt-openvla",
+      "status": 200,
+      "final_url": "https://github.com/rail-berkeley/tensorrt-openvla",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/search?q=OpenVLA+Minecraft&type=discussions",
+      "status": 200,
+      "final_url": "https://github.com/search?q=OpenVLA+Minecraft&type=discussions",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/search?q=OpenVLA+Minecraft&type=repositories",
+      "status": 200,
+      "final_url": "https://github.com/search?q=OpenVLA+Minecraft&type=repositories",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/datasets/iapp/thai_handwriting_dataset",
+      "status": 200,
+      "final_url": "https://huggingface.co/datasets/iapp/thai_handwriting_dataset",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 85
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/datasets/lst-nectec/lst20",
+      "status": 200,
+      "final_url": "https://huggingface.co/datasets/lst-nectec/lst20",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/datasets/naazimsnh02/medocr-vision-dataset",
+      "status": 200,
+      "final_url": "https://huggingface.co/datasets/naazimsnh02/medocr-vision-dataset",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 87
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/datasets/openthaigpt/thai-ocr-evaluation",
+      "status": 200,
+      "final_url": "https://huggingface.co/datasets/openthaigpt/thai-ocr-evaluation",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/datasets/typhoon-ai/ThaiOCRBench/blob/main/README.md",
+      "status": 200,
+      "final_url": "https://huggingface.co/datasets/typhoon-ai/ThaiOCRBench/blob/main/README.md",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 127
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/learn/cookbook/en/fine_tuning_vlm_trl",
+      "status": 200,
+      "final_url": "https://huggingface.co/learn/cookbook/en/fine_tuning_vlm_trl",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/models",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/models",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-10",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-10",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-goal",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-goal",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-object",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-object",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/openvla/openvla-7b-prismatic",
+      "status": 200,
+      "final_url": "https://huggingface.co/openvla/openvla-7b-prismatic",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2403.04696",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2403.04696",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2403.12895",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2403.12895",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2406.12624",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2406.12624",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2410.22257",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2410.22257",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2411.05945",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2411.05945",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2501.15558",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2501.15558",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/papers/2508.03686",
+      "status": 200,
+      "final_url": "https://huggingface.co/papers/2508.03686",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/patomp/thai-light-multimodal-clip-and-distill",
+      "status": 200,
+      "final_url": "https://huggingface.co/patomp/thai-light-multimodal-clip-and-distill",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 142
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 192
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/physical-intelligence/fast",
+      "status": 200,
+      "final_url": "https://huggingface.co/physical-intelligence/fast",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/scb10x/typhoon-ocr1.5-2b",
+      "status": 200,
+      "final_url": "https://huggingface.co/typhoon-ai/typhoon-ocr1.5-2b",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/tomaarsen/jina-clip-v2",
+      "status": 200,
+      "final_url": "https://huggingface.co/tomaarsen/jina-clip-v2",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 147
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 192
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/typhoon-ai/typhoon-ocr-7b",
+      "status": 200,
+      "final_url": "https://huggingface.co/typhoon-ai/typhoon-ocr-7b",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/diagrams/vlm-thai-ocr-architecture-map-2026-05-06.md",
+          "line": 65
+        },
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 21
+        },
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 132
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "url": "https://internvl.github.io/blog/2024-12-05-InternVL-2.5/",
+      "status": 200,
+      "final_url": "https://internvl.github.io/blog/2024-12-05-InternVL-2.5/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "url": "https://medium.com/@ishaafsalman/fine-tuning-qwen-qwen3-vl-30b-a3b-moe-architecture-with-lora-2365359e870f",
+      "status": 200,
+      "final_url": "https://medium.com/@ishaafsalman/fine-tuning-qwen-qwen3-vl-30b-a3b-moe-architecture-with-lora-2365359e870f",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "url": "https://nanonets.com/blog/fine-tuning-vision-language-models-vlms-for-data-extraction/",
+      "status": 200,
+      "final_url": "https://nanonets.com/blog/fine-tuning-vision-language-models-vlms-for-data-extraction/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "url": "https://openaccess.thecvf.com/content/CVPR2024/papers/Saha_Improved_Zero-Shot_Classification_by_Adapting_VLMs_with_Text_Descriptions_CVPR_2024_paper.pdf",
+      "status": 200,
+      "final_url": "https://openaccess.thecvf.com/content/CVPR2024/papers/Saha_Improved_Zero-Shot_Classification_by_Adapting_VLMs_with_Text_Descriptions_CVPR_2024_paper.pdf",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 99
+        },
+        {
+          "file": "research/sources/vlm-thai-ocr-reference-deep-dive-2026-05-06.md",
+          "line": 172
+        }
+      ]
+    },
+    {
+      "url": "https://openvla-oft.github.io/",
+      "status": 200,
+      "final_url": "https://openvla-oft.github.io/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "url": "https://openvla.github.io/",
+      "status": 200,
+      "final_url": "https://openvla.github.io/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 10
+        },
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 7
+        },
+        {
+          "file": "research/sources/openvla-open-source-vla-2026-04-04.md",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "url": "https://papers.nips.cc/paper_files/paper/2024/hash/937ae0e83eb08d2cb8627fe1def8c751-Abstract-Conference.html",
+      "status": 200,
+      "final_url": "https://papers.nips.cc/paper_files/paper/2024/hash/937ae0e83eb08d2cb8627fe1def8c751-Abstract-Conference.html",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "url": "https://pythainlp.org/docs/2.0/api/tokenize.html",
+      "status": 200,
+      "final_url": "https://pythainlp.org/docs/2.0/api/tokenize.html",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "url": "https://robotics-transformer-x.github.io/",
+      "status": 200,
+      "final_url": "https://robotics-transformer-x.github.io/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "url": "https://robotics-transformer2.github.io/assets/rt2.pdf",
+      "status": 200,
+      "final_url": "https://robotics-transformer2.github.io/assets/rt2.pdf",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "url": "https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/fine_tune/fine_tuning_lora_qwen2vl.html",
+      "status": 200,
+      "final_url": "https://rocm.docs.amd.com/projects/ai-developer-hub/en/latest/notebooks/fine_tune/fine_tuning_lora_qwen2vl.html",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 97
+        }
+      ]
+    },
+    {
+      "url": "https://say-can.github.io/",
+      "status": 200,
+      "final_url": "https://say-can.github.io/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nlp-robotics.md",
+          "line": 6
+        },
+        {
+          "file": "research/sources/saycan-grounding-language-robotic-affordances-2026-04-04.md",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "url": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html",
+      "status": 200,
+      "final_url": "https://sbert.net/docs/sentence_transformer/usage/semantic_textual_similarity.html",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "url": "https://ui.adsabs.harvard.edu/abs/2024arXiv240900527B/references",
+      "status": 200,
+      "final_url": "https://ui.adsabs.harvard.edu/abs/2024arXiv240900527B/references",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-cited-by-ocr-pipeline-papers-2026-04.md",
+          "line": 151
+        }
+      ]
+    },
+    {
+      "url": "https://unsloth.ai/docs/models/tutorials/qwen3-how-to-run-and-fine-tune/qwen3-vl-how-to-run-and-fine-tune",
+      "status": 200,
+      "final_url": "https://unsloth.ai/docs/models/tutorials/qwen3-how-to-run-and-fine-tune/qwen3-vl-how-to-run-and-fine-tune",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 64
+        }
+      ]
+    },
+    {
+      "url": "https://voyager.minedojo.org/",
+      "status": 200,
+      "final_url": "https://voyager.minedojo.org/",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "url": "https://www.datacamp.com/tutorial/fine-tuning-qwen3-vl-8b",
+      "status": 200,
+      "final_url": "https://www.datacamp.com/tutorial/fine-tuning-qwen3-vl-8b",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 96
+        }
+      ]
+    },
+    {
+      "url": "https://www.philschmid.de/fine-tune-multimodal-llms-with-trl",
+      "status": 200,
+      "final_url": "https://www.philschmid.de/fine-tune-multimodal-llms-with-trl",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-lora-vlm-finetune-2026-05.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "url": "https://www.pi.website/research/fast",
+      "status": 200,
+      "final_url": "https://www.pi.website/research/fast",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-openvla-minecraft-2026-04.md",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S0957417425003343",
+      "status": 200,
+      "final_url": "https://www.sciencedirect.com/science/article/pii/S0957417425003343",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-llm-as-verifier-2026-05.md",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S1566253526000680",
+      "status": 200,
+      "final_url": "https://www.sciencedirect.com/science/article/pii/S1566253526000680",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 113
+        }
+      ]
+    },
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S2667096825000370",
+      "status": 200,
+      "final_url": "https://www.sciencedirect.com/science/article/pii/S2667096825000370",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-vlm-thai-ocr-extension-2026-05.md",
+          "line": 94
+        }
+      ]
+    },
+    {
+      "url": "https://www.sciencestack.ai/paper/2402.04788",
+      "status": 200,
+      "final_url": "https://www.sciencestack.ai/paper/2402.04788",
+      "error": null,
+      "refs": [
+        {
+          "file": "research/references/refs-nectec-nlp-llm-extension-2026-05.md",
+          "line": 27
+        }
+      ]
+    }
+  ]
+}

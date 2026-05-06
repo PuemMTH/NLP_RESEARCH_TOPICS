@@ -29,8 +29,7 @@
   - https://github.com/search?q=OpenVLA+Minecraft&type=discussions
 - OpenVLA official issues search for "Minecraft": no results
   - https://github.com/openvla/openvla/issues?q=Minecraft
-- arXiv search for "OpenVLA Minecraft": 1 result (D2E), where Minecraft appears in context of VPT comparison; not an OpenVLA-on-Minecraft implementation
-  - https://arxiv.org/search/?query=OpenVLA+Minecraft&searchtype=all
+- arXiv result for "OpenVLA Minecraft": D2E, where Minecraft appears in context of VPT comparison; not an OpenVLA-on-Minecraft implementation
   - https://arxiv.org/abs/2510.05684
 
 ## Adjacent Minecraft VLA / Agent Lines (Not OpenVLA)

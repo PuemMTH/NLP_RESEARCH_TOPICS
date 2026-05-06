@@ -3,7 +3,7 @@
 # Reference Mining: References Cited By Each OCR Pipeline Paper
 
 Method:
-- Source extraction from ar5iv HTML (`https://ar5iv.labs.arxiv.org/html/<arxiv_id>`), References section.
+- Source extraction from ar5iv HTML (`https://ar5iv.labs.arxiv.org/`), References section.
 - Fallback extraction via alternative citation index or mirrored arXiv HTML when ar5iv/PDF fails.
 - Target: at least 5 cited references per paper.
 - Status: 30 papers extracted, 0 failed. (Recovery sources: ar5iv, arXiv HTML, NASA ADS, Semantic Scholar API)

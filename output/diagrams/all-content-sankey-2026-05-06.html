@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Diagram</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12/dist/d3-sankey.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0f1117;
+      --surface:    #1a1d2e;
+      --surface2:   #222640;
+      --border:     #2d3148;
+      --text:       #e2e8f0;
+      --muted:      #8892b0;
+      --accent:     #64ffda;
+      --accent2:    #7c5cbf;
+      --warn:       #f97316;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1.5rem 5rem;
+      gap: 1.5rem;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    header { width: 100%; max-width: 1200px; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: -0.02em; }
+    .subtitle { font-size: 0.84rem; color: var(--muted); margin-top: 0.35rem; }
+
+    /* ── Main diagram ────────────────────────────── */
+    #diagram-container {
+      width: 100%; max-width: 1200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      overflow: auto;
+      min-height: 200px;
+    }
+
+    /* ── Sankey ──────────────────────────────────── */
+    .sankey-link { opacity: 0.38; transition: opacity 0.2s; fill: none; }
+    .sankey-link:hover { opacity: 0.72; }
+    .sankey-label { font-size: 12px; fill: var(--text); font-weight: 500; }
+
+    /* ── LaTeX ───────────────────────────────────── */
+    .latex-block {
+      margin: 1.2rem 0; padding: 1rem 1.5rem;
+      background: var(--bg);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px; font-size: 1.05rem; overflow-x: auto;
+    }
+    .latex-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
+
+    /* ── Mermaid ─────────────────────────────────── */
+    .mermaid { color: var(--text); }
+
+    /* ── Editable data table ─────────────────────── */
+    #data-section {
+      width: 100%; max-width: 1200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    #data-section summary {
+      padding: 0.85rem 1.5rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      user-select: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    #data-section summary::before { content: "▶"; font-size: 0.7rem; transition: transform 0.2s; }
+    #data-section[open] summary::before { transform: rotate(90deg); }
+    #data-section[open] summary { border-bottom-color: var(--border); }
+    #data-section summary::-webkit-details-marker { display: none; }
+
+    #data-table-wrap { padding: 1.25rem 1.5rem; overflow-x: auto; }
+
+    table.data-tbl {
+      width: 100%; border-collapse: collapse; font-size: 0.83rem;
+    }
+    table.data-tbl th {
+      text-align: left; padding: 0.4rem 0.6rem;
+      color: var(--muted); font-weight: 600; font-size: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table.data-tbl td {
+      padding: 0.25rem 0.4rem;
+      border-bottom: 1px solid rgba(45,49,72,0.5);
+    }
+    table.data-tbl td[contenteditable="true"] {
+      outline: none; cursor: text;
+      border-radius: 3px;
+      transition: background 0.15s;
+    }
+    table.data-tbl td[contenteditable="true"]:focus {
+      background: var(--surface2);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .btn-rerender {
+      margin-top: 0.9rem;
+      padding: 0.45rem 1.1rem;
+      background: var(--accent2);
+      color: #fff;
+      border: none; border-radius: 6px;
+      font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .btn-rerender:hover { opacity: 0.85; }
+    .edit-hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
+    /* ── Sources footer ──────────────────────────── */
+    #sources-section {
+      width: 100%; max-width: 1200px;
+      border-top: 1px solid var(--border);
+      padding-top: 1.2rem;
+    }
+    #sources-section h2 {
+      font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
+      margin-bottom: 0.7rem; font-weight: 600;
+    }
+    .source-item {
+      display: flex; gap: 0.7rem; align-items: baseline;
+      font-size: 0.8rem; margin-bottom: 0.4rem;
+    }
+    .source-file {
+      font-family: 'Consolas', monospace;
+      color: var(--accent); white-space: nowrap;
+    }
+    .source-desc { color: var(--muted); }
+    .source-date { color: var(--border); font-size: 0.72rem; white-space: nowrap; }
+
+    /* ── Tooltip ─────────────────────────────────── */
+    #tooltip {
+      position: fixed;
+      background: rgba(26,29,46,0.97);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.4rem 0.75rem; font-size: 0.8rem;
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.15s; z-index: 999; white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 id="graph-title">Diagram</h1>
+  <p class="subtitle" id="graph-subtitle"></p>
+</header>
+
+<div id="diagram-container"></div>
+
+<details id="data-section">
+  <summary>Edit Data</summary>
+  <div id="data-table-wrap">
+    <div id="data-table-inner"></div>
+    <p class="edit-hint">แก้ไขค่าในตารางแล้วกด Re-render เพื่ออัปเดต diagram</p>
+    <button class="btn-rerender" onclick="rerender()">Re-render</button>
+  </div>
+</details>
+
+<footer id="sources-section">
+  <h2>Data Sources</h2>
+  <div id="sources-list"></div>
+</footer>
+
+<div id="tooltip"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+// CONFIG — Claude fills this block with real data when generating a diagram
+// ════════════════════════════════════════════════════════════════════════════
+const CONFIG = {
+  "type": "sankey",
+  "title": "All Content Sankey",
+  "subtitle": "Current workspace content flow from source folders to rendered output artifacts.",
+  "sources": [
+    {
+      "file": "output/",
+      "description": "Current generated reports, diagrams, rendered Markdown, and link-check artifacts",
+      "extractedAt": "2026-05-06"
+    },
+    {
+      "file": "research/",
+      "description": "Current research topics, references, ideas, sources, diagrams, and reports",
+      "extractedAt": "2026-05-06"
+    },
+    {
+      "file": "poc/",
+      "description": "Current proof-of-concept directories",
+      "extractedAt": "2026-05-06"
+    }
+  ],
+  "data": {
+    "nodes": [
+      {
+        "id": "workspace",
+        "label": "Workspace"
+      },
+      {
+        "id": "output",
+        "label": "output/"
+      },
+      {
+        "id": "research",
+        "label": "research/"
+      },
+      {
+        "id": "poc",
+        "label": "poc/"
+      },
+      {
+        "id": "top_reports",
+        "label": "Top HTML reports"
+      },
+      {
+        "id": "direct_diagrams",
+        "label": "Standalone diagrams"
+      },
+      {
+        "id": "rendered_md",
+        "label": "Rendered Markdown"
+      },
+      {
+        "id": "link_reports",
+        "label": "Link-check reports"
+      },
+      {
+        "id": "topics",
+        "label": "Topics"
+      },
+      {
+        "id": "references",
+        "label": "References"
+      },
+      {
+        "id": "ideas",
+        "label": "Ideas"
+      },
+      {
+        "id": "sources",
+        "label": "Sources"
+      },
+      {
+        "id": "research_diagrams",
+        "label": "Research diagrams"
+      },
+      {
+        "id": "research_reports",
+        "label": "Research reports"
+      },
+      {
+        "id": "poc_dirs",
+        "label": "POC directories"
+      }
+    ],
+    "links": [
+      {
+        "source": "workspace",
+        "target": "output",
+        "value": 59,
+        "note": "All files under output/"
+      },
+      {
+        "source": "workspace",
+        "target": "research",
+        "value": 48,
+        "note": "Current research source files"
+      },
+      {
+        "source": "workspace",
+        "target": "poc",
+        "value": 8,
+        "note": "POC directories"
+      },
+      {
+        "source": "output",
+        "target": "top_reports",
+        "value": 2,
+        "note": "Top-level HTML reports except index"
+      },
+      {
+        "source": "output",
+        "target": "direct_diagrams",
+        "value": 5,
+        "note": "output/diagrams/*.html"
+      },
+      {
+        "source": "output",
+        "target": "rendered_md",
+        "value": 49,
+        "note": "output/rendered-md/*.html"
+      },
+      {
+        "source": "output",
+        "target": "link_reports",
+        "value": 2,
+        "note": "Markdown + JSON link-check reports"
+      },
+      {
+        "source": "research",
+        "target": "topics",
+        "value": 5,
+        "note": "research/topics/*.md"
+      },
+      {
+        "source": "research",
+        "target": "references",
+        "value": 12,
+        "note": "research/references/*.md"
+      },
+      {
+        "source": "research",
+        "target": "ideas",
+        "value": 10,
+        "note": "research/ideas/*.md"
+      },
+      {
+        "source": "research",
+        "target": "sources",
+        "value": 7,
+        "note": "research/sources/*.md"
+      },
+      {
+        "source": "research",
+        "target": "research_diagrams",
+        "value": 12,
+        "note": "research/diagrams/*.md"
+      },
+      {
+        "source": "research",
+        "target": "research_reports",
+        "value": 2,
+        "note": "research/reports/*"
+      },
+      {
+        "source": "poc",
+        "target": "poc_dirs",
+        "value": 8,
+        "note": "Runnable POC folders"
+      }
+    ]
+  }
+};
+// ════════════════════════════════════════════════════════════════════════════
+
+const PALETTE = [
+  "#4c9be8","#7c5cbf","#64ffda","#f97316","#a855f7",
+  "#ec4899","#22d3ee","#84cc16","#fbbf24","#ef4444",
+  "#10b981","#6366f1","#14b8a6","#f59e0b","#8b5cf6",
+  "#3b82f6","#d946ef","#0ea5e9","#a3e635","#fb923c"
+];
+
+const container = document.getElementById("diagram-container");
+const tooltip   = document.getElementById("tooltip");
+
+document.getElementById("page-title").textContent     = CONFIG.title;
+document.getElementById("graph-title").textContent    = CONFIG.title;
+document.getElementById("graph-subtitle").textContent = CONFIG.subtitle || "";
+
+// ── Renderers ────────────────────────────────────────────────────────────────
+
+function renderSankey(data) {
+  container.innerHTML = "";
+  const W   = Math.min(container.clientWidth - 64, 1100);
+  const H   = Math.max(520, data.links.length * 20);
+  const PAD = { top: 12, right: 200, bottom: 12, left: 200 };
+
+  const svg = d3.select(container).append("svg")
+    .attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  const sankey = d3.sankey()
+    .nodeId(d => d.id)
+    .nodeWidth(22).nodePadding(16)
+    .extent([[PAD.left, PAD.top], [W - PAD.right, H - PAD.bottom]]);
+
+  const { nodes, links } = sankey({
+    nodes: data.nodes.map(d => ({ ...d })),
+    links: data.links.map(d => ({ ...d }))
+  });
+
+  const colorOf = {};
+  nodes.forEach((n, i) => { colorOf[n.id] = PALETTE[i % PALETTE.length]; });
+
+  svg.append("g").selectAll("path").data(links).join("path")
+    .attr("class", "sankey-link")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", d => colorOf[d.source.id])
+    .attr("stroke-width", d => Math.max(1.5, d.width))
+    .on("mousemove", (e, d) => {
+      tooltip.style.opacity = 1;
+      tooltip.style.left = (e.clientX + 14) + "px";
+      tooltip.style.top  = (e.clientY - 30) + "px";
+      const note = d.note ? ` — ${d.note}` : "";
+      tooltip.textContent = `${d.source.label||d.source.id} → ${d.target.label||d.target.id}  ${d.value}${note}`;
+    })
+    .on("mouseleave", () => { tooltip.style.opacity = 0; });
+
+  const nodeG = svg.append("g").selectAll("g").data(nodes).join("g");
+  nodeG.append("rect")
+    .attr("x", d => d.x0).attr("y", d => d.y0)
+    .attr("width", d => d.x1 - d.x0)
+    .attr("height", d => Math.max(5, d.y1 - d.y0))
+    .attr("fill", d => colorOf[d.id]).attr("rx", 4);
+  nodeG.append("text")
+    .attr("class", "sankey-label")
+    .attr("x", d => d.x0 < W/2 ? d.x1 + 9 : d.x0 - 9)
+    .attr("y", d => (d.y0 + d.y1) / 2).attr("dy", "0.35em")
+    .attr("text-anchor", d => d.x0 < W/2 ? "start" : "end")
+    .text(d => d.label || d.id);
+}
+
+function renderMermaid(data) {
+  container.innerHTML = "";
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  const pre = document.createElement("pre");
+  pre.className = "mermaid";
+  pre.textContent = data.definition;
+  container.appendChild(pre);
+  mermaid.run({ nodes: [pre] });
+}
+
+function renderLatex(data) {
+  container.innerHTML = "";
+  data.blocks.forEach(block => {
+    const wrap = document.createElement("div");
+    wrap.className = "latex-block";
+    if (block.label) {
+      const lbl = document.createElement("div");
+      lbl.className = "latex-label";
+      lbl.textContent = block.label;
+      wrap.appendChild(lbl);
+    }
+    const math = document.createElement("div");
+    math.textContent = `\\[${block.tex || block}\\]`;
+    wrap.appendChild(math);
+    container.appendChild(wrap);
+  });
+  if (window.MathJax) MathJax.typesetPromise([container]);
+}
+
+function renderPlotly(data) {
+  container.innerHTML = "";
+  const div = document.createElement("div");
+  container.appendChild(div);
+  const layout = Object.assign({
+    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+    font: { color: "#e2e8f0", family: "Segoe UI, system-ui, sans-serif" },
+    margin: { t: 30, b: 50, l: 60, r: 30 }
+  }, data.layout || {});
+  Plotly.newPlot(div, data.traces, layout, { responsive: true });
+}
+
+// ── Editable data table ───────────────────────────────────────────────────────
+
+function buildTable(data) {
+  const inner = document.getElementById("data-table-inner");
+  inner.innerHTML = "";
+
+  if (CONFIG.type === "sankey") {
+    const tbl = document.createElement("table");
+    tbl.className = "data-tbl";
+    tbl.innerHTML = `<thead><tr><th>Source</th><th>Target</th><th>Value</th><th>Note</th></tr></thead>`;
+    const tbody = document.createElement("tbody");
+    data.links.forEach((lk, i) => {
+      const tr = document.createElement("tr");
+      tr.dataset.idx = i;
+      ["source","target","value","note"].forEach(col => {
+        const td = document.createElement("td");
+        td.contentEditable = "true";
+        td.dataset.col = col;
+        td.textContent = lk[col] ?? "";
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    inner.appendChild(tbl);
+
+  } else if (CONFIG.type === "plotly" && data.traces && data.traces.length) {
+    data.traces.forEach((trace, ti) => {
+      const label = document.createElement("p");
+      label.style.cssText = "font-size:.75rem;color:var(--muted);margin-bottom:.4rem;margin-top:.6rem";
+      label.textContent = `Trace ${ti + 1}: ${trace.name || trace.type}`;
+      inner.appendChild(label);
+      const tbl = document.createElement("table");
+      tbl.className = "data-tbl";
+      tbl.dataset.traceIdx = ti;
+      const xs = trace.x || [];
+      const ys = trace.y || [];
+      const max = Math.max(xs.length, ys.length);
+      tbl.innerHTML = `<thead><tr><th>x</th><th>y</th></tr></thead>`;
+      const tbody = document.createElement("tbody");
+      for (let i = 0; i < max; i++) {
+        const tr = document.createElement("tr");
+        tr.dataset.idx = i;
+        ["x","y"].forEach(col => {
+          const td = document.createElement("td");
+          td.contentEditable = "true";
+          td.dataset.col = col;
+          td.textContent = (col === "x" ? xs[i] : ys[i]) ?? "";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      }
+      tbl.appendChild(tbody);
+      inner.appendChild(tbl);
+    });
+
+  } else {
+    inner.textContent = "Live editing is available for sankey and plotly types.";
+  }
+}
+
+function readTableBack() {
+  if (CONFIG.type === "sankey") {
+    const rows = document.querySelectorAll("#data-table-inner tbody tr");
+    rows.forEach(tr => {
+      const i = +tr.dataset.idx;
+      tr.querySelectorAll("td[data-col]").forEach(td => {
+        const col = td.dataset.col;
+        const val = td.textContent.trim();
+        CONFIG.data.links[i][col] = col === "value" ? (parseFloat(val) || 0) : val;
+      });
+    });
+  } else if (CONFIG.type === "plotly") {
+    document.querySelectorAll("#data-table-inner table[data-trace-idx]").forEach(tbl => {
+      const ti = +tbl.dataset.traceIdx;
+      const xs = [], ys = [];
+      tbl.querySelectorAll("tbody tr").forEach(tr => {
+        tr.querySelectorAll("td").forEach(td => {
+          const v = td.textContent.trim();
+          if (td.dataset.col === "x") xs.push(isNaN(v) ? v : +v);
+          else ys.push(isNaN(v) ? v : +v);
+        });
+      });
+      CONFIG.data.traces[ti].x = xs;
+      CONFIG.data.traces[ti].y = ys;
+    });
+  }
+}
+
+function rerender() {
+  readTableBack();
+  const render = RENDERERS[CONFIG.type];
+  if (render) render(CONFIG.data);
+}
+
+// ── Sources footer ─────────────────────────────────────────────────────────────
+
+function renderSources(sources) {
+  const list = document.getElementById("sources-list");
+  if (!sources || sources.length === 0) {
+    list.innerHTML = `<p style="font-size:.8rem;color:var(--muted)">No data sources specified.</p>`;
+    return;
+  }
+  list.innerHTML = sources.map(s => `
+    <div class="source-item">
+      <span class="source-file">${s.file}</span>
+      <span class="source-desc">${s.description || ""}</span>
+      <span class="source-date">${s.extractedAt || ""}</span>
+    </div>`).join("");
+}
+
+// ── Dispatch ───────────────────────────────────────────────────────────────────
+
+const RENDERERS = {
+  sankey: renderSankey, mermaid: renderMermaid,
+  latex:  renderLatex,  plotly:  renderPlotly
+};
+
+const render = RENDERERS[CONFIG.type];
+if (render) {
+  render(CONFIG.data);
+  buildTable(CONFIG.data);
+} else {
+  container.innerHTML = `<p style="color:#ef4444">Unknown type: <strong>${CONFIG.type}</strong><br>Valid: sankey, mermaid, latex, plotly</p>`;
+}
+
+renderSources(CONFIG.sources);
+</script>
+</body>
+</html>

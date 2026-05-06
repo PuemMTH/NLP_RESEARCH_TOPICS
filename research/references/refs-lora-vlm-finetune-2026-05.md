@@ -84,7 +84,7 @@ Topic: Fine-tuning vision-language models with LoRA/QLoRA, specifically for Qwen
 | openthaigpt/thai-ocr-evaluation | https://huggingface.co/datasets/openthaigpt/thai-ocr-evaluation | General Thai OCR eval; not medical |
 | iapp/thai_handwriting_dataset | https://huggingface.co/datasets/iapp/thai_handwriting_dataset | Used in Typhoon OCR training (5.5%) |
 | lst-nectec/lst20 | https://huggingface.co/datasets/lst-nectec/lst20 | Text-only NLP corpus (NER, POS); no images |
-| Synthetic Medical Prescription OCR | https://www.kaggle.com/datasets/priyanshuyav13/synthetic-medical-prescription-ocr-dataset | English; useful as structure template |
+| MedOCR-Vision Dataset | https://huggingface.co/datasets/naazimsnh02/medocr-vision-dataset | English medical OCR dataset; useful as a structure template |
 
 **Conclusion**: No public Thai medical document OCR dataset with annotated images exists. Training data must be constructed in-house.
 

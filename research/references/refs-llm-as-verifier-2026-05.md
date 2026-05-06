@@ -5,7 +5,7 @@
 ## Core Verification and Factuality Papers
 
 ### Chain-of-Verification Reduces Hallucination in Large Language Models
-- **Source**: <https://www.research-collection.ethz.ch/entities/publication/dc36c61e-6ae8-4483-8d69-4f57ee0b2229>
+- **Source**: <https://aclanthology.org/2024.findings-acl.212/>
 - **Venue**: Findings of ACL 2024
 - **Summary**: Chain-of-Verification drafts an answer, creates verification questions, answers them independently, and then produces a verified final answer. Useful pattern for OCR correction: generate correction first, then verify critical fields independently before accepting it.
 - **Relevance**: Supports a staged correction-then-verification design for Thai OCR.
@@ -45,7 +45,7 @@
 ## Hallucination Detection Tools
 
 ### HaluCheck
-- **Source**: <https://colab.ws/articles/10.1016/j.eswa.2025.126712>
+- **Source**: <https://www.sciencedirect.com/science/article/pii/S0957417425003343>
 - **Year**: 2025
 - **Summary**: Introduces explainable hallucination detection with evidence-based sentence checking and visual display of hallucination likelihood. Reports that tailored fact-checking can outperform generic LLM-as-a-Judge.
 - **Relevance**: Supports building explicit OCR verifier prompts and evidence spans instead of relying on generic judge scores.
@@ -55,4 +55,3 @@
 - **Year**: 2024
 - **Summary**: Uses token-level uncertainty for hallucination detection and fact-checking.
 - **Relevance**: Potential extension: combine OCR confidence scores with LLM verification confidence.
-

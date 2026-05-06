@@ -170,7 +170,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
 </ul>
 <h3>BERTScore for LLM Evaluation</h3>
 <ul>
-<li><strong>Reference</strong>: <a href="https://www.analyticsvidhya.com/blog/2025/04/bertscore-a-contextual-metric-for-llm-evaluation/">https://www.analyticsvidhya.com/blog/2025/04/bertscore-a-contextual-metric-for-llm-evaluation/</a></li>
+<li><strong>Reference</strong>: <a href="https://github.com/Tiiiger/bert_score">https://github.com/Tiiiger/bert_score</a></li>
 <li><strong>Summary</strong>: Uses contextual BERT embeddings for semantic similarity scoring. Better than cosine similarity on generic SentenceTransformer because it is token-level and alignment-aware. Limitations: computationally heavier; multilingual BERT required for Thai.</li>
 <li><strong>Relevance to Module 2</strong>: Drop-in upgrade to cosine similarity score using wangchanberta or multilingual-BERT as the scorer.</li>
 </ul>
@@ -190,7 +190,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
 <h2>Multimodal Product Understanding</h2>
 <h3>Multimodal E-Commerce Framework (ScienceDirect 2025)</h3>
 <ul>
-<li><strong>Reference</strong>: <a href="https://www.sciencedirect.com/article/pii/S2667096825000370">https://www.sciencedirect.com/article/pii/S2667096825000370</a></li>
+<li><strong>Reference</strong>: <a href="https://www.sciencedirect.com/science/article/pii/S2667096825000370">https://www.sciencedirect.com/science/article/pii/S2667096825000370</a></li>
 <li><strong>Summary</strong>: BiLens-style framework combining ViT + LLM for product caption generation and retrieval. Evaluates BLIP-2, ViT-GPT2, Florence-2-large, GIT.</li>
 <li><strong>Pipeline stage</strong>: Module 1 upgrade — replace 700-char threshold heuristic with VLM-based content classifier.</li>
 </ul>

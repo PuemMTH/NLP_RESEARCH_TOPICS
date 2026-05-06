@@ -72,7 +72,7 @@ Topic thread: extending the NECTEC SME product-data cleaning + OCR evaluation pi
 - **Pipeline stage**: Stage 6 (Validation) + Module 2 upgrade.
 
 ### BERTScore for LLM Evaluation
-- **Reference**: https://www.analyticsvidhya.com/blog/2025/04/bertscore-a-contextual-metric-for-llm-evaluation/
+- **Reference**: https://github.com/Tiiiger/bert_score
 - **Summary**: Uses contextual BERT embeddings for semantic similarity scoring. Better than cosine similarity on generic SentenceTransformer because it is token-level and alignment-aware. Limitations: computationally heavier; multilingual BERT required for Thai.
 - **Relevance to Module 2**: Drop-in upgrade to cosine similarity score using wangchanberta or multilingual-BERT as the scorer.
 
@@ -91,7 +91,7 @@ Topic thread: extending the NECTEC SME product-data cleaning + OCR evaluation pi
 ## Multimodal Product Understanding
 
 ### Multimodal E-Commerce Framework (ScienceDirect 2025)
-- **Reference**: https://www.sciencedirect.com/article/pii/S2667096825000370
+- **Reference**: https://www.sciencedirect.com/science/article/pii/S2667096825000370
 - **Summary**: BiLens-style framework combining ViT + LLM for product caption generation and retrieval. Evaluates BLIP-2, ViT-GPT2, Florence-2-large, GIT.
 - **Pipeline stage**: Module 1 upgrade — replace 700-char threshold heuristic with VLM-based content classifier.
 

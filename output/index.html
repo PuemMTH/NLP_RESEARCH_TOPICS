@@ -5,344 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NLP Research Topics Index</title>
   <style>
-    :root {
-      --bg: #f5f7fa;
-      --paper: #ffffff;
-      --ink: #162027;
-      --muted: #65717c;
-      --line: #d8dee5;
-      --accent: #0f766e;
-      --blue: #38598b;
-      --red: #a33a2b;
-    }
-
+    :root { --bg:#f6f8fb; --paper:#ffffff; --ink:#17212b; --muted:#64717d; --line:#d9e0e7; --accent:#0f766e; --blue:#315b8f; --warn:#a33a2b; }
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
-      line-height: 1.6;
-    }
-
-    main {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 38px 0 56px;
-    }
-
-    header {
-      padding-bottom: 22px;
-      border-bottom: 2px solid var(--line);
-      margin-bottom: 24px;
-    }
-
-    .eyebrow {
-      margin: 0 0 8px;
-      color: var(--accent);
-      font-weight: 700;
-      text-transform: uppercase;
-      font-size: 0.86rem;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      line-height: 1.1;
-      letter-spacing: 0;
-    }
-
-    .lead {
-      max-width: 900px;
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    section {
-      margin-top: 22px;
-      padding: 22px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: 1.32rem;
-      letter-spacing: 0;
-    }
-
-    h3 {
-      margin: 0 0 8px;
-      font-size: 1.02rem;
-    }
-
-    p { margin: 0 0 10px; }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .cards-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .card {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
-    }
-
-    .tag {
-      display: inline-block;
-      margin-bottom: 10px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #e7f3f1;
-      color: var(--accent);
-      font-size: 0.76rem;
-      font-weight: 700;
-    }
-
-    ul {
-      margin: 8px 0 0;
-      padding-left: 20px;
-    }
-
-    li + li { margin-top: 6px; }
-
-    a {
-      color: var(--blue);
-      text-decoration-thickness: 1px;
-      overflow-wrap: anywhere;
-    }
-
-    code {
-      padding: 2px 5px;
-      border-radius: 4px;
-      background: #edf1f5;
-      font-family: Consolas, monospace;
-      font-size: 0.92em;
-    }
-
-    .priority {
-      border-left: 5px solid var(--accent);
-    }
-
-    .warn {
-      border-left: 5px solid var(--red);
-    }
-
-    .path-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .path-item {
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
-    }
-
-    .path-item p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    footer {
-      margin-top: 22px;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 820px) {
-      main { width: min(100% - 20px, 1180px); padding-top: 24px; }
-      .grid, .cards-3 { grid-template-columns: 1fr; }
-      section { padding: 18px; }
-    }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,"Noto Sans Thai",Tahoma,sans-serif; line-height:1.58; }
+    main { width:min(1200px, calc(100% - 32px)); margin:0 auto; padding:36px 0 56px; }
+    header { padding-bottom:22px; border-bottom:2px solid var(--line); margin-bottom:24px; }
+    .eyebrow { margin:0 0 8px; color:var(--accent); font-weight:700; text-transform:uppercase; font-size:.84rem; }
+    h1 { margin:0; font-size:clamp(2rem,4vw,3.2rem); line-height:1.1; letter-spacing:0; }
+    .lead { max-width:920px; margin:14px 0 0; color:var(--muted); font-size:1.04rem; }
+    section { margin-top:22px; padding:22px; background:var(--paper); border:1px solid var(--line); border-radius:8px; }
+    h2 { margin:0 0 14px; font-size:1.28rem; letter-spacing:0; }
+    h3 { margin:0 0 7px; font-size:1rem; }
+    p { margin:0 0 10px; }
+    a { color:var(--blue); overflow-wrap:anywhere; }
+    code { padding:2px 5px; border-radius:4px; background:#edf1f5; font-family:Consolas,monospace; font-size:.92em; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .cards-4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .card,.path-item { padding:15px; border:1px solid var(--line); border-radius:8px; background:#fbfcfd; }
+    .tag { display:inline-block; margin-bottom:9px; padding:3px 8px; border-radius:999px; background:#e7f3f1; color:var(--accent); font-size:.75rem; font-weight:700; }
+    .stats { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin-top:18px; }
+    .stat { padding:12px; border:1px solid var(--line); border-radius:8px; background:#fbfcfd; }
+    .stat strong { display:block; font-size:1.45rem; color:var(--accent); line-height:1.1; }
+    .stat span { color:var(--muted); font-size:.84rem; }
+    .path-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .path-item p { color:var(--muted); font-size:.9rem; }
+    .priority { border-left:5px solid var(--accent); }
+    .muted { color:var(--muted); }
+    footer { margin-top:22px; color:var(--muted); font-size:.9rem; }
+    @media (max-width:980px) { .grid,.cards-4,.stats,.path-list { grid-template-columns:1fr; } main { width:min(100% - 20px,1200px); padding-top:24px; } section { padding:18px; } }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <p class="eyebrow">NLP Research Workspace · Index</p>
+      <p class="eyebrow">NLP Research Workspace · Complete Index</p>
       <h1>Thai OCR / SME NLP / LLM-VLM Research Index</h1>
-      <p class="lead">
-        หน้าเข้าเดียวสำหรับ report, diagram, research notes, references และ POC ที่เกี่ยวกับ
-        NECTEC NLP extension, Thai OCR evaluation, VLM fallback, LLM verifier และ Typhoon OCR LoRA
-      </p>
+      <p class="lead">หน้าเข้าเดียวสำหรับ generated reports, Sankey diagrams, rendered research notes, references, ideas, source summaries, and runnable POCs. Updated from current workspace inventory on 2026-05-06.</p>
+      <div class="stats"><div class="stat"><strong>60</strong><span>Output files</span></div>
+<div class="stat"><strong>6</strong><span>Standalone diagrams</span></div>
+<div class="stat"><strong>49</strong><span>Rendered Markdown pages</span></div>
+<div class="stat"><strong>46</strong><span>Research notes</span></div>
+<div class="stat"><strong>8</strong><span>POC folders</span></div>
+<div class="stat"><strong>159</strong><span>Source web links checked</span></div></div>
     </header>
 
     <section class="priority">
       <h2>Start Here</h2>
-      <div class="grid cards-3">
-        <div class="card">
-          <span class="tag">Main Summary</span>
-          <h3><a href="nectec-nlp-llm-summary-2026-05-06.html">NECTEC NLP → LLM/VLM Summary</a></h3>
-          <p>สรุปใหญ่ของ scope, research directions, architecture, verifier และ POC results</p>
-        </div>
-        <div class="card">
-          <span class="tag">POC Report</span>
-          <h3><a href="diagrams/poc-results-vlm-eval-lora-2026-05-06.html">POC Results: VLM + Eval + LoRA</a></h3>
-          <p>รายงานผล run จริงของ VLM classifier, 3-layer OCR evaluation และ Idea 6 LoRA research</p>
-        </div>
-        <div class="card">
-          <span class="tag">Research Scope</span>
-          <h3><a href="rendered-md/research__topics__nlp-scope-and-topic-map-2026-05-06.html">NLP Scope and Topic Map</a></h3>
-          <p>แยก scope NLP เป็น Core NLP, IE, LLM-era, Document AI, Thai NLP, Evaluation และ Deployment</p>
-        </div>
-        <div class="card">
-          <span class="tag">Refs</span>
-          <h3><a href="references.html">References Index</a></h3>
-          <p>รวม ref ของ refs ทั้งหมดจาก <code>research/references/*.md</code> พร้อม external URLs</p>
-        </div>
-      </div>
+      <div class="grid cards-4"><div class="card"><span class="tag">Main Summary</span><h3><a href="nectec-nlp-llm-summary-2026-05-06.html">Main Summary</a></h3><p>Integrated NECTEC NLP, Thai OCR, VLM, verifier, and POC summary.</p></div>
+<div class="card"><span class="tag">All Content Sankey</span><h3><a href="diagrams/all-content-sankey-2026-05-06.html">All Content Sankey</a></h3><p>Workspace content flow from source folders to output artifacts.</p></div>
+<div class="card"><span class="tag">References Index</span><h3><a href="references.html">References Index</a></h3><p>Aggregated rendered reference index.</p></div>
+<div class="card"><span class="tag">Link Check Report</span><h3><a href="link-check-report-2026-05-06.md">Link Check Report</a></h3><p>Current source-file link health report.</p></div></div>
     </section>
 
-    <section>
-      <h2>HTML Reports and Diagrams</h2>
-      <div class="path-list">
-        <div class="path-item">
-          <h3><a href="nectec-nlp-llm-summary-2026-05-06.html">output/nectec-nlp-llm-summary-2026-05-06.html</a></h3>
-          <p>Main integrated report with research directions, architecture cards, verifier section, and POC updates.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="diagrams/poc-results-vlm-eval-lora-2026-05-06.html">output/diagrams/poc-results-vlm-eval-lora-2026-05-06.html</a></h3>
-          <p>Evidence-based POC result report with tokenizer drift chart.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="diagrams/vlm-thai-ocr-research-summary-2026-05-06.html">output/diagrams/vlm-thai-ocr-research-summary-2026-05-06.html</a></h3>
-          <p>VLM Thai OCR research summary report.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="diagrams/poc-ocr-confidence-2026-04-29.html">output/diagrams/poc-ocr-confidence-2026-04-29.html</a></h3>
-          <p>OCR confidence visualization from earlier POC outputs.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="diagrams/nlp-scope-sankey-2026-04-29.html">output/diagrams/nlp-scope-sankey-2026-04-29.html</a></h3>
-          <p>NLP scope Sankey diagram.</p>
-        </div>
-      </div>
-    </section>
+    <section><h2>Standalone Reports</h2><div class="path-list">
+<div class="path-item"><h3><a href="nectec-nlp-llm-summary-2026-05-06.html">Nectec NLP LLM Summary 2026 05 06</a></h3><p>Standalone generated HTML artifact.</p></div>
+<div class="path-item"><h3><a href="references.html">References</a></h3><p>Standalone generated HTML artifact.</p></div>
+<div class="path-item"><h3><a href="link-check-report-2026-05-06.md">Link Check Report</a></h3><p>Source-file web links verified: 159/159 reachable.</p></div>
+<div class="path-item"><h3><a href="link-check-report-2026-05-06.json">Link Check Report JSON</a></h3><p>Machine-readable link-check details.</p></div>
+</div></section><section><h2>Diagrams and Visual Reports</h2><div class="path-list">
+<div class="path-item"><h3><a href="diagrams/all-content-sankey-2026-05-06.html">All Content Sankey 2026 05 06</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+<div class="path-item"><h3><a href="diagrams/nlp-research-scope-sankey-2026-04-29.html">NLP Research Scope Sankey 2026 04 29</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+<div class="path-item"><h3><a href="diagrams/nlp-scope-sankey-2026-04-29.html">NLP Scope Sankey 2026 04 29</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+<div class="path-item"><h3><a href="diagrams/poc-ocr-confidence-2026-04-29.html">POC OCR Confidence 2026 04 29</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+<div class="path-item"><h3><a href="diagrams/poc-results-vlm-eval-lora-2026-05-06.html">POC Results VLM Eval Lora 2026 05 06</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+<div class="path-item"><h3><a href="diagrams/vlm-thai-ocr-research-summary-2026-05-06.html">VLM Thai OCR Research Summary 2026 05 06</a></h3><p>Generated diagram/report in output/diagrams/.</p></div>
+</div></section><section><h2>Proofs of Concept</h2><div class="path-list">
+<div class="path-item"><h3><a href="../poc/byt5-ocr-correction">poc/byt5-ocr-correction</a></h3><p>poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="rendered-md/poc__doclayout-yolo__README.html">poc/doclayout-yolo</a></h3><p>README.md, poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="../poc/easyocr-thai">poc/easyocr-thai</a></h3><p>poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="../poc/got-ocr2">poc/got-ocr2</a></h3><p>poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="rendered-md/poc__ocr-eval-3layer__README.html">poc/ocr-eval-3layer</a></h3><p>README.md, poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="../poc/paddleocr-v5">poc/paddleocr-v5</a></h3><p>poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="rendered-md/poc__vlm-zero-shot-classifier__README.html">poc/vlm-zero-shot-classifier</a></h3><p>README.md, poc_runner.py, run.sh, pyproject.toml</p></div>
+<div class="path-item"><h3><a href="../poc/wangchanberta-correction">poc/wangchanberta-correction</a></h3><p>poc_runner.py, run.sh, pyproject.toml</p></div>
+</div></section><section><h2>Rendered Topics</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/research__topics__chanlekha-research-landscape.html">Research / Topics / Chanlekha Research Landscape</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__topics__nlp-and-robotics.html">Research / Topics / NLP And Robotics</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__topics__nlp-scope-and-topic-map-2026-05-06.html">Research / Topics / NLP Scope And Topic Map 2026 05 06</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__topics__technical-profile-and-career.html">Research / Topics / Technical Profile And Career</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__topics__thai-medical-ocr-post-correction.html">Research / Topics / Thai Medical OCR Post Correction</a></h3></div>
+</div></section><section><h2>Rendered References</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-chanlekha-research-landscape-2026-04.html">Research / References / Refs Chanlekha Research Landscape 2026 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-cited-by-ocr-pipeline-papers-2026-04.html">Research / References / Refs Cited By OCR Pipeline Papers 2026 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-llm-as-verifier-2026-05.html">Research / References / Refs LLM As Verifier 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-lora-vlm-finetune-2026-05.html">Research / References / Refs Lora VLM Finetune 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-nectec-nlp-llm-extension-2026-05.html">Research / References / Refs Nectec NLP LLM Extension 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-nlp-broad-topics.html">Research / References / Refs NLP Broad Topics</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-nlp-robotics.html">Research / References / Refs NLP Robotics</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-ocr-pipeline-papers-2026-04.html">Research / References / Refs OCR Pipeline Papers 2026 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-openvla-minecraft-2026-04.html">Research / References / Refs Openvla Minecraft 2026 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-tanapat-profile.html">Research / References / Refs Tanapat Profile</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-thai-medical-ocr-post-correction.html">Research / References / Refs Thai Medical OCR Post Correction</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__references__refs-vlm-thai-ocr-extension-2026-05.html">Research / References / Refs VLM Thai OCR Extension 2026 05</a></h3></div>
+</div></section><section><h2>Rendered Ideas</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/research__ideas__draft-proposal-thai-medical-ocr-masters-2026-03-31.html">Research / Ideas / Draft Proposal Thai Medical OCR Masters 2026 03 31</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__experiment-plan-thai-medical-ocr-2026-03-31.html">Research / Ideas / Experiment Plan Thai Medical OCR 2026 03 31</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__idea6-lora-finetune-typhoon-ocr-2026-05.html">Research / Ideas / Idea6 Lora Finetune Typhoon OCR 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-2026-03.html">Research / Ideas / Ideas 2026 03</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-2026-04.html">Research / Ideas / Ideas 2026 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-2026-05.html">Research / Ideas / Ideas 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-llm-as-verifier-2026-05.html">Research / Ideas / Ideas LLM As Verifier 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-vlm-thai-ocr-deep-research-2026-05-06.html">Research / Ideas / Ideas VLM Thai OCR Deep Research 2026 05 06</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__ideas-vlm-thai-ocr-extension-2026-05.html">Research / Ideas / Ideas VLM Thai OCR Extension 2026 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__ideas__proposal-baselines-metrics-ablations-minecraft-nlp-robotics-2026-04-04.html">Research / Ideas / Proposal Baselines Metrics Ablations Minecraft NLP Robotics 2026 04 04</a></h3></div>
+</div></section><section><h2>Rendered Sources</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/research__sources__chanlekha-publications-list-2026-04-05.html">Research / Sources / Chanlekha Publications List 2026 04 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__openvla-open-source-vla-2026-04-04.html">Research / Sources / Openvla Open Source Vla 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__rt-2-vla-robot-control-2026-04-04.html">Research / Sources / Rt 2 Vla Robot Control 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__saycan-grounding-language-robotic-affordances-2026-04-04.html">Research / Sources / Saycan Grounding Language Robotic Affordances 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__tanapat-eiam-arj-profile-cv.html">Research / Sources / Tanapat Eiam Arj Profile Cv</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__thai-medical-ocr-post-correction-2026-03-31.html">Research / Sources / Thai Medical OCR Post Correction 2026 03 31</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__sources__vlm-thai-ocr-reference-deep-dive-2026-05-06.html">Research / Sources / VLM Thai OCR Reference Deep Dive 2026 05 06</a></h3></div>
+</div></section><section><h2>Rendered Research Diagrams</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__chanlekha-research-landscape-2008-2024-2026-04-05.html">Research / Diagrams / Chanlekha Research Landscape 2008 2024 2026 04 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__evaluation-framework-minecraft-nlp-robotics-2026-04-04.html">Research / Diagrams / Evaluation Framework Minecraft NLP Robotics 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__nlp-robotics-top3-thesis-picks-2026-04-04.html">Research / Diagrams / NLP Robotics Top3 Thesis Picks 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__nlp-scope-sankey-2026-04-29.html">Research / Diagrams / NLP Scope Sankey 2026 04 29</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__ocr-research-landscape-2026-04-05.html">Research / Diagrams / OCR Research Landscape 2026 04 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__openvla-minecraft-landscape-2026-04-04.html">Research / Diagrams / Openvla Minecraft Landscape 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__pipeline-thai-medical-ocr-modular.html">Research / Diagrams / Pipeline Thai Medical OCR Modular</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__research-file-link-map.html">Research / Diagrams / Research File Link Map</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__research-trend-outlook-2026-04-05.html">Research / Diagrams / Research Trend Outlook 2026 04 05</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__system-comparison-ocr-abcd.html">Research / Diagrams / System Comparison OCR Abcd</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__thesis-stack-decision-openvla-vs-voyager-jarvis-2026-04-04.html">Research / Diagrams / Thesis Stack Decision Openvla Vs Voyager Jarvis 2026 04 04</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/research__diagrams__vlm-thai-ocr-architecture-map-2026-05-06.html">Research / Diagrams / VLM Thai OCR Architecture Map 2026 05 06</a></h3></div>
+</div></section><section><h2>Rendered POC Docs</h2><div class="path-list">
+<div class="path-item"><h3><a href="rendered-md/poc__doclayout-yolo__README.html">POC / Doclayout Yolo / Readme</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/poc__ocr-eval-3layer__README.html">POC / OCR Eval 3layer / Readme</a></h3></div>
+<div class="path-item"><h3><a href="rendered-md/poc__vlm-zero-shot-classifier__README.html">POC / VLM Zero Shot Classifier / Readme</a></h3></div>
+</div></section>
 
-    <section>
-      <h2>Core Research Topics</h2>
-      <div class="grid">
-        <div class="card">
-          <span class="tag">Primary</span>
-          <h3><a href="rendered-md/research__topics__thai-medical-ocr-post-correction.html">Thai Medical OCR + Post-correction</a></h3>
-          <p>Main topic index for OCR pipeline, POC logs, VLM research, verifier, architecture, and POC results.</p>
-        </div>
-        <div class="card">
-          <span class="tag">Scope</span>
-          <h3><a href="rendered-md/research__topics__nlp-scope-and-topic-map-2026-05-06.html">NLP Scope and Topic Map</a></h3>
-          <p>Clear topic separation and priority tracks for this project.</p>
-        </div>
-        <div class="card">
-          <span class="tag">Secondary</span>
-          <h3><a href="rendered-md/research__topics__nlp-and-robotics.html">NLP and Robotics</a></h3>
-          <p>Separate robotics/VLA thread, lower priority unless the project changes direction.</p>
-        </div>
-        <div class="card">
-          <span class="tag">Context</span>
-          <h3><a href="rendered-md/research__topics__chanlekha-research-landscape.html">Chanlekha Research Landscape</a></h3>
-          <p>Research landscape context and related Thai NLP/OCR background.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>Ideas and Plans</h2>
-      <div class="path-list">
-        <div class="path-item">
-          <h3><a href="rendered-md/research__ideas__ideas-2026-05.html">NECTEC NLP Work → LLM/VLM Extensions</a></h3>
-          <p>LLM-assisted product normalization, LLM-as-Judge, VLM classifier, constrained correction.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="rendered-md/research__ideas__ideas-vlm-thai-ocr-extension-2026-05.html">VLM Extension for Thai OCR Pipeline</a></h3>
-          <p>Seven VLM/OCR extension ideas and priority ranking.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="rendered-md/research__ideas__ideas-vlm-thai-ocr-deep-research-2026-05-06.html">Deep Research Follow-up From VLM References</a></h3>
-          <p>Internal OCRBench, evaluation cascade, VLM fallback, image-text alignment, baseline study.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="rendered-md/research__ideas__ideas-llm-as-verifier-2026-05.html">LLM as a Verifier</a></h3>
-          <p>Evidence-grounded supported / unsupported / uncertain verification for OCR fields.</p>
-        </div>
-        <div class="path-item">
-          <h3><a href="rendered-md/research__ideas__idea6-lora-finetune-typhoon-ocr-2026-05.html">Idea 6: LoRA Fine-Tune Typhoon OCR</a></h3>
-          <p>Implementation plan for adapting <code>scb10x/typhoon-ocr1.5-2b</code>.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>Proofs of Concept</h2>
-      <div class="grid cards-3">
-        <div class="card">
-          <span class="tag">Done</span>
-          <h3><a href="rendered-md/poc__vlm-zero-shot-classifier__README.html">poc/vlm-zero-shot-classifier</a></h3>
-          <p>Typhoon2-Vision zero-shot product vs advertisement classifier with fallback to 700-char rule.</p>
-        </div>
-        <div class="card">
-          <span class="tag">Done</span>
-          <h3><a href="rendered-md/poc__ocr-eval-3layer__README.html">poc/ocr-eval-3layer</a></h3>
-          <p>CER + ANLS* + WangchanBERTa scoring with WER tokenizer drift demonstration.</p>
-        </div>
-        <div class="card">
-          <span class="tag">Existing</span>
-          <h3><a href="rendered-md/poc__doclayout-yolo__README.html">poc/doclayout-yolo</a></h3>
-          <p>Layout detection POC for document regions.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>References</h2>
-      <div class="grid">
-        <div class="card">
-          <h3><a href="references.html">All References Index</a></h3>
-          <p>รวม reference files ทุกไฟล์และลิงก์อ้างอิงภายนอกทั้งหมดที่ extract ได้.</p>
-        </div>
-        <div class="card">
-          <h3><a href="rendered-md/research__references__refs-vlm-thai-ocr-extension-2026-05.html">VLM Thai OCR References</a></h3>
-          <p>Typhoon OCR, ThaiOCRBench, Qwen2.5-VL, DocOwl, ANLS, product understanding, CLIP-style alignment.</p>
-        </div>
-        <div class="card">
-          <h3><a href="rendered-md/research__references__refs-llm-as-verifier-2026-05.html">LLM as Verifier References</a></h3>
-          <p>Chain-of-Verification, SAFE, VERIFY, fact verification, hallucination detection.</p>
-        </div>
-        <div class="card">
-          <h3><a href="rendered-md/research__references__refs-lora-vlm-finetune-2026-05.html">LoRA VLM Fine-tune References</a></h3>
-          <p>References for Typhoon OCR LoRA and Qwen-VL fine-tuning.</p>
-        </div>
-        <div class="card">
-          <h3><a href="rendered-md/research__references__refs-nectec-nlp-llm-extension-2026-05.html">NECTEC NLP → LLM Extension References</a></h3>
-          <p>PyThaiNLP, SentenceTransformers, OCR correction, document VLM, LLM-as-Judge.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="warn">
-      <h2>Recommended Next Order</h2>
-      <ol>
-        <li>Run Idea 1 and Idea 2 on real labelled data, not only synthetic samples.</li>
-        <li>Create internal OCRBench slice using the schema in the scope notes.</li>
-        <li>Add <code>poc/llm-ocr-verifier/</code> for supported / unsupported / uncertain field verification.</li>
-        <li>Start Typhoon OCR LoRA only after benchmark and annotation format are fixed.</li>
-      </ol>
-    </section>
-
-    <footer>
-      Generated index for local workspace. Open this file directly: <code>output/index.html</code>
-    </footer>
+    <footer>Generated from current local files. Open directly: <code>output/index.html</code></footer>
   </main>
 </body>
 </html>
